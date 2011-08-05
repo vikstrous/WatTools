@@ -1,5 +1,5 @@
 <?php require('pre.php');?>
-  <div id="links">
+<div id="links">
   <?php
   $string = file_get_contents('data/data.json');
   $json_a=json_decode($string,true);
@@ -41,4 +41,5 @@
     echo '</div>';// close item
   }
   ?>
+</div>
 <?php require('post.php');
