@@ -1,10 +1,10 @@
 <?php require('pre.php');?>
-<div id="links">
+<ul id="links" class="grid">
   <?php
   $string = file_get_contents('data/data.json');
   $json_a=json_decode($string,true);
   foreach($json_a as $item){
-    echo '<div class="item">'; //open item
+    echo '<li class="item">'; //open item
     
     foreach($item as $name => $data){
       //skip the url ones
@@ -38,8 +38,9 @@
       echo '</div>';
     }
     
-    echo '</div>';// close item
+    echo '</li>';// close item
   }
   ?>
-</div>
+  <div class="clearfix"></div>
+</ul>
 <?php require('post.php');

@@ -10,7 +10,15 @@
 <meta property="fb:admins" content="100000486272805" />
 <title>Waterloo Tools - A collection of tools for University of Waterloo students</title>
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssreset/reset-min.css">
-<link rel="stylesheet" href="style.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="style.css" />
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js"></script>
+<!-- I HATE IE -->
+<!--[if lte IE 7.0]>
+<style type="text/css">
+.grid li {display:inline;}
+</style>
+<![endif]--> 
 </head>
 
 <body>

@@ -1,12 +1,12 @@
 html{color:#2C5700; background-color:#FFFFFF;}
 body{margin:30px;}
-a{color:#024769; text-decoration:none;}
+a{color:#024769; text-decoration:none; cursor:pointer;}
 a:hover{color:#95CBE9;}
 
 #header .title a {font-size:3em; color:#2C5700;}
 #header .description {color:#5F5F5F;}
 
-#links .item{margin-top:30px; width:500px;}
+#links .item{ margin-top:20px; margin-right:20px;}
 #links .name{font-size:2em;}
 #links .label{margin-right:5px; float:left;}
 
@@ -20,3 +20,12 @@ a:hover{color:#95CBE9;}
 .noscript {color:red;}
 .bold {font-weight:bold;}
 .clearfix {clear:both;}
+.code {font-family:monospace;}
+.hidden {display:none;}
+
+.placeholder { border: 1px solid black; margin-top:18px; margin-right:18px; height: 1em;}
+
+.grid li {display:block; width:300px;}
+.grid li {display:inline-block; vertical-align: top;}
+
+.edit-button {margin-left:0.5em;}
