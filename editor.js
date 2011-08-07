@@ -2,15 +2,119 @@ var sort_by_order = function(a, b){
       a.order > b.order;
 };
 
-var max_sort_id = 0;
+/**
+ * The main application namespace
+ */
+var watedit = {};
 
-$(document).ready(function(){
-  var LinkData = {};
+watedit.LinkData = {};
+
+watedit.init = function(data){
+  watedit.LinkData = data;
+  watedit.redraw();
+}
+
+watedit.load_data = function(){
+  $.ajax({
+    url: 'data.js',
+    success: function(data, textStatus, jqXHR){
+      watedit.init(data);
+    },
+    error: function(jqXHR, textStatus, errorThrown){
+      console.erorr(errorThrown);
+    },
+    dataType: 'json',
+    cache: false
+  });
+}
+
+watedit.redraw = function(){
+  field_manager.redraw();
+  entry_manager.redraw();
+}
+
+/**
+ * The namespace for things related to editing the entries
+ */
+var entry_manager = {};
+
+entry_manager.redraw = function (){
+  var $ul = $('<ul>', {id:'links', class:'grid'});
+  var entries  = watedit.LinkData.entries.sort(sort_by_order);
   
-  function show_entry_editor(index){
+  for (entry in entries){
+    //the sorting function needs to know the index, but is not given it
+    //so we keep track of it ourselves
+    entries[entry].sort_id = entry;
+    $ul.append(entry_manager.build_entry(entry));
+  }
+  
+  $('#edit-area').empty().append($ul);
+  $ul.sortable({
+    placeholder: "item placeholder",
+    update: function(event, ui){
+      var sort_order = $(this).sortable('toArray');
+      watedit.LinkData.entries.sort(function(a, b){
+        return sort_order.indexOf('item_'+a.sort_id) > sort_order.indexOf('item_'+b.sort_id);
+      });
+    }
+  });
+  $ul.disableSelection();
+}
+
+entry_manager.build_entry = function(index){
+  var $a, $edit, property, this_field, $field, fields,
+      entry = watedit.LinkData.entries[index],
+      $label = $('<div>', {class:'label'});
+      $entry = $('<li>', {class:"item", id:'item_' + index}),
+      fields = watedit.LinkData.fields.sort(sort_by_order);
+
+  //go through each field and display its value
+  for (field in fields){
+    this_field = fields[field];
+    property = entry[this_field.name];
+    //if this entry has a property coresponding to this field
+    if(property != undefined && property.text != ''){
+      $field = $('<div>', {class: (this_field.class ? this_field.class + ' field' : 'field')});
+      //take care of url
+      if(property.url){
+        $a = $('<a>', {href:property.url});
+        $a.text(property.text);
+        $field.html($a);
+      } else {
+        $field.text(property.text);
+      }
+      //take care of label
+      if(this_field.label){
+        $field.prepend($label.clone().text(this_field.label));
+      }
+      $entry.append($field);
+    }
+  }
+  //edit button
+  $edit = $('<a>', {class:'faux-button'});
+  $edit.text('Edit');
+  $edit.click(function(){
+      entry_manager.open_editor(index);
+  });
+  $entry.append($edit);
+  //delete button
+  $delete = $('<a>', {class:'faux-button'});
+  $delete.text('Delete');
+  $delete.click(function(){
+    if(confirm('Are you sure you want to delete this item?')){
+      watedit.LinkData.entries.splice(index,1);
+      watedit.redraw();
+    }
+  });
+  $entry.append($delete);
+  return $entry;
+}
+
+entry_manager.open_editor = function(index){
     var fields, this_field, property
-        entry = LinkData.entries[index],
-        fields = LinkData.fields.sort(sort_by_order);
+        entry = watedit.LinkData.entries[index],
+        fields = watedit.LinkData.fields.sort(sort_by_order);
     
     var $fields = $('<div>');
     
@@ -71,10 +175,18 @@ $(document).ready(function(){
               
               //set the value
               if(entry[field] != undefined){
-                entry[field][purpose] = val;
+                if(val != ''){
+                  entry[field][purpose] = val;
+                } else {
+                  delete entry[field][purpose];
+                }
+              }
+              //remove empty object
+              if($.isEmptyObject(entry[field])){
+                delete entry[field];
               }
             }
-            redraw();
+            entry_manager.redraw();
             $(this).dialog( "close" );
           },
         Cancel: function(){
@@ -82,126 +194,47 @@ $(document).ready(function(){
         }
       }
     });
-  }
+}
+
+/**
+ * The namespace for things related to editing the fields
+ */
+var field_manager = {};
+field_manager.redraw = function(){
+  console.log('drawing');
+}
+
+$(document).ready(function(){
   
-  //each sortable entry
-  function build_entry(index){
-    var $a, $edit, property, this_field, $field, fields,
-        entry = LinkData.entries[index],
-        $label = $('<div>', {class:'label'});
-        
-    entry.sort_id = max_sort_id;
-    
-    var $entry = $('<li>', {class:"item", id:'item_' + max_sort_id++}),
-        fields = LinkData.fields.sort(sort_by_order);
-    
-    //go through each field and display its value
-    for (field in fields){
-      this_field = fields[field];
-      property = entry[this_field.name];
-      //if this entry has a property coresponding to this field
-      if(property != undefined){
-        $field = $('<div>', {class: this_field.class + ' field'});
-        //take care of url
-        if(property.url){
-          $a = $('<a>', {href:property.url});
-          $a.text(property.text);
-          $field.html($a);
-        } else {
-          $field.text(property.text);
-        }
-        //take care of label
-        if(this_field.label){
-          $field.prepend($label.clone().text(this_field.label));
-        }
-        $entry.append($field);
-      }
+  //set up event handlers for buttons
+  $('#submit-data').click(function(){
+    if(confirm('Are you sure you want to submit your changes to the list?')){
+      $("#json").text(JSON.stringify(watedit.LinkData));
+      $("#json_form").submit();
     }
-    //edit button
-    $edit = $('<a>', {class:'faux-button'});
-    $edit.text('Edit');
-    $edit.click(function(){
-        show_entry_editor(index);
-    });
-    $entry.append($edit);
-    //delete button
-    $delete = $('<a>', {class:'faux-button'});
-    $delete.text('Delete');
-    $delete.click(function(){
-      if(confirm('Are you sure you want to delete this item?')){
-        LinkData.entries.splice(index,1);
-        redraw();
-      }
-    });
-    $entry.append($delete);
-    return $entry;
-  }
+  });
   
-  function redraw(){
-    max_sort_id = 0;
-    var $ul = $('<ul>', {id:'links', class:'grid'});
-    var entries  = LinkData.entries.sort(sort_by_order);
-    
-    for (entry in entries){
-      $ul.append(build_entry(entry));
-    }
-    
-    $('#edit-area').empty().append($ul);
-		$ul.sortable({
-			placeholder: "item placeholder",
-      update: function(event, ui){
-        var sort_order = $(this).sortable('toArray');
-        LinkData.entries.sort(function(a, b){
-          return sort_order.indexOf('item_'+a.sort_id) > sort_order.indexOf('item_'+b.sort_id);
-        });
-      }
-		});
-		$ul.disableSelection();
-  }
-  
-  function init_list(){
-    $('#new-item').click(function(){
-      LinkData.entries.push(
-        {
-          'name' : {
-            'text' : 'New Item'
-          },
-          'description': {
-            'text' : 'This item is new.'
-          }
+  $('#new-item').click(function(){
+    watedit.LinkData.entries.push(
+      {
+        'name' : {
+          'text' : 'New Item'
+        },
+        'description': {
+          'text' : 'This item is new.'
         }
-      );
-      redraw();
-    });
-    $('#submit-data').click(function(){
-      if(confirm('Are you sure you want to submit your changes to the list?')){
-        $("#json").text(JSON.stringify(LinkData));
-        $("#json_form").submit();
       }
-    });
-    $('#refresh').click(function(){
-      redraw();
-    });
-    $('#reload').click(function(){
-      load_data();
-    });
-    redraw();
-  }
+    );
+    watedit.redraw();
+  });
   
-  function load_data(){
-    $.ajax({
-      url: 'data.js',
-      success: function(data, textStatus, jqXHR){
-        LinkData = data;
-        init_list();
-      },
-      error: function(jqXHR, textStatus, errorThrown){
-        console.erorr(errorThrown);
-      },
-      dataType: 'json',
-      cache: false
-    });
-  }
+  $('#refresh').click(function(){
+    watedit.redraw();
+  });
   
-  load_data();
+  $('#reload').click(function(){
+    watedit.load_data();
+  });
+  
+  watedit.load_data();
 });
