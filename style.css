@@ -2,13 +2,16 @@ html{color:#2C5700; background-color:#FFFFFF;}
 body{margin:30px;}
 a{color:#024769; text-decoration:none; cursor:pointer;}
 a:hover{color:#95CBE9;}
+label {cursor: pointer;}
 
 #header .title a {font-size:3em; color:#2C5700;}
 #header .description {color:#5F5F5F;}
 
-#links .item{ margin-top:20px; margin-right:20px;}
-#links .name{font-size:2em;}
-#links .label{margin-right:5px; display:inline;}
+#links .item {margin-top:20px; margin-right:20px;}
+#links .name {font-size:2em;}
+#links .label {margin-right:5px; display:inline;}
+
+#fields .name {font-size:2em;}
 
 #meta {margin-top:30px;}
 
