@@ -6,8 +6,9 @@ if($_POST['json']){
 ?>
 <?php require('pre.php');?>
   <div id="content">
-    <div class="bold">TODO: auth</div>
-    <a id="new-item">New Item</a>
+    <div class="bold">TODO: auth, versions, etc.</div>
+    <a id="new-item" class="faux-button">New Item</a><br/>
+    <a id="refresh" class="faux-button">Refresh</a>
     <div id="edit-area">
     </div>
     <form id="json_form" action="" method="POST" class="hidden">
@@ -15,8 +16,7 @@ if($_POST['json']){
       <br/>
       <input type="submit" value="Update data!"/>
     </form>
-    <a id="refresh">Refresh</a>
-    <a id="submit-data">Submit Data</a>
+    <a id="submit-data" class="faux-button">Submit Data</a>
   </div>
   
   <script type="text/javascript" src="editor.js"></script>

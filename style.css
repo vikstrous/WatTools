@@ -8,7 +8,7 @@ a:hover{color:#95CBE9;}
 
 #links .item{ margin-top:20px; margin-right:20px;}
 #links .name{font-size:2em;}
-#links .label{margin-right:5px; float:left;}
+#links .label{margin-right:5px; display:inline;}
 
 #meta {margin-top:30px;}
 
@@ -28,4 +28,4 @@ a:hover{color:#95CBE9;}
 .grid li {display:block; width:300px;}
 .grid li {display:inline-block; vertical-align: top;}
 
-.edit-button {margin-left:0.5em;}
+.faux-button {background-color:#E9E9E9; border:1px solid #CCCCCC; padding:0.25em; margin:0.25em; line-height:2em;}

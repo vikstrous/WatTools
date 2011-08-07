@@ -26,10 +26,10 @@
         $label = $item[$name . '_label'];
       }
       //output the stuff
+      echo '<div class="' . $name . '">';
       if($has_label){
         echo '<div class="label">' . $label . ':</div>';
       }
-      echo '<div class="' . $name . '">';
       if($has_link){
         echo '<a href="' . $link . '">' . $data . '</a>';
       } else {
