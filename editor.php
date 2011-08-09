@@ -1,31 +1,16 @@
 <?php
-if($_POST['json']){
-  $fh = fopen('data.js', 'w') or die('Failed to open file for writing.');
-  fwrite($fh, $_POST['json']);
-}
-?>
-<?php require('pre.php');?>
+require('pre.php');?>
   <div id="content">
-    <div class="bold">TODO: auth, versions, etc.</div>
-    <a id="refresh" class="faux-button">Refresh</a><br/>
-    <a id="reload" class="faux-button">Reload</a><br/>
-    <div>name</div>
-    <div>class</div>
-    <div>multiline</div>
-    <div>label</div>
-    <div>url</div>
+    <a id="editor" class="faux-button">Editor</a><br/>
+    <a id="refresh" class="faux-button hidden">Refresh</a>
+    <a id="reload" class="faux-button hidden">Reload</a>
     <div id="field-editor">
     </div>
-    <a id="new-field" class="faux-button">New Field</a>
+    <a id="new-field" class="faux-button hidden">New Field</a>
     <div id="item-editor">
     </div>
-    <form id="json_form" action="" method="POST" class="hidden">
-      <textarea id="json" name="json"></textarea>
-      <br/>
-      <input type="submit" value="Update data!"/>
-    </form>
-    <a id="new-item" class="faux-button">New Item</a>
-    <a id="submit-data" class="faux-button">Submit Data</a>
+    <a id="new-item" class="faux-button hidden">New Item</a><br/>
+    <a id="submit-data" class="faux-button hidden">Submit New Revision</a>
   </div>
   
   <script type="text/javascript" src="editor.js"></script>

@@ -14,6 +14,7 @@
 <link rel="stylesheet" type="text/css" href="jquery-ui-1.8.14.custom/css/smoothness/jquery-ui-1.8.14.custom.css" />
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js"></script>
+<script type="text/javascript" src="jquery.ui.touch.js"></script>
 <!-- I HATE IE -->
 <!--[if lte IE 7.0]>
 <style type="text/css">

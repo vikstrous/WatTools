@@ -7,28 +7,34 @@ label {cursor: pointer;}
 #header .title a {font-size:3em; color:#2C5700;}
 #header .description {color:#5F5F5F;}
 
-#links .item {margin-top:20px; margin-right:20px;}
+#links .item {margin-bottom:10px; margin-right:20px;}
 #links .name {font-size:2em;}
 #links .label {margin-right:5px; display:inline;}
 
+#fields {font-family: monospace; font-weight: bold;}
 #fields .name {font-size:2em;}
+#fields .field {margin-bottom:10px;}
 
-#meta {margin-top:30px;}
+#meta {margin-top:20px;}
 
 #social {margin-top:10px;}
 #social .social_item {float:left; margin-right:10px;}
-
-#content {margin-top:30px;}
 
 .noscript {color:red;}
 .bold {font-weight:bold;}
 .clearfix {clear:both;}
 .code {font-family:monospace;}
 .hidden {display:none;}
+.big {font-size:2.5em;}
 
-.placeholder { border: 1px solid black; margin-top:18px; margin-right:18px; height: 1em;}
+.placeholder { height: 100px; background-image:url('placeholder.png'); background-repeat:no-repeat; background-position:center; }
 
 .grid li {display:block; width:300px;}
 .grid li {display:inline-block; vertical-align: top;}
 
 .faux-button {background-color:#E9E9E9; border:1px solid #CCCCCC; padding:0.25em; margin:0.25em; line-height:2em;}
+
+
+//jquery ui
+.ui-widget {font-size:1em;}
+.ui-button-text {padding: 0.2em 0.5em;}

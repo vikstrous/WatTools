@@ -6,7 +6,7 @@
 #############################
 
 define('VERSION', 0.2);
-define('EXT', '.json');
+define('EXT', '.js');
 
 /*SETTINGS*/
 $settings['title']="WatTools Edit Mode";
@@ -63,14 +63,14 @@ AddHandler x-mapp-php5 .php'
 
 //make an .htaccess in the save path folder if needed (also makes the folder)
 if(!file_exists($settings['save path'].'/'.'.htaccess')){
-	$fh = fopen($settings['save path'].'/'.'.htaccess', 'w');
+	$fh = fopen($settings['save path'].'/'.'.htaccess', 'w') or die("not enough permissions");
 	fwrite($fh, 'deny from all');
 	fclose($fh);
 }
 
 //make php.ini if needed
 if(!file_exists('php.ini')){
-	$fh = fopen('php.ini', 'w');
+	$fh = fopen('php.ini', 'w')  or die("not enough permissions");
 	fwrite($fh,
 'session.name = "'.$settings['session name'].'"
 session.cache_expire = "60"
@@ -238,7 +238,7 @@ class doc{
 	public function create($name){
 		if(preg_match('/[a-zA-Z0-9\-\. ]+/', $name)){
 			if(!file_exists($this->make_filename($name))){
-				$fh = fopen($this->make_filename($name), 'w');
+				$fh = fopen($this->make_filename($name), 'w')  or die("not enough permissions");
 				if($fh){
 					fclose($fh);
 					$this->name=$name;
@@ -289,7 +289,7 @@ class doc{
 	
 	private function load(){
 		if(file_exists($this->make_filename($this->name))){
-			$fh = fopen($this->make_filename($this->name), 'r');
+			$fh = fopen($this->make_filename($this->name), 'r')  or die("not enough permissions");
 			$buff='';
 			while(!feof($fh)) {
 				$buff .= fread($fh, 1024*8);
@@ -302,7 +302,7 @@ class doc{
 	
 	private function save(){
 		if(file_exists($this->make_filename($this->name))){
-			$fh = fopen($this->make_filename($this->name), 'w');
+			$fh = fopen($this->make_filename($this->name), 'w')  or die("not enough permissions");
 			$return = fwrite($fh, $this->contents);
 			fclose($fh);
 			return $return;
