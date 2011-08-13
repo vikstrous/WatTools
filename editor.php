@@ -12,6 +12,12 @@ require('pre.php');?>
     <a id="new-item" class="faux-button hidden">New Item</a><br/>
     <a id="submit-data" class="faux-button hidden">Submit New Revision</a>
   </div>
+  <script type="text/template" id="input-tpl">
+    {{#label}}
+    <label for="{{id}}">{{label}}</label><br/>
+    {{/label}}
+    <input type="{{type}}" id="{{id}}" />
+  </script>
   
   <script type="text/javascript" src="editor.js"></script>
 <?php require('post.php');?>

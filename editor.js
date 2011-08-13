@@ -461,7 +461,7 @@ $(document).ready(function () {
       'for': 'revision_description'
     });
     $label.text('Description:');
-    $input = $('<input>', {
+    $input = $('<textarea>', {
       id: 'revision_description',
       name: 'description'
     });
@@ -474,7 +474,7 @@ $(document).ready(function () {
       modal: true,
       buttons: {
         Submit: function () {
-          var description = $('input[name="description"]', $inputs).val(),
+          var description = $('textarea[name="description"]', $inputs).val(),
               $dialog = $(this), //keep a reference
               data = {};
           data.data = watedit.LinkData;
