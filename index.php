@@ -72,16 +72,15 @@ require('pre.php');?>
     <div class="{{class}} field">
     {{#label}}
       <div class="label">
-        {{label}} 
-      </div>
+        {{label}}
     {{/label}}
-      {{#link}}
-      <a href="{{link}}">
-        {{/link}}
-          {{text}}
         {{#link}}
-      </a>
-      {{/link}}
+        <a href="{{link}}">
+          {{/link}}
+            {{text}}
+          {{#link}}
+        </a>
+        {{/link}}
     {{#label}}
       </div>
     {{/label}}
