@@ -11,6 +11,7 @@ session_start();
 <meta property="og:site_name" content="Waterloo Tools" />
 <meta property="fb:admins" content="100000486272805" />
 <title>Waterloo Tools - A collection of tools for University of Waterloo students</title>
+<link rel="alternate" type="application/rss+xml" href="/rss.xml" title="Waterloo Tools" />
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssreset/reset-min.css">
 <link rel="stylesheet" type="text/css" href="css/smoothness/jquery-ui-1.8.14.custom.css" />
 <link rel="stylesheet" type="text/css" href="css/jquery.jgrowl.css" />

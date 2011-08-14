@@ -63,3 +63,34 @@ function save_new_revision($filename, $data){
   fwrite($fh, json_encode($data));
   fclose($fh);
 }
+
+function build_rss($data){
+  $rss = <<<EOF
+<?xml version="1.0" encoding="UTF-8" ?>
+  <rss version="2.0">
+    <channel> 
+      <title>Waterloo Tools</title>
+      <link>http://wattools.com</link> 
+      <description>A collection of useful tools for University of Waterloo students. Made by students!</description>
+EOF;
+  $rss .= '<pubDate>'.date('D, d M Y H:i:s T').'</pubDate>';
+
+  foreach($data['revisions'] as $revision){
+    $rss .= '<item>';
+      $rss .= '<title>A new revision has been submitted!</title>';
+      $rss .= '<link>http://wattools.com</link>';
+      $rss .= '<description>'.htmlentities($revision['description']).'</description>';
+    $rss .= '</item>';
+  }
+
+  $rss .= 
+<<<EOF
+    </channel>
+  </rss>
+EOF;
+
+  // save the feed
+  $fh = fopen('rss.xml', 'w') or die('Failed to save data.');
+  fwrite($fh, $rss);
+  fclose($fh);
+}

@@ -17,6 +17,16 @@ if(in_array($_GET['action'], $admin_actions) && empty($postdata)) die('No data s
 
 switch ($_GET['action']){
   
+  case 'generate_rss':
+
+    // get all the revisions data
+    $revisions = get_revisions_data();
+    // rebuid the rss
+    build_rss($revisions);
+    die('Succes.');
+    
+    break;
+    
   case 'new_revision':
   
     // parse POST data
@@ -41,6 +51,9 @@ switch ($_GET['action']){
     
     // save the new revision
     save_new_revision($meta['file'], $data);
+    
+    // rebuid the rss
+    build_rss($revisions);
     
     // die with the id of the new revision
     die(''.(count($revisions['revisions'])-1));
