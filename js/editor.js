@@ -16,8 +16,8 @@ var debug = {
     if(debug.on && window.console !== undefined && console.time !== undefined){
       debug.time = function (label){
         console.time(label);
-      }
-      debug.time();
+      };
+      debug.time(label);
     } else {
       debug.time = function(){};
     }
@@ -26,8 +26,8 @@ var debug = {
     if(debug.on && window.console !== undefined && console.timeEnd !== undefined){
       debug.timeEnd = function (label){
         console.timeEnd(label);
-      }
-      debug.timeEnd();
+      };
+      debug.timeEnd(label);
     } else {
       debug.timeEnd = function(){};
     }
@@ -112,13 +112,16 @@ watedit.RevisionData = {};
  * 
  * @param {string} data to set
  */
-watedit.init = function(data) {
-  watedit.LinkData = data;
-  watedit.redraw();
+watedit.init = function() {
+  debug.time('start up');
+  watedit.attach_events();
+  watedit.load_data(false);
+  watedit.load_revisions();
+  debug.timeEnd('start up');
 };
 
 /**
- * Loads new data and calls watedit.init() with it
+ * Loads new data and draws the app
  *  
  * @param {boolean} fresh if the data should be fetched anew
  */
@@ -130,11 +133,13 @@ watedit.load_data = function(fresh) {
     'preload_current_data',
     'get_revision.php',
     function(data){
-      watedit.init(data);
+      watedit.LinkData = data;
+      watedit.redraw();
       debug.timeEnd('load');
     },
     function(jqXHR, textStatus, errorThrown){
       console.erorr(errorThrown);
+      debug.timeEnd('load');
     },
     fresh,
     params
@@ -219,7 +224,8 @@ watedit.choose_revisions = function () {
         date = new Date();
         date.setTime( revision.time*1000 );
         view = {
-          label: revision.description + ' -- ' + date.toLocaleDateString() + ' ' + date.toLocaleTimeString() ,
+          label: revision.description,
+          description: date.toLocaleDateString() + ' ' + date.toLocaleTimeString() ,
           checked: i == current,
           name: 'revision',
           value: i
@@ -355,6 +361,62 @@ watedit.submit = function() {
       });
     });
 };
+
+/**
+ * Attaches events to buttons and other things
+ * 
+ * @param {obejct} a jquery dom element to limit the scope of the changes (similar to how drupal does this)
+ */
+watedit.attach_events = function($context) {
+  //set up event handlers for buttons
+  $('#revisions', $context).click(function () {
+    watedit.choose_revisions();
+  });
+  
+  $('#login', $context).click(function () {
+    watedit.login();
+  });
+  
+  $('#logout', $context).click(function () {
+    watedit.logout();
+  });
+  
+  $('#submit-data', $context).click(function () {
+    watedit.submit();
+  });
+
+  $('#new-item', $context).click(function () {
+    var new_item_data = {};
+    //first thing is title amirite?
+    new_item_data[watedit.LinkData.fields[0].name] = {
+      'text': 'New Item'
+    };
+    watedit.LinkData.entries = watedit.LinkData.entries || [];
+    watedit.LinkData.entries.push(new_item_data);
+    entry_manager.redraw();
+    entry_manager.open_editor(watedit.LinkData.entries.length - 1);
+  });
+
+  $('#new-field', $context).click(function () {
+    watedit.LinkData.fields.push({
+      'name': 'New Field'
+    });
+    field_manager.redraw();
+    field_manager.open_editor(watedit.LinkData.fields.length - 1);
+  });
+
+  $('#refresh', $context).click(function () {
+    watedit.redraw();
+  });
+
+  $('#reload', $context).click(function () {
+    watedit.load_data(true);
+  });
+  $('#editor', $context).click(function () {
+    watedit.edit_mode = watedit.edit_mode ? false : true;
+    watedit.redraw();
+  });
+}
 
 
 /**
@@ -720,63 +782,3 @@ field_manager.open_editor = function (index) {
     }
   });
 };
-
-/**
- * Initializes all the click actions on the buttons.
- */
-$(document).ready(function () {
-  
-  debug.time('start up');
-  
-  //set up event handlers for buttons
-  $('#revisions').click(function () {
-    watedit.choose_revisions();
-  });
-  
-  $('#login').click(function () {
-    watedit.login();
-  });
-  
-  $('#logout').click(function () {
-    watedit.logout();
-  });
-  
-  $('#submit-data').click(function () {
-    watedit.submit();
-  });
-
-  $('#new-item').click(function () {
-    var new_item_data = {};
-    //first thing is title amirite?
-    new_item_data[watedit.LinkData.fields[0].name] = {
-      'text': 'New Item'
-    };
-    watedit.LinkData.entries = watedit.LinkData.entries || [];
-    watedit.LinkData.entries.push(new_item_data);
-    entry_manager.redraw();
-    entry_manager.open_editor(watedit.LinkData.entries.length - 1);
-  });
-
-  $('#new-field').click(function () {
-    watedit.LinkData.fields.push({
-      'name': 'New Field'
-    });
-    field_manager.redraw();
-    field_manager.open_editor(watedit.LinkData.fields.length - 1);
-  });
-
-  $('#refresh').click(function () {
-    watedit.redraw();
-  });
-
-  $('#reload').click(function () {
-    watedit.load_data(true);
-  });
-  $('#editor').click(function () {
-    watedit.edit_mode = watedit.edit_mode ? false : true;
-    watedit.redraw();
-  });
-  
-  watedit.load_data(false);
-  watedit.load_revisions();
-});

@@ -53,13 +53,18 @@ require('pre.php');?>
 
   <script type="text/template" id="radio-tpl">
     <div>
-    {{#label}}
-      <label>
-    {{/label}}
-      <input type="radio" name="{{name}}" {{#checked}}checked="checked"{{/checked}} value="{{value}}"/>
-    {{#label}}
-      {{label}}</label>
-    {{/label}}
+      <div class="radio">
+        {{#label}}
+          <label>
+        {{/label}}
+          <input type="radio" name="{{name}}" {{#checked}}checked="checked"{{/checked}} value="{{value}}"/>
+        {{#label}}
+          {{label}}</label>
+        {{/label}}
+      </div>
+    {{#description}}
+      <div class="description">{{description}}</div>
+    {{/description}}
     </div>
   </script>
 
@@ -93,10 +98,15 @@ require('pre.php');?>
   <script type="text/javascript" src="js/editor.js"></script>
   
   <?php if($_SESSION['loggedin']){?>
-  <script type="text/javascript">
-  watedit.admin = true;
-  watedit.redraw();
-  </script>
+    <script type="text/javascript">
+      watedit.admin = true;
+    </script>
   <?php }?>
   
+  <script type="text/javascript">
+    $(document).ready(function () {
+      watedit.init();
+    });
+  </script>
+
 <?php require('post.php');?>
