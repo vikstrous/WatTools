@@ -452,7 +452,7 @@ entry_manager.redraw = function () {
       update: function (event, ui) {
         var sort_order = $(this).sortable('toArray');
         watedit.LinkData.entries.sort(function (a, b) {
-          return sort_order.indexOf('item_' + a.sort_id) > sort_order.indexOf('item_' + b.sort_id);
+          return sort_order.indexOf('item_' + a.sort_id) - sort_order.indexOf('item_' + b.sort_id);
         });
         entry_manager.redraw();
       }
@@ -631,7 +631,7 @@ field_manager.redraw = function () {
     update: function (event, ui) {
       var sort_order = $(this).sortable('toArray');
       watedit.LinkData.fields.sort(function (a, b) {
-        return sort_order.indexOf('field_' + a.sort_id) > sort_order.indexOf('field_' + b.sort_id);
+        return sort_order.indexOf('field_' + a.sort_id) - sort_order.indexOf('field_' + b.sort_id);
       });
       watedit.redraw();
     }
