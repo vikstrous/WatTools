@@ -41,6 +41,9 @@ label { cursor: pointer; }
   line-height: 2em;
   margin: 0.25em;
   padding: 0.25em;
+  font-family: sans-serif;
+  font-weight: normal;
+  font-size: 0.9em;
   -moz-border-radius: 5px;
   border-radius: 5px;
 }
