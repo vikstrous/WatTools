@@ -179,7 +179,7 @@ watedit.login = function() {
     var $dialog = $(this);
     
     $.ajax({
-      url: '/login.php',
+      url: '/action.php?action=login',
       type: 'POST',
       data: {password: $('input[name="password"]', $dialog).val()},
       success: function (data, textStatus, jqXHR) {
@@ -203,7 +203,7 @@ watedit.login = function() {
  * Logs out the admin
  */
 watedit.logout = function() {
-  $.get('logout.php', function() {
+  $.get('/action.php?action=logout', function() {
     $.jGrowl('You have been logged out.');
     watedit.admin = false;
     watedit.redraw();
@@ -254,7 +254,7 @@ watedit.choose_revisions = function () {
       
       if (everyone && watedit.admin) {
         $.ajax({
-          url: '/set_current_revision.php',
+          url: '/action.php?action=set_current_revision',
           type: 'POST',
           data: ''+revision,
           success: function (data, textStatus, jqXHR) {
@@ -343,7 +343,7 @@ watedit.submit = function() {
       };
       
       $.ajax({
-        url: '/new_revision.php',
+        url: '/action.php?action=new_revision',
         type: 'POST',
         data: JSON.stringify(data),
         success: function (data, textStatus, jqXHR) {
