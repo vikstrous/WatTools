@@ -112,12 +112,11 @@ code .this { color: #19469D; }</style>
 <td class="docs">
 <h2>TODO faster templating - convert more things to use mustache?</h2>
 
-<p>enter button submit dialogs
-make revisions available to all users
-provide explanation of the fact that this is a wiki
-make revision deletion possible
-reuse dialogs
- </p>
+<h2>TODO enter button submit dialogs</h2>
+
+<h2>TODO make revision deletion possible</h2>
+
+<h2>TODO reuse dialogs</h2>
 </td>
 <td class="code">
 
@@ -135,8 +134,8 @@ reuse dialogs
     <span class="keyword">if</span>(<span class="variable">debug</span>.<span class="variable">on</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">window</span>.<span class="variable">console</span> !== <span class="variable">undefined</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">console</span>.<span class="variable">time</span> !== <span class="variable">undefined</span>){
       <span class="variable">debug</span>.<span class="variable">time</span> = <span class="keyword">function</span> (<span class="keyword">label</span>){
         <span class="variable">console</span>.<span class="variable">time</span>(<span class="keyword">label</span>);
-      }
-      <span class="variable">debug</span>.<span class="variable">time</span>();
+      };
+      <span class="variable">debug</span>.<span class="variable">time</span>(<span class="keyword">label</span>);
     } <span class="keyword">else</span> {
       <span class="variable">debug</span>.<span class="variable">time</span> = <span class="keyword">function</span>(){};
     }
@@ -145,10 +144,10 @@ reuse dialogs
     <span class="keyword">if</span>(<span class="variable">debug</span>.<span class="variable">on</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">window</span>.<span class="variable">console</span> !== <span class="variable">undefined</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">console</span>.<span class="variable">timeEnd</span> !== <span class="variable">undefined</span>){
       <span class="variable">debug</span>.<span class="variable">timeEnd</span> = <span class="keyword">function</span> (<span class="keyword">label</span>){
         <span class="variable">console</span>.<span class="variable">timeEnd</span>(<span class="keyword">label</span>);
-      }
-      <span class="variable">debug</span>.<span class="variable">timeEnd</span>();
+      };
+      <span class="variable">debug</span>.<span class="variable">timeEnd</span>(<span class="keyword">label</span>);
     } <span class="keyword">else</span> {
-      <span class="variable">debug</span>.<span class="variable">time</span> = <span class="keyword">function</span>(){};
+      <span class="variable">debug</span>.<span class="variable">timeEnd</span> = <span class="keyword">function</span>(){};
     }
   }
 }</code></pre>
@@ -246,15 +245,18 @@ reuse dialogs
 <ul><li><p><strong>param</strong>: <em>string</em>  data to set</p></li></ul>
 </td>
 <td class="code">
-<pre><code><span class="variable">watedit</span>.<span class="variable">init</span> = <span class="keyword">function</span>(<span class="variable">data</span>) {
-  <span class="variable">watedit</span>.<span class="class">LinkData</span> = <span class="variable">data</span>;
-  <span class="variable">watedit</span>.<span class="variable">redraw</span>();
+<pre><code><span class="variable">watedit</span>.<span class="variable">init</span> = <span class="keyword">function</span>() {
+  <span class="variable">debug</span>.<span class="variable">time</span>(<span class="string">'start up'</span>);
+  <span class="variable">watedit</span>.<span class="variable">attach_events</span>();
+  <span class="variable">watedit</span>.<span class="variable">load_data</span>(<span class="variable">false</span>);
+  <span class="variable">watedit</span>.<span class="variable">load_revisions</span>();
+  <span class="variable">debug</span>.<span class="variable">timeEnd</span>(<span class="string">'start up'</span>);
 };</code></pre>
 </td>
 </tr>
 <tr class="code">
 <td class="docs">
-<p>Loads new data and calls watedit.init() with it</p>
+<p>Loads new data and draws the app</p>
 
 <h2></h2>
 
@@ -269,11 +271,13 @@ reuse dialogs
     <span class="string">'preload_current_data'</span>,
     <span class="string">'get_revision.php'</span>,
     <span class="keyword">function</span>(<span class="variable">data</span>){
-      <span class="variable">watedit</span>.<span class="variable">init</span>(<span class="variable">data</span>);
+      <span class="variable">watedit</span>.<span class="class">LinkData</span> = <span class="variable">data</span>;
+      <span class="variable">watedit</span>.<span class="variable">redraw</span>();
       <span class="variable">debug</span>.<span class="variable">timeEnd</span>(<span class="string">'load'</span>);
     },
     <span class="keyword">function</span>(<span class="variable">jqXHR</span>, <span class="variable">textStatus</span>, <span class="variable">errorThrown</span>){
       <span class="variable">console</span>.<span class="variable">erorr</span>(<span class="variable">errorThrown</span>);
+      <span class="variable">debug</span>.<span class="variable">timeEnd</span>(<span class="string">'load'</span>);
     },
     <span class="variable">fresh</span>,
     <span class="variable">params</span>
@@ -311,6 +315,7 @@ reuse dialogs
   <span class="keyword">var</span> $<span class="variable">dialog</span> = $(<span class="string">'&lt;div&gt;'</span>), <span class="variable">view</span>;
   
   <span class="variable">view</span> = {
+    <span class="keyword">label</span>: <span class="string">'Password'</span>,
     <span class="variable">name</span>: <span class="string">'password'</span>,
     <span class="variable">password</span>: <span class="variable">true</span>
   };
@@ -374,7 +379,8 @@ reuse dialogs
         <span class="variable">date</span> = <span class="keyword">new</span> <span class="class">Date</span>();
         <span class="variable">date</span>.<span class="variable">setTime</span>( <span class="variable">revision</span>.<span class="variable">time</span>*<span class="number integer">1000</span> );
         <span class="variable">view</span> = {
-          <span class="keyword">label</span>: <span class="variable">revision</span>.<span class="variable">description</span> + <span class="string">' -- '</span> + <span class="variable">date</span>.<span class="variable">toLocaleDateString</span>() + <span class="string">' '</span> + <span class="variable">date</span>.<span class="variable">toLocaleTimeString</span>() ,
+          <span class="keyword">label</span>: <span class="variable">revision</span>.<span class="variable">description</span>,
+          <span class="variable">description</span>: <span class="variable">date</span>.<span class="variable">toLocaleDateString</span>() + <span class="string">' '</span> + <span class="variable">date</span>.<span class="variable">toLocaleTimeString</span>() ,
           <span class="variable">checked</span>: <span class="variable">i</span> == <span class="variable">current</span>,
           <span class="variable">name</span>: <span class="string">'revision'</span>,
           <span class="variable">value</span>: <span class="variable">i</span>
@@ -383,13 +389,15 @@ reuse dialogs
       }
     }
 
-    <span class="variable">view</span> = {
-      <span class="keyword">label</span>: <span class="string">'Change for everyone.'</span>,
-      <span class="variable">checkbox</span>: <span class="variable">true</span>,
-      <span class="variable">name</span>: <span class="string">'everyone'</span>
-    };
+    <span class="keyword">if</span>(<span class="variable">watedit</span>.<span class="variable">admin</span>){
+      <span class="variable">view</span> = {
+        <span class="keyword">label</span>: <span class="string">'Change for everyone.'</span>,
+        <span class="variable">checkbox</span>: <span class="variable">true</span>,
+        <span class="variable">name</span>: <span class="string">'everyone'</span>
+      };
 
-    $<span class="variable">dialog</span>.<span class="variable">append</span>($.<span class="variable">mustache</span>(<span class="string">'input'</span>, <span class="variable">view</span>));
+      $<span class="variable">dialog</span>.<span class="variable">append</span>($.<span class="variable">mustache</span>(<span class="string">'input'</span>, <span class="variable">view</span>));
+    }
     
     <span class="variable">submit_cancel_dialog</span>($<span class="variable">dialog</span>, <span class="string">'Change active revision'</span>, <span class="keyword">function</span> () {
       $<span class="variable">dialog</span> = $(<span class="this">this</span>);
@@ -399,7 +407,7 @@ reuse dialogs
       <span class="comment">//change active revision</span>
       <span class="variable">watedit</span>.<span class="class">RevisionData</span>.<span class="variable">current</span> = <span class="variable">revision</span>;
       
-      <span class="keyword">if</span> (<span class="variable">everyone</span>) {
+      <span class="keyword">if</span> (<span class="variable">everyone</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">watedit</span>.<span class="variable">admin</span>) {
         $.<span class="variable">ajax</span>({
           <span class="variable">url</span>: <span class="string">'/set_current_revision.php'</span>,
           <span class="variable">type</span>: <span class="string">'POST'</span>,
@@ -452,13 +460,11 @@ reuse dialogs
   <span class="variable">debug</span>.<span class="variable">time</span>(<span class="string">'redraw all'</span>);
   <span class="keyword">if</span> (<span class="variable">watedit</span>.<span class="variable">edit_mode</span>) {
     <span class="variable">field_manager</span>.<span class="variable">redraw</span>();
-    $(<span class="string">'#submit-data, #new-item, #new-field, #refresh, #reload, #field-editor'</span>).<span class="variable">show</span>();
+    $(<span class="string">'#submit-data, #new-item, #new-field, #refresh, #reload, #field-editor, #revisions'</span>).<span class="variable">show</span>();
     <span class="keyword">if</span>(<span class="variable">watedit</span>.<span class="variable">admin</span>){
-      $(<span class="string">'#revisions'</span>).<span class="variable">show</span>();
       $(<span class="string">'#login'</span>).<span class="variable">hide</span>();
       $(<span class="string">'#logout'</span>).<span class="variable">show</span>();
     } <span class="keyword">else</span> {
-      $(<span class="string">'#revisions'</span>).<span class="variable">hide</span>();
       $(<span class="string">'#login'</span>).<span class="variable">show</span>();
       $(<span class="string">'#logout'</span>).<span class="variable">hide</span>();
     }
@@ -518,6 +524,67 @@ reuse dialogs
       });
     });
 };</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<p>Attaches events to buttons and other things</p>
+
+<h2></h2>
+
+<ul><li><p><strong>param</strong>: <em>obejct</em>  a jquery dom element to limit the scope of the changes (similar to how drupal does this)</p></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="variable">watedit</span>.<span class="variable">attach_events</span> = <span class="keyword">function</span>($<span class="variable">context</span>) {
+  <span class="comment">//set up event handlers for buttons</span>
+  $(<span class="string">'#revisions'</span>, $<span class="variable">context</span>).<span class="variable">click</span>(<span class="keyword">function</span> () {
+    <span class="variable">watedit</span>.<span class="variable">choose_revisions</span>();
+  });
+  
+  $(<span class="string">'#login'</span>, $<span class="variable">context</span>).<span class="variable">click</span>(<span class="keyword">function</span> () {
+    <span class="variable">watedit</span>.<span class="variable">login</span>();
+  });
+  
+  $(<span class="string">'#logout'</span>, $<span class="variable">context</span>).<span class="variable">click</span>(<span class="keyword">function</span> () {
+    <span class="variable">watedit</span>.<span class="variable">logout</span>();
+  });
+  
+  $(<span class="string">'#submit-data'</span>, $<span class="variable">context</span>).<span class="variable">click</span>(<span class="keyword">function</span> () {
+    <span class="variable">watedit</span>.<span class="variable">submit</span>();
+  });
+
+  $(<span class="string">'#new-item'</span>, $<span class="variable">context</span>).<span class="variable">click</span>(<span class="keyword">function</span> () {
+    <span class="keyword">var</span> <span class="variable">new_item_data</span> = {};
+    <span class="comment">//first thing is title amirite?</span>
+    <span class="variable">new_item_data</span>[<span class="variable">watedit</span>.<span class="class">LinkData</span>.<span class="variable">fields</span>[<span class="number integer">0</span>].<span class="variable">name</span>] = {
+      <span class="string">'text'</span>: <span class="string">'New Item'</span>
+    };
+    <span class="variable">watedit</span>.<span class="class">LinkData</span>.<span class="variable">entries</span> = <span class="variable">watedit</span>.<span class="class">LinkData</span>.<span class="variable">entries</span> || [];
+    <span class="variable">watedit</span>.<span class="class">LinkData</span>.<span class="variable">entries</span>.<span class="variable">push</span>(<span class="variable">new_item_data</span>);
+    <span class="variable">entry_manager</span>.<span class="variable">redraw</span>();
+    <span class="variable">entry_manager</span>.<span class="variable">open_editor</span>(<span class="variable">watedit</span>.<span class="class">LinkData</span>.<span class="variable">entries</span>.<span class="variable">length</span> - <span class="number integer">1</span>);
+  });
+
+  $(<span class="string">'#new-field'</span>, $<span class="variable">context</span>).<span class="variable">click</span>(<span class="keyword">function</span> () {
+    <span class="variable">watedit</span>.<span class="class">LinkData</span>.<span class="variable">fields</span>.<span class="variable">push</span>({
+      <span class="string">'name'</span>: <span class="string">'New Field'</span>
+    });
+    <span class="variable">field_manager</span>.<span class="variable">redraw</span>();
+    <span class="variable">field_manager</span>.<span class="variable">open_editor</span>(<span class="variable">watedit</span>.<span class="class">LinkData</span>.<span class="variable">fields</span>.<span class="variable">length</span> - <span class="number integer">1</span>);
+  });
+
+  $(<span class="string">'#refresh'</span>, $<span class="variable">context</span>).<span class="variable">click</span>(<span class="keyword">function</span> () {
+    <span class="variable">watedit</span>.<span class="variable">redraw</span>();
+  });
+
+  $(<span class="string">'#reload'</span>, $<span class="variable">context</span>).<span class="variable">click</span>(<span class="keyword">function</span> () {
+    <span class="variable">watedit</span>.<span class="variable">load_data</span>(<span class="variable">true</span>);
+  });
+  $(<span class="string">'#editor'</span>, $<span class="variable">context</span>).<span class="variable">click</span>(<span class="keyword">function</span> () {
+    <span class="variable">watedit</span>.<span class="variable">edit_mode</span> = <span class="variable">watedit</span>.<span class="variable">edit_mode</span> ? <span class="variable">false</span> : <span class="variable">true</span>;
+    <span class="variable">watedit</span>.<span class="variable">redraw</span>();
+  });
+}</code></pre>
 </td>
 </tr>
 <tr class="code">
@@ -908,71 +975,7 @@ of field to edit</li></ul>
       }
     }
   });
-};</code></pre>
-</td>
-</tr>
-<tr class="code">
-<td class="docs">
-<p>Initializes all the click actions on the buttons.
- </p>
-</td>
-<td class="code">
-<pre><code>$(<span class="variable">document</span>).<span class="variable">ready</span>(<span class="keyword">function</span> () {
-  
-  <span class="variable">debug</span>.<span class="variable">time</span>(<span class="string">'start up'</span>);
-  
-  <span class="comment">//set up event handlers for buttons</span>
-  $(<span class="string">'#revisions'</span>).<span class="variable">click</span>(<span class="keyword">function</span> () {
-    <span class="variable">watedit</span>.<span class="variable">choose_revisions</span>();
-  });
-  
-  $(<span class="string">'#login'</span>).<span class="variable">click</span>(<span class="keyword">function</span> () {
-    <span class="variable">watedit</span>.<span class="variable">login</span>();
-  });
-  
-  $(<span class="string">'#logout'</span>).<span class="variable">click</span>(<span class="keyword">function</span> () {
-    <span class="variable">watedit</span>.<span class="variable">logout</span>();
-  });
-  
-  $(<span class="string">'#submit-data'</span>).<span class="variable">click</span>(<span class="keyword">function</span> () {
-    <span class="variable">watedit</span>.<span class="variable">submit</span>();
-  });
-
-  $(<span class="string">'#new-item'</span>).<span class="variable">click</span>(<span class="keyword">function</span> () {
-    <span class="keyword">var</span> <span class="variable">new_item_data</span> = {};
-    <span class="comment">//first thing is title amirite?</span>
-    <span class="variable">new_item_data</span>[<span class="variable">watedit</span>.<span class="class">LinkData</span>.<span class="variable">fields</span>[<span class="number integer">0</span>].<span class="variable">name</span>] = {
-      <span class="string">'text'</span>: <span class="string">'New Item'</span>
-    };
-    <span class="variable">watedit</span>.<span class="class">LinkData</span>.<span class="variable">entries</span> = <span class="variable">watedit</span>.<span class="class">LinkData</span>.<span class="variable">entries</span> || [];
-    <span class="variable">watedit</span>.<span class="class">LinkData</span>.<span class="variable">entries</span>.<span class="variable">push</span>(<span class="variable">new_item_data</span>);
-    <span class="variable">entry_manager</span>.<span class="variable">redraw</span>();
-    <span class="variable">entry_manager</span>.<span class="variable">open_editor</span>(<span class="variable">watedit</span>.<span class="class">LinkData</span>.<span class="variable">entries</span>.<span class="variable">length</span> - <span class="number integer">1</span>);
-  });
-
-  $(<span class="string">'#new-field'</span>).<span class="variable">click</span>(<span class="keyword">function</span> () {
-    <span class="variable">watedit</span>.<span class="class">LinkData</span>.<span class="variable">fields</span>.<span class="variable">push</span>({
-      <span class="string">'name'</span>: <span class="string">'New Field'</span>
-    });
-    <span class="variable">field_manager</span>.<span class="variable">redraw</span>();
-    <span class="variable">field_manager</span>.<span class="variable">open_editor</span>(<span class="variable">watedit</span>.<span class="class">LinkData</span>.<span class="variable">fields</span>.<span class="variable">length</span> - <span class="number integer">1</span>);
-  });
-
-  $(<span class="string">'#refresh'</span>).<span class="variable">click</span>(<span class="keyword">function</span> () {
-    <span class="variable">watedit</span>.<span class="variable">redraw</span>();
-  });
-
-  $(<span class="string">'#reload'</span>).<span class="variable">click</span>(<span class="keyword">function</span> () {
-    <span class="variable">watedit</span>.<span class="variable">load_data</span>(<span class="variable">true</span>);
-  });
-  $(<span class="string">'#editor'</span>).<span class="variable">click</span>(<span class="keyword">function</span> () {
-    <span class="variable">watedit</span>.<span class="variable">edit_mode</span> = <span class="variable">watedit</span>.<span class="variable">edit_mode</span> ? <span class="variable">false</span> : <span class="variable">true</span>;
-    <span class="variable">watedit</span>.<span class="variable">redraw</span>();
-  });
-  
-  <span class="variable">watedit</span>.<span class="variable">load_data</span>(<span class="variable">false</span>);
-  <span class="variable">watedit</span>.<span class="variable">load_revisions</span>();
-});
+};
 </code></pre>
 </td>
 </tr>	</body>

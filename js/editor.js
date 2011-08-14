@@ -1,17 +1,15 @@
 /**
  * TODO: faster templating - convert more things to use mustache?
- * enter button submit dialogs
- * make revisions available to all users
- * provide explanation of the fact that this is a wiki
- * make revision deletion possible
- * reuse dialogs
+ * TODO: enter button submit dialogs
+ * TODO: make revision deletion possible
+ * TODO: reuse dialogs
  */
 
 /**
  * Debug tools - built only if necessary and possible
  */
 var debug = {
-  on: true,
+  on: false,
   time: function(label) {
     if(debug.on && window.console !== undefined && console.time !== undefined){
       debug.time = function (label){
@@ -53,6 +51,7 @@ function loader(preload_var, url, success, error, fresh, params){
       type: 'GET',
       data: params,
       success: function(data, textStatus, jqXHR){
+        window[preload_var] = data;
         success(data, textStatus, jqXHR);
       },
       error: function(data, textStatus, errorThrown){
@@ -169,6 +168,7 @@ watedit.login = function() {
   var $dialog = $('<div>'), view;
   
   view = {
+    label: 'Password',
     name: 'password',
     password: true
   };
