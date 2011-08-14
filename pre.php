@@ -1,4 +1,6 @@
-<!DOCTYPE HTML>
+<?php
+session_start();
+?><!DOCTYPE HTML>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -10,15 +12,17 @@
 <meta property="fb:admins" content="100000486272805" />
 <title>Waterloo Tools - A collection of tools for University of Waterloo students</title>
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssreset/reset-min.css">
-<link rel="stylesheet" type="text/css" href="style.css" />
-<link rel="stylesheet" type="text/css" href="jquery-ui-1.8.14.custom/css/smoothness/jquery-ui-1.8.14.custom.css" />
+<link rel="stylesheet" type="text/css" href="css/smoothness/jquery-ui-1.8.14.custom.css" />
+<link rel="stylesheet" type="text/css" href="css/jquery.jgrowl.css" />
+<link rel="stylesheet" type="text/css" href="css/style.css" />
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js"></script>
-<script type="text/javascript" src="jquery.ui.touch.js"></script>
-<script type="text/javascript" src="mustache.js"></script>
+<script type="text/javascript" src="js/lib/jquery.ui.touch.js"></script>
+<script type="text/javascript" src="js/lib/mustache.js"></script>
+<script type="text/javascript" src="js/lib/jquery.jgrowl_minimized.js"></script>
 <script type="text/javascript">
 $.mustache = function(template, view, partials) {
-  return Mustache.to_html($('#'+template+'-tpl').html();, view, partials);
+  return Mustache.to_html($('#'+template+'-tpl').html(), view, partials);
 };
 </script>
 <!-- I HATE IE -->
@@ -33,7 +37,7 @@ $.mustache = function(template, view, partials) {
   <div id="header">
     <div class='title'><a href="/">Waterloo Tools</a></div>
     <div class='description'>A collection of tools for University of Waterloo students (made by University of Waterloo students!)</div>
-    <div class='description'><a href="/suggest.php">Make a suggestion!</a></div>
+    <div class='description'>You can be on this list too! If you (or someone you know) made a tool for other students to use, we would love to include it on this list. Click the edit button to submit your own midifications for approval.</div>
     <div id="social">
       <div class="social_item">
         <iframe src="http://www.facebook.com/plugins/like.php?app_id=155945941150696&amp;href=wattools.com&amp;send=false&amp;layout=box_count&amp;width=55&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=90" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:55px; height:90px;" allowTransparency="true"></iframe>

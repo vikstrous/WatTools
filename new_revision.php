@@ -12,8 +12,18 @@ $data = $decoded['data'];//data to store
 if(!$decoded['data']) die('No data.');
 if(!$decoded['meta']) die('No meta info.');
 
+//make sure our data doesn't contain any evil urls
+foreach ($data['entries'] as $entry){
+  foreach ($entry as $field){
+    if(!is_array($field)) continue;
+    if(!$field['url']) continue;
+    if(substr($field['url'], 0, 4) == 'http') continue;
+    die('Bad url type detected.');
+  }
+}
+
 //load json revision data
-$fh = fopen('revisions.js','r') or die('Failed to read revision data.');
+$fh = fopen('data/revisions.js','r') or die('Failed to read revision data.');
 $jsonInput = fgets($fh);
 $decoded = json_decode($jsonInput,true);
 fclose($fh);
@@ -27,10 +37,12 @@ if(!$revisions['current']) $revisions['current'] = 0;
 //make filename for new revision
 $meta['time'] = time();
 $meta['file'] = 'data/'.md5(json_encode($meta)).time().'.js';
+
+//add new revision
 array_push($revisions['revisions'], $meta);
 
 //save new revisions list
-$fh = fopen('revisions.js', 'w') or die('Failed to save revision data.');
+$fh = fopen('data/revisions.js', 'w') or die('Failed to save revision data.');
 fwrite($fh, json_encode($revisions));
 fclose($fh);
 
@@ -38,4 +50,4 @@ fclose($fh);
 $fh = fopen($meta['file'], 'w') or die('Failed to save data.');
 fwrite($fh, json_encode($data));
 fclose($fh);
-die('1');
+die(''.(count($revisions['revisions'])-1));

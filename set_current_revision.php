@@ -1,15 +1,17 @@
 <?php
-//TODO: requre login
+session_start();
+$_SESSION["loggedin"] or die ('Not logged in.');
 
 //get revision selection
 $fh = fopen('php://input','r') or die('Failed to read POST data.');
 $revision = fgets($fh);
 fclose($fh);
 
+//safety first frosh
 if(!is_numeric($revision)) die('Non numeric input.');
 
 //load json revision data
-$fh = fopen('revisions.js','r') or die('Failed to read revision data.');
+$fh = fopen('data/revisions.js','r') or die('Failed to read revision data.');
 $jsonInput = fgets($fh);
 $decoded = json_decode($jsonInput,true);
 fclose($fh);
@@ -27,7 +29,7 @@ if($revision > count($revisions['revisions'])) die('Selected revision out of ran
 $revisions['current'] = $revision;
 
 //save new revisions list
-$fh = fopen('revisions.js', 'w') or die('Failed to save revision data.');
+$fh = fopen('data/revisions.js', 'w') or die('Failed to save revision data.');
 fwrite($fh, json_encode($revisions));
 fclose($fh);
 die('1');
