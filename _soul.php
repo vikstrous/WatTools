@@ -75,6 +75,7 @@ function build_rss($data){
 EOF;
   $rss .= '<pubDate>'.date('D, d M Y H:i:s T').'</pubDate>';
 
+  $data['revisions'] = array_reverse($data['revisions']);
   foreach($data['revisions'] as $revision){
     $rss .= '<item>';
       $rss .= '<title>A new revision has been submitted!</title>';
