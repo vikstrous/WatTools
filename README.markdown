@@ -14,6 +14,7 @@ Steal my code!
 --------------
 
 If you are not a Waterloo student, you are free to use this code for your own school!
+It's really easy. It will (probably) run on any server with PHP 4.
 Just please contrinute back any enhancements that you make :)
 
 Contribute
