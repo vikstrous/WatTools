@@ -2,7 +2,7 @@
 
 // Constants
 
-define('PASSWORD', 'asdfdfdf');
+define('PASSWORD', trim(file_get_contents('.adminpassword')));
 
 // Useful stuff
 

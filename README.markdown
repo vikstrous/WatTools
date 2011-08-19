@@ -13,9 +13,14 @@ the submitted revisions by clicking on the Revisions button.
 Steal my code!
 --------------
 
-If you are not a Waterloo student, you are free to use this code for your own school!
-It's really easy. It will (probably) run on any server with PHP 4.
+If you are not a Waterloo student, you are free to use 
+this code for your own school!
+It's really easy. It will (probably) run on any server with PHP 5.
 Just please contrinute back any enhancements that you make :)
+
+Oh, and note that you have to create a file called .adminpassword
+containing the admin password!
+
 
 Contribute
 ----------
