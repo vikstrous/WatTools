@@ -62,12 +62,14 @@ watedit.login = function() {
   var $dialog = $('<div>'), view;
   
   view = {
-    label: 'Password',
-    name: 'password',
-    password: true
+    inputs: [{
+      label: 'Password',
+      name: 'password',
+      password: true
+    }]
   };
   
-  $dialog.append($.mustache('input', view));
+  $dialog.append($.mustache('form', view));
   
   submit_cancel_dialog($dialog, 'Log in', function() {
     var $dialog = $(this);
@@ -123,22 +125,26 @@ watedit.choose_revisions = function () {
           description: date.toLocaleDateString() + ' ' + date.toLocaleTimeString() ,
           checked: i == current,
           name: 'revision',
-          value: i
+          value: i,
+          radio: true
         });
       }
     }
 
+    if (watedit.admin) {
+      revisions_data.push({
+        label: 'Change for everyone.',
+        checkbox: true,
+        name: 'everyone',
+        revisions: revisions_data
+      });
+    }
+    
     view = {
-      label: 'Change for everyone.',
-      checkbox: true,
-      name: 'everyone',
-      revisions: revisions_data,
-      loggedin: watedit.admin,
-      partials: ['input', 'radio']
+      inputs: revisions_data
     };
 
-    
-    submit_cancel_dialog($.mustache('revisions', view), 'Change active revision', function () {
+    submit_cancel_dialog($.mustache('form', view), 'Change active revision', function () {
       var $dialog = $(this)
         , revision = $('input[name="revision"]:checked', $dialog).val()
         , everyone = $('input[name="everyone"]', $dialog).attr('checked');
@@ -207,18 +213,15 @@ watedit.redraw = function () {
 
 // Opens a dialog where the user enters a description and then submits a new revision
 watedit.submit_revision_dialog = function() {
-  var $dialog, $label, $input;
-
-  $dialog = $('<div>');
-
   var view = {
-    label: 'Description',
-    name: 'description',
-    multiline: true
+    inputs: [{
+      label: 'Description',
+      name: 'description',
+      multiline: true
+    }]
   };
-  $dialog.append($.mustache('input', view));
 
-  submit_cancel_dialog($dialog, 'Submit a revision', 
+  submit_cancel_dialog($.mustache('form', view), 'Submit a revision', 
     function (){
       var $dialog = $(this),
           description = $('textarea[name="description"]', $dialog).val(),
@@ -260,28 +263,23 @@ watedit.handle_button_click = function(button){
   switch ($btn.attr('type')) {
     case 'edit_field':
       field_manager.open_editor(param);
-      console.log('f edit button');
       break;
     case 'delete_field':
       if (confirm('Are you sure you want to delete this item?')) {
         watedit.LinkData.fields.splice(param, 1);
         watedit.redraw();
       }
-      console.log('f del button');
       break;
     case 'edit_entry':
       entry_manager.open_editor(param);
-      console.log('e edit button');
       break;
     case 'delete_entry':
       if (confirm('Are you sure you want to delete this item?')) {
         watedit.LinkData.entries.splice(param, 1);
         watedit.redraw();
       }
-      console.log('e del button');
       break;
     default:
-      console.log('unhandled button');
       break;
   }
 };

@@ -68,16 +68,17 @@ entry_manager.redraw = function () {
 // 
 // Modifies watedit.LinkData and triggers redraw of entries
 entry_manager.open_editor = function (index) {
-  var this_field, property, field, $field, view, title,
+  var this_field, property, field, $field, view, title, fields_data, field_data,
     entry = watedit.LinkData.entries[index],
     fields = watedit.LinkData.fields,
     $fields = $('<div>');
   
+  fields_data = [];
   for (field in fields) {
     if (Object.prototype.hasOwnProperty.call(fields, field)) {
       this_field = fields[field];
       property = entry[this_field.name];
-      view = {
+      field_data = {
         val: property ? property.text : '',
         label: this_field.name,
         purpose: 'text',
@@ -86,21 +87,27 @@ entry_manager.open_editor = function (index) {
       };
 
       //text input
-      $fields.append($.mustache('input', view));
-
+      fields_data.push(field_data);
+      
       //url input
       if (this_field.url) {
-        view.label += ' url';
-        view.val = property ? property.url : '';
-        view.purpose = 'url';
-        $fields.append($.mustache('input', view));
+        //make a copy of the old data
+        field_data = $.extend({}, field_data);
+        field_data.label += ' url';
+        field_data.val = property ? property.url : '';
+        field_data.purpose = 'url';
+        //then add a field for the url
+        fields_data.push(field_data);
       }
     }
   }
+  view = {
+    inputs: fields_data
+  };
   
   title = entry[watedit.LinkData.fields[0].name] ? entry[watedit.LinkData.fields[0].name].text : 'Untitled';
   
-  submit_cancel_dialog($fields, title, function(){
+  submit_cancel_dialog($.mustache('form', view), title, function(){
     var $dialog = $(this),
         $inputs = $('input,textarea', $dialog),
         $input, purpose, field, val, n, length;

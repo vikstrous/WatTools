@@ -4,6 +4,7 @@
 //- enter button submits dialogs
 //- make revision deletion possible
 //- reuse dialogs? maybe not
+//- extract form related things into a form api
 
 
 // Debug tools - built only if necessary and possible

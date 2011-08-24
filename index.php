@@ -25,50 +25,63 @@ require('pre.php');?>
     {{/edit_mode}}
   </script>
   
-  <script type="text/template" id="revisions-tpl">
-    <div>
-    {{#revisions}}
-      {{>radio}}
-    {{/revisions}}
-    {{#loggedin}}
-      {{>input}}
-    {{/loggedin}}
-    </div>
-  </script>
-  
-  <script type="text/template" id="input-tpl">
-    <div>
-    {{#checkbox}}
-      {{#label}}
-        <label>
-      {{/label}}
-      <input type="checkbox" name="{{name}}" purpose="{{purpose}}" field="{{field}}" {{#checked}}checked="checked"{{/checked}} />
-      {{#label}}
-        {{label}}</label>
-      {{/label}}
-    {{/checkbox}}
-    
-    {{^checkbox}}
-      {{#label}}
-        <label>{{label}}<br/>
-      {{/label}}
+  <script type="text/template" id="form-tpl">
+    <form>
+    {{#inputs}}
+      <div>
+      {{#checkbox}}
+        {{#label}}
+          <label>
+        {{/label}}
+        <input type="checkbox" name="{{name}}" purpose="{{purpose}}" field="{{field}}" {{#checked}}checked="checked"{{/checked}} />
+        {{#label}}
+          {{label}}</label>
+        {{/label}}
+      {{/checkbox}}
       
-        {{^multiline}}
-            <input {{#password}}type="password"{{/password}} {{^password}}type="text"{{/password}}
-              name="{{name}}" value="{{val}}" purpose="{{purpose}}" field="{{field}}" />
-        {{/multiline}}
+      {{#radio}}
+        <div>
+          <div class="radio">
+            {{#label}}
+              <label>
+            {{/label}}
+              <input type="radio" name="{{name}}" {{#checked}}checked="checked"{{/checked}} value="{{value}}"/>
+            {{#label}}
+              {{label}}</label>
+            {{/label}}
+          </div>
+        </div>
+      {{/radio}}
+      
+      {{^checkbox}}
+      {{^radio}}
+        {{#label}}
+          <label>{{label}}<br/>
+        {{/label}}
         
-        {{#multiline}}
-          <textarea name="{{name}}" purpose="{{purpose}}" field="{{field}}" >{{val}}</textarea>
-        {{/multiline}}
-        
-      {{#label}}
-        </label>
-      {{/label}}
-    {{/checkbox}}
-    </div>
+          {{^multiline}}
+              <input {{#password}}type="password"{{/password}} {{^password}}type="text"{{/password}}
+                name="{{name}}" value="{{val}}" purpose="{{purpose}}" field="{{field}}" />
+          {{/multiline}}
+          
+          {{#multiline}}
+            <textarea name="{{name}}" purpose="{{purpose}}" field="{{field}}" >{{val}}</textarea>
+          {{/multiline}}
+          
+        {{#label}}
+          </label>
+        {{/label}}
+      {{/radio}}
+      {{/checkbox}}
+      
+      {{#description}}
+        <div class="description">{{description}}</div>
+      {{/description}}
+      </div>
+    {{/inputs}}
+    </form>
   </script>
-  
+
   <script type="text/template" id="button-tpl">
     <a class="faux-button" type="{{type}}" parameter="{{parameter}}">
       {{label}}

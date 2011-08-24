@@ -85,7 +85,7 @@ field_manager.possible_properties = {
   //property name : property type
   'name': 'text',
   'class': 'text',
-  'label': 'multiline',
+  'label': 'textarea',
   'multiline': 'bool',
   'url': 'bool'
 };
@@ -94,31 +94,31 @@ field_manager.possible_properties = {
 // Open a modal to edit the field with this index
 // 
 // Modifies watedit.LinkData and triggers redraw of everything
-// 
-// @param index of field to edit
 field_manager.open_editor = function (index) {
-  var property, prop_type, view,
-      field = watedit.LinkData.fields[index],
-      $properties = $('<div>');
+  var property, prop_type, view, properties_data,
+      field = watedit.LinkData.fields[index];
 
+  properties_data = []
   //go through each property that a field can have
   for (property in field_manager.possible_properties) {
     if (Object.prototype.hasOwnProperty.call(field_manager.possible_properties, property)) {
       prop_type = field_manager.possible_properties[property];
       
-      view = {
+      properties_data.push({
         val: field[property],
         label: property,
         name: property,
         checked: field[property] === true,
         checkbox: prop_type === 'bool',
         multiline: prop_type === 'multiline'
-      };
-      $properties.append($.mustache('input', view));
+      });
     }
   }
-
-  submit_cancel_dialog($properties, field.name, function () {
+  view = {
+    inputs: properties_data
+  };
+  
+  submit_cancel_dialog($.mustache('form', view), field.name, function () {
     var $inputs = $('input,textarea', $properties), n,
         $input, val, old_data, name, entry, length,
         old_name = field.name;
