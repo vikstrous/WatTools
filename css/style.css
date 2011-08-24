@@ -7,9 +7,9 @@ label { cursor: pointer; }
 #header .title a { color: #2C5700; 	font-size: 3em; }
 #header .description { color: #5F5F5F; }
 
-#links .item { margin-bottom: 10px; 	margin-right: 20px; }
-#links .name { font-size: 2em; }
-#links .label { display: inline; 	margin-right: 5px; }
+#items .item { margin-bottom: 10px; 	margin-right: 20px; }
+#items .name { font-size: 2em; }
+#items .label { display: inline; 	margin-right: 5px; }
 
 #fields { font-family: monospace; 	font-weight: bold; }
 #fields .name { font-size: 2em; }
@@ -36,16 +36,21 @@ label { cursor: pointer; }
 .grid li { display: inline-block; 	vertical-align: top; }
 
 .faux-button {
-  background-color: #E9E9E9; 
+  background-color: #E9E9E9;
   border: 1px solid #CCCCCC;
-  line-height: 2em;
+  line-height: 2.5em;
   margin: 0.25em;
   padding: 0.25em;
-  font-family: sans-serif;
-  font-weight: normal;
+  font-family: monospace;
+  font-weight: bold;
   font-size: 0.9em;
   -moz-border-radius: 5px;
   border-radius: 5px;
+  color: #000000;
+}
+.faux-button:hover {
+  background-color: #C9C9C9;
+  color: #000000;
 }
 
 /* jquery ui */

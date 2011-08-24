@@ -1,23 +1,41 @@
 <?php
 require('pre.php');?>
   <div id="content">
-    <a id="editor" class="faux-button">Editor</a>
-    <a id="login" class="faux-button hidden">Log in</a>
-    <a id="logout" class="faux-button hidden">Log out</a><br/>
-    <a id="revisions" class="faux-button hidden">Revisions</a><br/>
-    <a id="refresh" class="faux-button hidden">Refresh</a>
-    <a id="reload" class="faux-button hidden">Reload</a>
-    <div id="field-editor">
-    </div>
-    <a id="new-field" class="faux-button hidden">New Field</a>
-    <div id="item-editor">
-    </div>
-    <a id="new-item" class="faux-button hidden">New Item</a><br/>
-    <a id="submit-data" class="faux-button hidden">Submit New Revision</a>
+    <div id="app"></div>
   </div>
 
-  <!-- we are preloading some templates -->
-  <!-- TODO:remove the need for purpose and field properties? -->
+  <!-- we are preloading some templates and we should be able to get the rest through ajax (currently we preload all) -->
+  <script type="text/template" id="app-tpl">
+    <a id="editor" class="faux-button">Editor</a>
+    {{#edit_mode}}
+      <a id="submit-data" class="faux-button">Submit New Revision</a>
+      <a id="revisions" class="faux-button">Revisions</a>
+      <a id="refresh" class="faux-button">Refresh</a>
+      <a id="reload" class="faux-button">Reload</a>
+      {{^loggedin}}<a id="login" class="faux-button">Log in</a>{{/loggedin}}
+      {{#loggedin}}<a id="logout" class="faux-button">Log out</a>{{/loggedin}}
+      <div id="field-editor">
+      </div>
+      <a id="new-field" class="faux-button">New Field</a>
+    {{/edit_mode}}
+    <div id="item-editor">
+    </div>
+    {{#edit_mode}}
+      <a id="new-item" class="faux-button">New Item</a>
+    {{/edit_mode}}
+  </script>
+  
+  <script type="text/template" id="revisions-tpl">
+    <div>
+    {{#revisions}}
+      {{>radio}}
+    {{/revisions}}
+    {{#loggedin}}
+      {{>input}}
+    {{/loggedin}}
+    </div>
+  </script>
+  
   <script type="text/template" id="input-tpl">
     <div>
     {{#checkbox}}
@@ -50,6 +68,12 @@ require('pre.php');?>
     {{/checkbox}}
     </div>
   </script>
+  
+  <script type="text/template" id="button-tpl">
+    <a class="faux-button" type="{{type}}" parameter="{{parameter}}">
+      {{label}}
+    </a>
+  </script>
 
   <script type="text/template" id="radio-tpl">
     <div>
@@ -68,23 +92,64 @@ require('pre.php');?>
     </div>
   </script>
 
-  <script type="text/template" id="entry-field-tpl">
-    <div class="{{class}} field">
-    {{#label}}
-      <div class="label">
+  <script type="text/template" id="fields-tpl">
+    <div class="big">Fields</div>
+    <ul id="fields" class="grid">
+    {{#fields}}
+      <li class="field" id="{{id}}">
+        <div class="name">
+          {{title}}
+        </div>
+        {{#properties}}
+          <div>
+          {{property}} : {{value}}
+          </div>
+        {{/properties}}
+        {{>buttons}}
+      </li>
+    {{/fields}}
+    </ul>
+  </script>
+  
+  <script type="text/template" id="entries-tpl">
+    {{#edit_mode}}
+    <div class="big">Entires</div>
+    {{/edit_mode}}
+    <ul id="items" class="grid">
+    {{#entries}}
+      <li class="item" id="{{id}}">
+        {{#fields}}
+          <div class="{{class}} field">
+          {{#label}}
+            <div class="label">
+              {{label}}
+          {{/label}}
+              {{#link}}
+              <a href="{{link}}">
+                {{/link}}
+                  {{text}}
+                {{#link}}
+              </a>
+              {{/link}}
+          {{#label}}
+            </div>
+          {{/label}}
+          </div>
+        {{/fields}}
+        {{#edit_mode}}
+        {{>buttons}}
+        {{/edit_mode}}
+      </li>
+    {{/entries}}
+    </ul>
+  </script>
+  
+  <script type="text/template" id="buttons-tpl">
+    {{#buttons}}
+      <a class="faux-button" type="{{type}}" parameter="{{parameter}}">
         {{label}}
-    {{/label}}
-        {{#link}}
-        <a href="{{link}}">
-          {{/link}}
-            {{text}}
-          {{#link}}
-        </a>
-        {{/link}}
-    {{#label}}
-      </div>
-    {{/label}}
-    </div>
+      </a>
+    {{/buttons}}
   </script>
   
   <script type="text/javascript">
@@ -94,9 +159,12 @@ require('pre.php');?>
     var preload_revisions = <?php require 'get_revisions.php';?>;
   </script>
   
-  <script type="text/javascript" src="js/editor.js"></script>
+  <script type="text/javascript" src="js/header.js"></script>
+  <script type="text/javascript" src="js/watedit.js"></script>
+  <script type="text/javascript" src="js/entry_manager.js"></script>
+  <script type="text/javascript" src="js/field_manager.js"></script>
   
-  <?php if($_SESSION['loggedin']){?>
+  <?php if(isset($_SESSION['loggedin'])){?>
     <script type="text/javascript">
       watedit.admin = true;
     </script>

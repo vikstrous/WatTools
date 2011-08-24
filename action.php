@@ -80,7 +80,7 @@ switch ($_GET['action']){
     break;
   
   case 'login':
-    
+
     if($_POST['password'] != PASSWORD) die('Wrong password.');
     
     log_in();

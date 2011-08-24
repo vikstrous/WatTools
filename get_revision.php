@@ -13,7 +13,7 @@ if(!$revisions['revisions']) $revisions['revisions'] = array();
 if(!$revisions['current']) $revisions['current'] = 0;
 
 //did we want a differnet revision for the current one?
-if($_GET['revision'] || $_GET['revision'] === '0'){
+if(isset($_GET['revision'])){
   $data = file_get_contents($revisions['revisions'][$_GET['revision']]['file']);
 } else {
   $data = file_get_contents($revisions['revisions'][$revisions['current']]['file']);
