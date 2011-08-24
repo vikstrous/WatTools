@@ -49,7 +49,7 @@ function die_on_evil_url($entries){
   foreach ($entries as $entry){
     foreach ($entry as $field){
       if(!is_array($field)) continue;
-      if(!$field['url']) continue;
+      if(!isset($field['url']) || !$field['url']) continue;
       if(substr($field['url'], 0, 4) == 'http') continue;
       die('Bad url type detected.');
     }
