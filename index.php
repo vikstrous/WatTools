@@ -88,23 +88,6 @@ require('pre.php');?>
     </a>
   </script>
 
-  <script type="text/template" id="radio-tpl">
-    <div>
-      <div class="radio">
-        {{#label}}
-          <label>
-        {{/label}}
-          <input type="radio" name="{{name}}" {{#checked}}checked="checked"{{/checked}} value="{{value}}"/>
-        {{#label}}
-          {{label}}</label>
-        {{/label}}
-      </div>
-    {{#description}}
-      <div class="description">{{description}}</div>
-    {{/description}}
-    </div>
-  </script>
-
   <script type="text/template" id="fields-tpl">
     <div class="big">Fields</div>
     <ul id="fields" class="grid">
