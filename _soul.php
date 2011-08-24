@@ -9,7 +9,7 @@ define('PASSWORD', rtrim(file_get_contents('.adminpassword'), "\r\n"));
 session_start();
 
 function require_login(){
-  $_SESSION["loggedin"] or die ('You are not logged in. Please log in.');
+  isset($_SESSION["loggedin"]) or die ('You are not logged in. Please log in.');
 }
 
 function log_in(){
@@ -17,7 +17,6 @@ function log_in(){
 }
 
 function log_out(){
-  session_start();
   session_destroy();
 }
 
