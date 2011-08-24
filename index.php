@@ -82,12 +82,6 @@ require('pre.php');?>
     </form>
   </script>
 
-  <script type="text/template" id="button-tpl">
-    <a class="faux-button" type="{{type}}" parameter="{{parameter}}">
-      {{label}}
-    </a>
-  </script>
-
   <script type="text/template" id="fields-tpl">
     <div class="big">Fields</div>
     <ul id="fields" class="grid">
