@@ -1,8 +1,6 @@
-/**
- * Redraw all fields
- * 
- * It places the new fields into #field-editor
- */
+// Redraw all fields
+// 
+// It places the new fields into #field-editor
 field_manager.redraw = function () {
   
   //safety first, frosh
@@ -67,25 +65,22 @@ field_manager.redraw = function () {
   watedit.attach_events($('#field-editor').empty().append($.mustache('fields', view)));
 };
 
-/**
- * These properties will not be displayed in the description of fields
- */
+
+// These properties will not be displayed in the description of fields
 field_manager.hidden_properties = ['order', 'name', 'sort_id'];
 
-/**
- * Builds the html for a field and attaches actions to the edit/delete buttons
- * 
- * @param {number} index of the field to build
- * @return {object} jquery dom element of the field
- */
+
+// Builds the html for a field and attaches actions to the edit/delete buttons
+// 
+// @param {number} index of the field to build
+// @return {object} jquery dom element of the field
 field_manager.build_field = function (index) {
 };
 
-/**
- * This is a list of all properties a field may define.
- * Currently anything other than bool is a text value and bool is a 
- * checkbox which results in true/false when saved
- */
+
+// This is a list of all properties a field may define.
+// Currently anything other than bool is a text value and bool is a 
+// checkbox which results in true/false when saved
 field_manager.possible_properties = {
   //property name : property type
   'name': 'text',
@@ -95,13 +90,12 @@ field_manager.possible_properties = {
   'url': 'bool'
 };
 
-/**
- * Open a modal to edit the field with this index
- * 
- * Modifies watedit.LinkData and triggers redraw of everything
- * 
- * @param index of field to edit
- */
+
+// Open a modal to edit the field with this index
+// 
+// Modifies watedit.LinkData and triggers redraw of everything
+// 
+// @param index of field to edit
 field_manager.open_editor = function (index) {
   var property, prop_type, view,
       field = watedit.LinkData.fields[index],

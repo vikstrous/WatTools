@@ -1,15 +1,14 @@
-/**
- * TODO: faster templating - convert more things to use mustache?
- * TODO: enter button submits dialogs
- * TODO: make revision deletion possible
- * TODO: reuse dialogs? maybe not
- */
+// TODO: 
+//
+//- faster templating - convert more things to use mustache?
+//- enter button submits dialogs
+//- make revision deletion possible
+//- reuse dialogs? maybe not
 
-/**
- * Debug tools - built only if necessary and possible
- */
+
+// Debug tools - built only if necessary and possible
 var debug = {
-  on: true,
+  on: false,
   time: function(label) {
     if(debug.on && window.console !== undefined && console.time !== undefined){
       debug.time = function (label){
@@ -32,16 +31,17 @@ var debug = {
   }
 }
 
-/**
- * Loads json data on demand, supports preloading
- * 
- * @param {string} preload_var variable name where preloaded data is
- * @param {string} url to get the data from if it's not preloaded
- * @param {function} success function to call when done
- * @param {function} error function to call when done
- * @param {boolean} fresh demand fresh data
- * @param {object} params to send to the server
- */
+
+// Loads json data on demand, supports preloading
+// 
+// Parameters:
+//
+// - *string* preload_var variable name where preloaded data is
+// - *string* url to get the data from if it's not preloaded
+// - *function* success function to call when done
+// - *function* error function to call when done
+// - *boolean* fresh demand fresh data
+// - *object* params to send to the server
 function loader(preload_var, url, success, error, fresh, params){
   if(window[preload_var] !== undefined && !fresh){
     success(window[preload_var]);
@@ -63,14 +63,14 @@ function loader(preload_var, url, success, error, fresh, params){
   }
 }
 
-/**
- * Show a dialog with the submit and cancel buttons
- * 
- * @param {string} html
- * @param {string} title
- * @param {function} submit
- * @param {string} submit_label optional
- */
+// Show a dialog with the submit and cancel buttons
+// 
+// Parameters:
+// 
+// - *string* html
+// - *string* title
+// - *function* submit
+// - *string* submit_label optional
 function submit_cancel_dialog(html, title, submit, submit_label) {
   //parameter parsing
   submit_label = submit_label || 'Submit';

@@ -1,6 +1,4 @@
-/**
- * Redraws all entries and inserts them into #item-editor
- */
+// Redraws all entries and inserts them into #item-editor
 entry_manager.redraw = function () {
   var view, entry, field, fields_data, entries_data, this_entry, property, this_field
     , entries = watedit.LinkData.entries
@@ -65,13 +63,10 @@ entry_manager.redraw = function () {
 };
 
 
-/**
- * Open a modal to edit the entry with this index
- * 
- * Modifies watedit.LinkData and triggers redraw of entries
- * 
- * @param index of entry to edit
- */
+
+// Open a modal to edit the entry with this index
+// 
+// Modifies watedit.LinkData and triggers redraw of entries
 entry_manager.open_editor = function (index) {
   var this_field, property, field, $field, view, title,
     entry = watedit.LinkData.entries[index],

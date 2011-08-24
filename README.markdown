@@ -1,29 +1,28 @@
-Waterloo Tools
-==============
+#Waterloo Tools
 
-About
------
+##About
 
-This is a wesite which manages a collection of tools for University of Waterloo students
+This is a wesite which manages a collection of tools for 
+University of Waterloo students
 made by other students. Any edits are welcome! Drag to change
 the order! Edits will be reviewed by an admin and then accepted 
 and made active. At any time anyone can view all 
 the submitted revisions by clicking on the Revisions button.
 
-Steal my code!
---------------
+##Steal my code!
 
 If you are not a Waterloo student, you are free to use 
 this code for your own school!
 It's really easy. It will (probably) run on any server with PHP 5.
-Just please contrinute back any enhancements that you make :)
+Just please contribute back any enhancements that you make :)
 
-Oh, and note that you have to create a file called .adminpassword
-containing the admin password!
+###Set up
+- Create a file called .adminpassword containing the admin password. Trailing new lines are ignored.
+- Make sure there is a directly called data with write permissions
+- Make sure your web server has permission to create a file called rss.xml in the root folder.
+- If you want to build the documnetation, you need to install node.js, Pygents and docco, then run ./build_doc.sh
 
-
-Contribute
-----------
+##Contribute
 
 See doc.html for the documented JavaScript code behind the editor.
 
@@ -40,8 +39,7 @@ one of the following tasks:
   and then when the edit buttons are pressed, they should simply populate the values of the inputs inside the dialog.
 
 
-Disclaimer
-----------
+##Disclaimer
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE

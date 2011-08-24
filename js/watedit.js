@@ -1,35 +1,25 @@
-
-/**
- * The main application namespaces
- */
+// The main application namespaces
 var watedit = {}, field_manager = {}, entry_manager = {};
 
-/**
- * Some default state information
- */
+// Some default state information
 watedit.edit_mode = false;
 watedit.admin = false;
 watedit.LinkData = {};
 watedit.RevisionData = {};
 
-/**
- * Sets the main data and draws the app
- * 
- * @param {string} data to set
- */
+// Sets up the app initially and displays it
 watedit.init = function() {
   debug.time('start up');
-  watedit.attach_events();
   watedit.load_data(false);
   watedit.load_revisions();
   debug.timeEnd('start up');
 };
 
-/**
- * Loads new data and draws the app
- *  
- * @param {boolean} fresh if the data should be fetched anew
- */
+
+// Loads new data and draws the app
+//  
+// tell it if the data should be fetched from the server or 
+// we should use old data
 watedit.load_data = function(fresh) {
   debug.time('load');
   //get data and render it
@@ -53,9 +43,7 @@ watedit.load_data = function(fresh) {
   );
 };
 
-/**
- * Loads revision data
- */
+// Loads revision data
 watedit.load_revisions = function() {
   loader(
     'preload_revisions',
@@ -69,9 +57,7 @@ watedit.load_revisions = function() {
   );
 };
 
-/**
- * Opens the dialog to log in the admin
- */
+// Opens the dialog to log in the admin
 watedit.login = function() {
   var $dialog = $('<div>'), view;
   
@@ -107,9 +93,8 @@ watedit.login = function() {
   });
 };
 
-/**
- * Logs out the admin
- */
+
+// Logs out the admin
 watedit.logout = function() {
   $.get('/action.php?action=logout', function() {
     $.jGrowl('You have been logged out.');
@@ -118,9 +103,7 @@ watedit.logout = function() {
   });
 };
 
-/**
- * Opens a modal to let the user choose which revision to make active
- */
+//Opens a modal to let the user choose which revision to make active
 watedit.choose_revisions = function () {
   
   function revisions_dialog(data){
@@ -207,9 +190,7 @@ watedit.choose_revisions = function () {
   
 };
 
-/**
- * Redraws everything
- */
+// Redraws everything
 watedit.redraw = function () {
   debug.time('redraw all');
   var $app = $('#app')
@@ -224,9 +205,7 @@ watedit.redraw = function () {
   debug.timeEnd('redraw all');
 };
 
-/**
- * Opens a dialog where the user enters a description and then submits a new revision
- */
+// Opens a dialog where the user enters a description and then submits a new revision
 watedit.submit_revision_dialog = function() {
   var $dialog, $label, $input;
 
@@ -271,11 +250,9 @@ watedit.submit_revision_dialog = function() {
     });
 };
 
-/**
- * This is a universal event handler for all buttons. It's very convenient.
- * 
- * @param {object} button the html element of the button which was pressed
- */
+// This is a universal event handler for all buttons. It's very convenient.
+//
+// pass in the DOM object of the button which was pressed
 watedit.handle_button_click = function(button){
   var $btn = $(button)
     , param = $btn.attr('parameter');
@@ -309,13 +286,13 @@ watedit.handle_button_click = function(button){
   }
 };
 
-/**
- * Attaches events to buttons and other things
- * 
- * @param {obejct} $context a jquery dom element to limit the scope of the changes (similar to how drupal does this)
- */
+// Attaches events to buttons and make things sortable
+// 
+// $context is a jquery dom element to limit the scope of the changes (similar to how drupal does this)
+//
 watedit.attach_events = function($context) {
-  //set up event handlers for buttons
+  
+  // Set up event handlers for buttons
   $('.faux-button', $context).click( function(){
     watedit.handle_button_click(this);
   });
@@ -338,8 +315,7 @@ watedit.attach_events = function($context) {
 
   $('#new-item', $context).click(function () {
     var new_item_data = {};
-    //first thing is title amirite?
-    new_item_data[watedit.LinkData.fields[0].name] = {
+    new_item_data[watedit.LinkData.fields[0].name] = {//first thing is title amirite?
       'text': 'New Item'
     };
     watedit.LinkData.entries = watedit.LinkData.entries || [];
