@@ -18,7 +18,7 @@ Just please contribute back any enhancements that you make :)
 
 ###Set up
 - Create a file called .adminpassword containing the admin password. Trailing new lines are ignored.
-- Make sure there is a directly called data with write permissions
+- Make sure there is a directory called data with write permissions
 - Make sure your web server has permission to create a file called rss.xml in the root folder.
 - If you want to build the documnetation, you need to install node.js, Pygents and docco, then run ./build_doc.sh
 
