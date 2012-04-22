@@ -1,1 +1,4 @@
-deny from all
+<Files ~ "^\.(js|json)">
+Order allow,deny
+Deny from all
+</Files>

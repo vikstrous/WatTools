@@ -1,0 +1,505 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"other_",
+				"other_uid"
+			],
+			[
+				"grid",
+				"grid_size"
+			],
+			[
+				"render",
+				"render_play_game"
+			],
+			[
+				"show_",
+				"show_main_menu"
+			],
+			[
+				"direc",
+				"direction"
+			],
+			[
+				"gro",
+				"group_config"
+			],
+			[
+				"mone",
+				"moneys"
+			],
+			[
+				"valu",
+				"value_reward"
+			],
+			[
+				"new",
+				"newUserAttributes"
+			],
+			[
+				"string",
+				"stringify"
+			],
+			[
+				"prot",
+				"prototype"
+			],
+			[
+				"update",
+				"update_game"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "Packages/Makefile/Make.sublime-build",
+	"command_palette":
+	{
+		"height": 54.0,
+		"selected_items":
+		[
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"aaa",
+				"z:AAAPackageDev: Generate .tmLanguage from Buffer"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"pa in",
+				"Package Control: Install Package"
+			],
+			[
+				"packa",
+				"z:AAAPackageDev: New Package"
+			],
+			[
+				"pack in",
+				"Package Control: Install Package"
+			],
+			[
+				"trail",
+				"Trailing Spaces: Delete Trailing Spaces"
+			],
+			[
+				"prev",
+				"Markdown Preview: current file in browser"
+			],
+			[
+				"mark",
+				"Markdown Preview: current file in browser"
+			],
+			[
+				"mar",
+				"Set Syntax: Markdown"
+			],
+			[
+				"tra",
+				"Trailing Spaces: Delete Trailing Spaces"
+			],
+			[
+				"jad",
+				"Set Syntax: Jade"
+			],
+			[
+				"package cont",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 449.0
+	},
+	"console":
+	{
+		"height": 139.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/v/webfun/utf8.c",
+		"/usr/include/c++/4.6/istream",
+		"/home/v/node/Makefile",
+		"/home/v/node/configure",
+		"/home/v/node/Makefile-gyp",
+		"/home/v/life/router.js",
+		"/home/v/Downloads/package/lib/apparatus/classifier/bayes_classifier.js",
+		"/home/v/backup/rsp/log/log_lol.txt",
+		"/home/v/backup/ira/index.html",
+		"/home/v/life/views/layout.jade",
+		"/home/v/life/views/index.jade",
+		"/home/v/life/public/js/lib/mustache.js",
+		"/home/v/life/game_server/main.js",
+		"/home/v/life/public/js/app.js",
+		"/home/v/life/README.md",
+		"/home/v/life/public/js/game.js",
+		"/home/v/hackel/tfidf.hs",
+		"/home/v/life/stylus/css/style.styl",
+		"/home/v/life/db.js",
+		"/home/v/life/auth.js",
+		"/home/v/life/server.js",
+		"/home/v/.config/sublime-text-2/Packages/Mustache Jade/info.plist",
+		"/home/v/test.mustache",
+		"/home/v/.config/sublime-text-2/Packages/Mustache HTML/Syntaxes/HTML with mustaches.tmLanguage",
+		"/home/v/.config/sublime-text-2/Packages/Mustache Jade/Syntaxes/Jade with mustaches.tmLanguage",
+		"/home/v/.config/sublime-text-2/Packages/Jade/Syntaxes/Jade.tmLanguage",
+		"/home/v/life/views/game.jade",
+		"/home/v/backup/dan/index.php",
+		"/home/v/life/views/join.jade",
+		"/home/v/life/views/create.jade",
+		"/home/v/life/views/profile.jade",
+		"/home/v/life/views/login.jade",
+		"/home/v/life/public/js/track.js",
+		"/home/v/.config/sublime-text-2/Packages/Stylus/Stylus.tmLanguage",
+		"/home/v/.config/sublime-text-2/Packages/CSS/CSS.tmLanguage",
+		"/home/v/.config/sublime-text-2/Packages/PHP/PHP.tmLanguage",
+		"/home/v/.config/sublime-text-2/Packages/JavaScript/JSON.tmLanguage",
+		"/home/v/.config/sublime-text-2/Packages/JavaScript/JavaScript.tmLanguage",
+		"/home/v/Downloads/user.stig",
+		"/home/v/.config/sublime-text-2/Packages/Java/Java.tmLanguage",
+		"/home/v/.config/sublime-text-2/Packages/Jade/Syntaxes/Jade.JSON-tmLanguage",
+		"/home/v/.config/sublime-text-2/Packages/User/StigScript.JSON-tmLanguage",
+		"/home/v/life/stylus/css/mobile.styl",
+		"/home/v/.config/sublime-text-2/Packages/HTML/HTML.tmLanguage",
+		"/home/v/life/run.sh",
+		"/home/v/life/setup.sh",
+		"/home/v/.config/sublime-text-2/Packages/UberSelection/README.rst",
+		"/home/v/.config/sublime-text-2/Packages/Markdown Preview/README.md",
+		"/home/v/Dropbox/school/online/CS373/final.py",
+		"/home/v/.config/sublime-text-2/Packages/JavaScript/JSON.tmLanguage.cache",
+		"/home/v/.config/sublime-text-2/Packages/Mustache Jade/Syntaxes/HTML with mustaches.tmLanguage",
+		"/home/v/.config/sublime-text-2/Packages/User/mustache.JSON-tmLanguage",
+		"/home/v/.config/sublime-text-2/Packages/User/mustache.tmLanguage",
+		"/home/v/.config/sublime-text-2/Packages/User/mustache.tmLanguage.cache",
+		"/home/v/.config/sublime-text-2/Packages/Mustache/info.plist",
+		"/home/v/life/README",
+		"/home/v/life/views/error.jade",
+		"/home/v/life/views/register.jade",
+		"/home/v/fareeda/Mustache.php",
+		"/home/v/life/views/profile_list.jade",
+		"/home/v/life/views/admin.jade",
+		"/home/v/life/public/js/shared/shared.js",
+		"/home/v/life/shared/shared.js",
+		"/home/v/life/views/test.jade",
+		"/home/v/life/views/profile_edit.jade",
+		"/home/v/resume/resume.jade",
+		"/home/v/resume/public/style.styl",
+		"/home/v/resume/public/reset.css",
+		"/home/v/resume/package.json",
+		"/home/v/resume/server.js",
+		"/home/v/Downloads/papaya/PapayaGameSDK/projects/zombies/includes/map.as",
+		"/home/v/Downloads/papaya/PapayaGameSDK/projects/zombies/includes/velociraptor.as",
+		"/home/v/Downloads/papaya/PapayaGameSDK/projects/zombies/main.as",
+		"/home/v/Downloads/papaya/PapayaGameSDK/projects/zombies/includes/gameobject.as",
+		"/home/v/Dropbox/school/online/CS373/hw4.py",
+		"/home/v/test.scala",
+		"/tmp/fz3temp-1/resume.html",
+		"/home/v/Downloads/papaya/PapayaGameSDK/projects/zombies/includes/globals.as",
+		"/home/v/Downloads/papaya/PapayaGameSDK/projects/srtzig/main.as",
+		"/home/v/Downloads/papaya/PapayaGameSDK/projects/physics/phy.as",
+		"/home/v/Downloads/papaya/PapayaGameSDK/projects/demo/includes/includes.as",
+		"/home/v/Downloads/papaya/PapayaGameSDK/projects/wallpaper/wallpaper.as",
+		"/home/v/Downloads/papaya/PapayaGameSDK/projects/tutorial/tutorial.as",
+		"/home/v/Downloads/papaya/PapayaGameSDK/projects/tutorial/label/label.as",
+		"/home/v/Downloads/papaya/PapayaGameSDK/projects/specaction/specaction.as",
+		"/home/v/Downloads/papaya/PapayaGameSDK/projects/demo/sample/dialog.as",
+		"/home/v/Downloads/papaya/PapayaGameSDK/projects/demo/sample/ease.as",
+		"/home/v/Downloads/papaya/PapayaGameSDK/projects/demo/sample/event.as",
+		"/home/v/Downloads/papaya/PapayaGameSDK/projects/demo/sample/file.as",
+		"/home/v/Downloads/papaya/PapayaGameSDK/projects/demo/sample/music.as",
+		"/home/v/Downloads/papaya/PapayaGameSDK/projects/demo/sample/simact.as",
+		"/home/v/Downloads/papaya/PapayaGameSDK/projects/demo/sample/social.as",
+		"/home/v/Downloads/papaya/PapayaGameSDK/projects/demo/sample/specact.as",
+		"/home/v/Downloads/papaya/PapayaGameSDK/projects/demo/sample/sprite.as",
+		"/home/v/Downloads/papaya/PapayaGameSDK/projects/demo/sample/timer.as",
+		"/home/v/Downloads/papaya/PapayaGameSDK/install.sh",
+		"/home/v/pets_experiment/run.py",
+		"/home/v/Dropbox/school/online/CS373/test.py",
+		"/home/v/life/views/mobile/layout-mobi.jade",
+		"/home/v/life/stylus/css/portrait.styl",
+		"/home/v/life/stylus/css/landscale.styl",
+		"/tmp/fz3temp-1/node.css",
+		"/home/v/Dropbox/school/online/CS373/hw2.py",
+		"/tmp/fz3temp-1/aboutus.html",
+		"/tmp/fz3temp-1/.htaccess",
+		"/home/v/Downloads/media_youtube/includes/MediaInternetYouTubeHandler.inc",
+		"/tmp/fz3temp-1/php.ini",
+		"/home/v/Downloads/php.ini",
+		"/home/v/life/public/js/library.js",
+		"/tmp/fz3temp-1/page.tpl.php",
+		"/home/v/Dropbox/school/online/Ruby/1.rb",
+		"/home/v/Dropbox/school/online/Ruby/2.rb",
+		"/home/v/Dropbox/school/online/Ruby/3.rb",
+		"/home/v/Dropbox/school/online/Ruby/4.rb",
+		"/home/v/Dropbox/school/online/Ruby/5.rb",
+		"/home/v/Dropbox/h4x/cm/decrypted.txt",
+		"/home/v/Dropbox/school/online/CS373/hw1.py"
+	],
+	"find":
+	{
+		"height": 38.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			"/home/v/life",
+			"/home/v/Downloads/",
+			"/home/v/Downloads/drupal-7.12",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"string",
+			"readl",
+			"NULL",
+			"everyauth",
+			"repain",
+			"Game.iteration",
+			"iteration",
+			"grid",
+			"animation_id",
+			"grid_colors",
+			"join_game",
+			"load_play_game",
+			"userId",
+			"uid",
+			"indexof",
+			"name_exists",
+			"sockets",
+			"socket.rematches",
+			"remat",
+			"start_state",
+			"rematch",
+			"\n    App.no_top_status();",
+			"no_top_error",
+			"top_error",
+			"open_gid_by_name",
+			"playing",
+			"playing =",
+			"playing",
+			"console.log",
+			"open",
+			"grid_play",
+			"start_state",
+			"state",
+			"start_state",
+			"save",
+			"current_gid",
+			"grid_size",
+			"load_play_game",
+			"by_name",
+			"name",
+			"load_play_game",
+			"attr",
+			"load_play_game",
+			"join",
+			"playing =",
+			"pop",
+			"play_pause",
+			"waiting",
+			"play",
+			"header",
+			"clicked",
+			"cache",
+			"compile",
+			"$",
+			"Mustache",
+			".mustach",
+			"musta",
+			"load_create_game",
+			"app.",
+			"game.",
+			"game",
+			"main-panel",
+			"updateGrid",
+			"get",
+			"animation_id",
+			"join_game",
+			"update",
+			"display_winner",
+			"repaint",
+			"clicked",
+			"init_template_pane",
+			"getTableForTiles",
+			"picked_template",
+			"join_game",
+			"load_create_game",
+			"ajax",
+			"load_join_game",
+			"track.js",
+			"ajax_login_check",
+			"requ",
+			"log",
+			"class",
+			"strings",
+			"string.",
+			"!",
+			"&amp;",
+			"&gt;",
+			"&lt;",
+			"\\",
+			"string.",
+			".comment",
+			"comment",
+			"keys",
+			"else",
+			"numb",
+			"\\d",
+			"var",
+			"stig",
+			"package",
+			"import",
+			"patterns",
+			"interpo",
+			"patterns",
+			"string.",
+			"patterns",
+			".js",
+			"javascr",
+			"patterns",
+			"html_entity",
+			"interpolated_value",
+			"string<",
+			"patterns",
+			"embedded-code",
+			"patterns",
+			"include",
+			"attri",
+			"patterns",
+			"interpolated_value",
+			"{",
+			"string<",
+			"#string",
+			"string.",
+			"inval",
+			"embedded-code",
+			"ruby",
+			"embedded",
+			"basic",
+			"invalid"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"Game.iteration",
+			"Game.current_gid",
+			"Game.grid_size",
+			"App.",
+			"Game.",
+			"Game",
+			"&",
+			">",
+			"<",
+			"\\\\",
+			"",
+			"open_gid_by_name",
+			"ender(req, res,",
+			"render(req, res, ",
+			"render(res, ",
+			"    "
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 34.0
+	},
+	"input":
+	{
+		"height": 44.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 199.0,
+	"status_bar_visible": true
+}

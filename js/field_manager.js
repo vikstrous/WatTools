@@ -98,12 +98,12 @@ field_manager.open_editor = function (index) {
   var property, prop_type, view, properties_data,
       field = watedit.LinkData.fields[index];
 
-  properties_data = []
+  properties_data = [];
   //go through each property that a field can have
   for (property in field_manager.possible_properties) {
     if (Object.prototype.hasOwnProperty.call(field_manager.possible_properties, property)) {
       prop_type = field_manager.possible_properties[property];
-      
+
       properties_data.push({
         val: field[property],
         label: property,
@@ -117,9 +117,10 @@ field_manager.open_editor = function (index) {
   view = {
     inputs: properties_data
   };
-  
+
   submit_cancel_dialog($.mustache('form', view), field.name, function () {
-    var $inputs = $('input,textarea', $properties), n,
+    var $dialog = $(this),
+        $inputs = $('input,textarea', $dialog), n,
         $input, val, old_data, name, entry, length,
         old_name = field.name;
 

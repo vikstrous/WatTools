@@ -2,8 +2,13 @@
 
 // Constants
 
-define('PASSWORD', rtrim(file_get_contents('.adminpassword'), "\r\n"));
-
+function get_admin_password(){
+  if(file_exists('.adminpassword')){
+    return rtrim(file_get_contents('.adminpassword'), "\r\n");
+  } else {
+    return '';
+  }
+}
 // Useful stuff
 
 session_start();
@@ -33,8 +38,8 @@ function get_revisions_data(){
   //get revisions stuff and fix it up a bit
   $revisions = prase_json_file('data/revisions.js');
   if(!$revisions) $revisions = array();
-  if(!$revisions['revisions']) $revisions['revisions'] = array();
-  if(!$revisions['current']) $revisions['current'] = 0;
+  if(!array_key_exists('revisions', $revisions)) $revisions['revisions'] = array();
+  if(!array_key_exists('current', $revisions)) $revisions['current'] = 0;
   return $revisions;
 }
 
@@ -67,9 +72,9 @@ function build_rss($data){
   $rss = <<<EOF
 <?xml version="1.0" encoding="UTF-8" ?>
   <rss version="2.0">
-    <channel> 
+    <channel>
       <title>Waterloo Tools</title>
-      <link>http://wattools.com</link> 
+      <link>http://wattools.com</link>
       <description>A collection of useful tools for University of Waterloo students. Made by students!</description>
 EOF;
   $rss .= '<pubDate>'.date('D, d M Y H:i:s T').'</pubDate>';
@@ -83,14 +88,14 @@ EOF;
     $rss .= '</item>';
   }
 
-  $rss .= 
+  $rss .=
 <<<EOF
     </channel>
   </rss>
 EOF;
 
   // save the feed
-  $fh = fopen('rss.xml', 'w') or die('Failed to save data.');
+  $fh = fopen('data/rss.xml', 'w') or die('Failed to save data.');
   fwrite($fh, $rss);
   fclose($fh);
 }

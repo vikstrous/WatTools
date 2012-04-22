@@ -35,7 +35,7 @@ watedit.load_data = function(fresh) {
     },
     //error handler
     function(jqXHR, textStatus, errorThrown){
-      console.erorr(errorThrown);
+      console.error(textStatus, errorThrown);
       debug.timeEnd('load');
     },
     fresh,
@@ -52,15 +52,15 @@ watedit.load_revisions = function() {
       watedit.RevisionData = data;
     },
     function(jqXHR, textStatus, errorThrown){
-      console.erorr(errorThrown);
+      console.error(errorThrown);
     }
   );
 };
 
 // Opens the dialog to log in the admin
 watedit.login = function() {
-  var $dialog = $('<div>'), view;
-  
+  var $dialog = $('<div>'), view, submit_func;
+
   view = {
     inputs: [{
       label: 'Password',
@@ -68,12 +68,10 @@ watedit.login = function() {
       password: true
     }]
   };
-  
+
   $dialog.append($.mustache('form', view));
-  
-  submit_cancel_dialog($dialog, 'Log in', function() {
-    var $dialog = $(this);
-    
+
+  submit_func = function() {
     $.ajax({
       url: '/action.php?action=login',
       type: 'POST',
@@ -92,7 +90,12 @@ watedit.login = function() {
         $.jGrowl('Failed to log in.');
       }
     });
-  });
+    return false;
+  };
+
+  $dialog.find('form').submit(submit_func);
+
+  submit_cancel_dialog($dialog, 'Log in', submit_func);
 };
 
 

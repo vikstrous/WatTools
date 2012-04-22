@@ -11,7 +11,7 @@ session_start();
   <meta property="og:site_name" content="Waterloo Tools" />
   <meta property="fb:admins" content="100000486272805" />
   <title>Waterloo Tools - A collection of tools for University of Waterloo students</title>
-  <link rel="alternate" type="application/rss+xml" href="/rss.xml" title="Waterloo Tools" />
+  <link rel="alternate" type="application/rss+xml" href="/data/rss.xml" title="Waterloo Tools" />
   <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssreset/reset-min.css">
   <link rel="stylesheet" type="text/css" href="css/smoothness/jquery-ui-1.8.14.custom.css" />
   <link rel="stylesheet" type="text/css" href="css/jquery.jgrowl.css" />
@@ -21,31 +21,38 @@ session_start();
   <script type="text/javascript" src="js/lib/jquery.ui.touch.js"></script>
   <script type="text/javascript" src="js/lib/mustache.js"></script>
   <script type="text/javascript" src="js/lib/jquery.jgrowl_minimized.js"></script>
+  <script type="text/javascript" src="js/mustache_helper.js"></script>
+  <script type="text/javascript" src="js/header.js"></script>
+  <script type="text/javascript" src="js/watedit.js"></script>
+  <script type="text/javascript" src="js/entry_manager.js"></script>
+  <script type="text/javascript" src="js/field_manager.js"></script>
+
+  <?php if(isset($_SESSION['loggedin'])){?>
+    <script type="text/javascript">
+      watedit.admin = true;
+    </script>
+  <?php }?>
+
   <script type="text/javascript">
-  $.mustache = function(template, view) {
-    var partials = {}, partial_list = view.partials;
-    //delete view.partials; //we shouldn't modify the view because it's passed by reference
-    if (partial_list instanceof Array) {
-      partial_list.forEach(function(item){
-        partials[item] = $('#'+item+'-tpl').html()
-      });
-    }
-    return Mustache.to_html($('#'+template+'-tpl').html(), view, partials);
-  };
+    $(document).ready(function () {
+      watedit.init();
+    });
   </script>
   <!-- I HATE IE -->
   <!--[if lte IE 7.0]>
   <style type="text/css">
   .grid li {display:inline;}
   </style>
-  <![endif]--> 
+  <![endif]-->
 </head>
 
 <body>
   <div id="header">
     <div class='title'><a href="/">Waterloo Tools</a></div>
+    <noscript><div class="noscript">Please enable javascript to use WatTools.</div></noscript>
     <div class='description'>A collection of tools for University of Waterloo students (made by University of Waterloo students!)</div>
-    <div class='description'>WatTools is now being crowdsourced. Submit your own revisions of the list! Click the Editor button!</div>
+    <div class='description'>This is a wiki!</div>
+    <div class='description'>Submit your own revisions of the list! Click the Editor button!</div>
     <div id="social">
       <div class="social_item">
         <iframe src="http://www.facebook.com/plugins/like.php?app_id=155945941150696&amp;href=wattools.com&amp;send=false&amp;layout=box_count&amp;width=55&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=90" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:55px; height:90px;" allowTransparency="true"></iframe>
@@ -92,7 +99,7 @@ session_start();
       <a id="new-item" class="faux-button">New Item</a>
     {{/edit_mode}}
   </script>
-  
+
   <script type="text/template" id="form-tpl">
     <form>
     {{#inputs}}
@@ -106,7 +113,7 @@ session_start();
           {{label}}</label>
         {{/label}}
       {{/checkbox}}
-      
+
       {{#radio}}
         <div>
           <div class="radio">
@@ -120,28 +127,28 @@ session_start();
           </div>
         </div>
       {{/radio}}
-      
+
       {{^checkbox}}
       {{^radio}}
         {{#label}}
           <label>{{label}}<br/>
         {{/label}}
-        
+
           {{^multiline}}
               <input {{#password}}type="password"{{/password}} {{^password}}type="text"{{/password}}
                 name="{{name}}" value="{{val}}" purpose="{{purpose}}" field="{{field}}" />
           {{/multiline}}
-          
+
           {{#multiline}}
             <textarea name="{{name}}" purpose="{{purpose}}" field="{{field}}" >{{val}}</textarea>
           {{/multiline}}
-          
+
         {{#label}}
           </label>
         {{/label}}
       {{/radio}}
       {{/checkbox}}
-      
+
       {{#description}}
         <div class="description">{{description}}</div>
       {{/description}}
@@ -168,7 +175,7 @@ session_start();
     {{/fields}}
     </ul>
   </script>
-  
+
   <script type="text/template" id="entries-tpl">
     {{#edit_mode}}
     <div class="big">Entires</div>
@@ -201,7 +208,7 @@ session_start();
     {{/entries}}
     </ul>
   </script>
-  
+
   <script type="text/template" id="buttons-tpl">
     {{#buttons}}
       <a class="faux-button" type="{{type}}" parameter="{{parameter}}">
@@ -209,30 +216,14 @@ session_start();
       </a>
     {{/buttons}}
   </script>
-  
+
   <script type="text/javascript">
     var preload_current_data = <?php require 'get_revision.php';?>;
   </script>
   <script type="text/javascript">
     var preload_revisions = <?php require 'get_revisions.php';?>;
   </script>
-  
-  <script type="text/javascript" src="js/header.js"></script>
-  <script type="text/javascript" src="js/watedit.js"></script>
-  <script type="text/javascript" src="js/entry_manager.js"></script>
-  <script type="text/javascript" src="js/field_manager.js"></script>
-  
-  <?php if(isset($_SESSION['loggedin'])){?>
-    <script type="text/javascript">
-      watedit.admin = true;
-    </script>
-  <?php }?>
-  
-  <script type="text/javascript">
-    $(document).ready(function () {
-      watedit.init();
-    });
-  </script>
+
 
   <script type="text/javascript">
 

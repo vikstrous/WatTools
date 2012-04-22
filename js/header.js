@@ -9,7 +9,7 @@
 
 // Debug tools - built only if necessary and possible
 var debug = {
-  on: false,
+  on: true,
   time: function(label) {
     if(debug.on && window.console !== undefined && console.time !== undefined){
       debug.time = function (label){

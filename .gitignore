@@ -1,3 +1,5 @@
 rss.xml
 .adminpassword
 data/*
+*.sublime-project
+*.sublime-workspace
