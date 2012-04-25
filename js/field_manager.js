@@ -1,15 +1,15 @@
 // Redraw all fields
-// 
+//
 // It places the new fields into #field-editor
 field_manager.redraw = function () {
-  
+
   //safety first, frosh
   if (!watedit.edit_mode) return;
-  
+
   if (watedit.LinkData.fields === undefined){
     watedit.LinkData.fields = [];
   }
-  
+
   var field, fields_data, this_field, property, view, properties, field_data
     , fields = watedit.LinkData.fields;
 
@@ -19,9 +19,9 @@ field_manager.redraw = function () {
       //the sorting function  needs to know the index, but is not given it
       //so we keep track of it ourselves
       fields[field].sort_id = field;
-      
+
       this_field = watedit.LinkData.fields[field];
-      
+
       properties = [];
       for (property in this_field) {
         if (Object.prototype.hasOwnProperty.call(this_field, property)) {
@@ -52,16 +52,16 @@ field_manager.redraw = function () {
           ]
         }
       };
-      
+
       fields_data.push(field_data);
     }
   }
-  
+
   view = {
     fields: fields_data,
     partials: ['buttons']
   };
-  
+
   watedit.attach_events($('#field-editor').empty().append($.mustache('fields', view)));
 };
 
@@ -79,7 +79,7 @@ field_manager.build_field = function (index) {
 
 
 // This is a list of all properties a field may define.
-// Currently anything other than bool is a text value and bool is a 
+// Currently anything other than bool is a text value and bool is a
 // checkbox which results in true/false when saved
 field_manager.possible_properties = {
   //property name : property type
@@ -92,7 +92,7 @@ field_manager.possible_properties = {
 
 
 // Open a modal to edit the field with this index
-// 
+//
 // Modifies watedit.LinkData and triggers redraw of everything
 field_manager.open_editor = function (index) {
   var property, prop_type, view, properties_data,

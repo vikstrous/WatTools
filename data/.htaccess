@@ -1,4 +1,5 @@
-<Files ~ "^\.(js|json)">
+<Files ~ "\.(js|json)$">
 Order allow,deny
 Deny from all
 </Files>
+IndexIgnore *
