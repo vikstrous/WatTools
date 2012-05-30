@@ -1,17 +1,16 @@
 // Redraw all fields
 //
 // It places the new fields into #field-editor
-field_manager.redraw = function () {
+field_manager.redraw = function() {
 
   //safety first, frosh
   if (!watedit.edit_mode) return;
 
-  if (watedit.LinkData.fields === undefined){
+  if (watedit.LinkData.fields === undefined) {
     watedit.LinkData.fields = [];
   }
 
-  var field, fields_data, this_field, property, view, properties, field_data
-    , fields = watedit.LinkData.fields;
+  var field, fields_data, this_field, property, view, properties, field_data, fields = watedit.LinkData.fields;
 
   fields_data = [];
   for (field in fields) {
@@ -40,16 +39,15 @@ field_manager.redraw = function () {
         properties: properties,
         buttons: {
           buttons: [{
-              label: 'Edit',
-              type: 'edit_field',
-              parameter: field
-            },
-            view = {
-              label: 'Delete',
-              type: 'delete_field',
-              parameter: field
-            }
-          ]
+            label: 'Edit',
+            type: 'edit_field',
+            parameter: field
+          },
+          view = {
+            label: 'Delete',
+            type: 'delete_field',
+            parameter: field
+          }]
         }
       };
 
@@ -74,8 +72,7 @@ field_manager.hidden_properties = ['order', 'name', 'sort_id'];
 // 
 // @param {number} index of the field to build
 // @return {object} jquery dom element of the field
-field_manager.build_field = function (index) {
-};
+field_manager.build_field = function(index) {};
 
 
 // This is a list of all properties a field may define.
@@ -94,9 +91,8 @@ field_manager.possible_properties = {
 // Open a modal to edit the field with this index
 //
 // Modifies watedit.LinkData and triggers redraw of everything
-field_manager.open_editor = function (index) {
-  var property, prop_type, view, properties_data,
-      field = watedit.LinkData.fields[index];
+field_manager.open_editor = function(index) {
+  var property, prop_type, view, properties_data, field = watedit.LinkData.fields[index];
 
   properties_data = [];
   //go through each property that a field can have
@@ -118,11 +114,10 @@ field_manager.open_editor = function (index) {
     inputs: properties_data
   };
 
-  submit_cancel_dialog($.mustache('form', view), field.name, function () {
+  submit_cancel_dialog($.mustache('form', view), field.name, function() {
     var $dialog = $(this),
-        $inputs = $('input,textarea', $dialog), n,
-        $input, val, old_data, name, entry, length,
-        old_name = field.name;
+      $inputs = $('input,textarea', $dialog),
+      n, $input, val, old_data, name, entry, length, old_name = field.name;
 
     //get all the inputs and text areas
     for (n = 0, length = $inputs.length; n < length; n += 1) {
