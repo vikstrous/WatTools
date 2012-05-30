@@ -12,7 +12,7 @@ fclose($fh);
 
 // require POST data for these actions
 $post_actions = array('new_revision', 'set_current_revision', 'login');
-if(in_array($_GET['action'], $post_actions) && empty($postdata)) die('No data submitted.');
+if(in_array($_GET['action'], $post_actions) && empty($postdata) && $postdata !== "0") die('No data submitted.');
 
 
 switch ($_GET['action']){

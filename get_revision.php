@@ -4,7 +4,6 @@ if(!file_exists('data/revisions.js')){
 	if(is_writable('data/revisions.js')){
 		file_put_contents('data/revisions.js', '{}');
 	}
-	die('{}');
 }
 $fh = fopen('data/revisions.js','c+') or die('Failed to read revision data.');
 $jsonInput = fgets($fh);
