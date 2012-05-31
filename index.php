@@ -19,6 +19,7 @@ session_start();
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js"></script>
   <script type="text/javascript" src="js/lib/jquery.ui.touch.js"></script>
+  <script type="text/javascript" src="js/lib/conveyor.js"></script>
   <script type="text/javascript" src="js/lib/mustache.js"></script>
   <script type="text/javascript" src="js/lib/jquery.jgrowl_minimized.js"></script>
   <script type="text/javascript" src="js/mustache_helper.js"></script>
@@ -85,20 +86,22 @@ session_start();
   <script type="text/template" id="app-tpl">
     <a id="editor" class="faux-button">Editor</a>
     {{#edit_mode}}
-      <a id="submit-data" class="faux-button">Submit New Revision</a>
       <a id="revisions" class="faux-button">Revisions</a>
       <a id="refresh" class="faux-button">Refresh</a>
       <a id="reload" class="faux-button">Reload</a>
       {{^loggedin}}<a id="login" class="faux-button">Log in</a>{{/loggedin}}
       {{#loggedin}}<a id="logout" class="faux-button">Log out</a>{{/loggedin}}
-      <div id="field-editor">
-      </div>
-      <a id="new-field" class="faux-button">New Field</a>
+      <br/>
+      <a id="submit-data" class="faux-button">Submit as New Revision</a>
+      <br/>
+      <a id="new-item" class="faux-button">New Item</a>
     {{/edit_mode}}
     <div id="item-editor">
     </div>
     {{#edit_mode}}
-      <a id="new-item" class="faux-button">New Item</a>
+      <div id="field-editor">
+      </div>
+      <a id="new-field" class="faux-button">New Field</a>
     {{/edit_mode}}
   </script>
 

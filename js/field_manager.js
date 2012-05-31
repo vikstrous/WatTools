@@ -15,10 +15,6 @@ field_manager.redraw = function() {
   fields_data = [];
   for (field in fields) {
     if (Object.prototype.hasOwnProperty.call(fields, field)) {
-      //the sorting function  needs to know the index, but is not given it
-      //so we keep track of it ourselves
-      fields[field].sort_id = field;
-
       this_field = watedit.LinkData.fields[field];
 
       properties = [];
@@ -87,6 +83,14 @@ field_manager.possible_properties = {
   'url': 'bool'
 };
 
+//the sorting function  needs to know the index, but is not given it
+//so we keep track of it ourselves
+field_manager.reindex = function(){
+  for (var field in watedit.LinkData.fields) {
+    //entry data
+    watedit.LinkData.fields[field].sort_id = field;
+  }
+};
 
 // Open a modal to edit the field with this index
 //
