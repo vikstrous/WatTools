@@ -357,6 +357,7 @@ watedit.attach_events = function($context) {
     field_manager.open_editor(watedit.LinkData.fields.length - 1);
   });
 
+/*
   $('#refresh', $context).click(function() {
     watedit.redraw();
   });
@@ -364,6 +365,8 @@ watedit.attach_events = function($context) {
   $('#reload', $context).click(function() {
     watedit.load_data(true);
   });
+*/
+
   $('#editor', $context).click(function() {
     watedit.edit_mode = watedit.edit_mode ? false : true;
     watedit.redraw();

@@ -87,8 +87,6 @@ session_start();
     <a id="editor" class="faux-button">Editor</a>
     {{#edit_mode}}
       <a id="revisions" class="faux-button">Revisions</a>
-      <a id="refresh" class="faux-button">Refresh</a>
-      <a id="reload" class="faux-button">Reload</a>
       {{^loggedin}}<a id="login" class="faux-button">Log in</a>{{/loggedin}}
       {{#loggedin}}<a id="logout" class="faux-button">Log out</a>{{/loggedin}}
       <br/>
