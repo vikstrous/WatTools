@@ -43,12 +43,7 @@ entry_manager.redraw = function() {
     }
   };
 
-  watedit.attach_events(
-    $('#item-editor').empty().append(
-      $.conveyor('entries', data, logic, ['buttons'])
-    )
-  );
-  //watedit.attach_events($('#item-editor').empty().append($.mustache('entries', view)));
+  watedit.attach_events($('#item-editor').empty().append($.conveyor('entries', data, logic, ['buttons'])));
 };
 
 //the sorting function  needs to know the index, but is not given it
@@ -64,45 +59,45 @@ entry_manager.reindex = function(){
 //
 // Modifies watedit.LinkData and triggers redraw of entries
 entry_manager.open_editor = function(index) {
-  var this_field, property, field, $field, view, title, fields_data, field_data, entry = watedit.LinkData.entries[index],
-    fields = watedit.LinkData.fields,
-    $fields = $('<div>');
+  var entry = watedit.LinkData.entries[index];
+  var data = watedit.LinkData.fields;
+  var logic = {
+    '/' : function(fields, path){
+      var fields_data = [];
+      for (var field in fields) {
+        if (Object.prototype.hasOwnProperty.call(fields, field)) {
+          var this_field = fields[field];
+          var property = entry[this_field.name];
+          var field_data = {
+            val: property ? property.text : '',
+            label: this_field.name,
+            purpose: 'text',
+            field: this_field.name,
+            multiline: this_field.multiline
+          };
 
-  fields_data = [];
-  for (field in fields) {
-    if (Object.prototype.hasOwnProperty.call(fields, field)) {
-      this_field = fields[field];
-      property = entry[this_field.name];
-      field_data = {
-        val: property ? property.text : '',
-        label: this_field.name,
-        purpose: 'text',
-        field: this_field.name,
-        multiline: this_field.multiline
-      };
+          //text input
+          fields_data.push(field_data);
 
-      //text input
-      fields_data.push(field_data);
-
-      //url input
-      if (this_field.url) {
-        //make a copy of the old data
-        field_data = $.extend({}, field_data);
-        field_data.label += ' url';
-        field_data.val = property ? property.url : '';
-        field_data.purpose = 'url';
-        //then add a field for the url
-        fields_data.push(field_data);
+          //url input
+          if (this_field.url) {
+            //make a copy of the old data
+            field_data = $.extend({}, field_data);
+            field_data.label += ' url';
+            field_data.val = property ? property.url : '';
+            field_data.purpose = 'url';
+            //then add a field for the url
+            fields_data.push(field_data);
+          }
+        }
       }
+      return Conveyor.name(fields_data, 'inputs');
     }
-  }
-  view = {
-    inputs: fields_data
   };
 
-  title = entry[watedit.LinkData.fields[0].name] ? entry[watedit.LinkData.fields[0].name].text : 'Untitled';
+  var title = entry[watedit.LinkData.fields[0].name] ? entry[watedit.LinkData.fields[0].name].text : 'Untitled';
 
-  submit_cancel_dialog($.mustache('form', view), title, function() {
+  submit_cancel_dialog($.conveyor('form', data, logic), title, function() {
     var $dialog = $(this),
       $inputs = $('input,textarea', $dialog),
       $input, purpose, field, val, n, length;
