@@ -318,23 +318,18 @@ watedit.attach_events = function($context) {
       'text': 'New Item'
     };
     watedit.LinkData.entries = watedit.LinkData.entries || [];
-    watedit.LinkData.entries.unshift(new_item_data);
+    watedit.LinkData.entries.push(new_item_data);
     entry_manager.redraw();
     entry_manager.open_editor(watedit.LinkData.entries.length - 1);
   });
 
   if (watedit.edit_mode) { //sortable only in edit mode
 
+
     function make_sortable(thing) {
       var $ul = $('#' + thing + 's', $context);
       $ul.sortable({
         placeholder: thing + " placeholder",
-        start: function(){
-          if ('item' == thing)
-            entry_manager.reindex();
-          else
-            field_manager.reindex();
-        },
         update: function(event, ui) {
           var sort_order = $(this).sortable('toArray');
           watedit.LinkData['item' == thing ? 'entries' : 'fields'].sort(function(a, b) {
