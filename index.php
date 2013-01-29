@@ -12,8 +12,8 @@ session_start();
   <meta property="fb:admins" content="100000486272805" />
   <title>Waterloo Tools - A collection of tools for University of Waterloo students</title>
   <link rel="alternate" type="application/rss+xml" href="/data/rss.xml" title="Waterloo Tools" />
-  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssreset/reset-min.css">
-  <link rel="stylesheet" type="text/css" href="css/smoothness/jquery-ui-1.8.14.custom.css" />
+  <link rel="stylesheet" type="text/css" href="css/reset-min.css">
+  <link rel="stylesheet" type="text/css" href="css/smoothness/jquery-ui-1.10.0.custom.min.css" />
   <link rel="stylesheet" type="text/css" href="css/jquery.jgrowl.css" />
   <link rel="stylesheet" type="text/css" href="css/style.css" />
   <script type="text/javascript" src="js/lib/jquery.min.js"></script>
@@ -92,20 +92,18 @@ session_start();
 
   <!-- we are preloading some templates and we should be able to get the rest through ajax (currently we preload all) -->
   <script type="text/template" id="app-tpl">
-    <a id="editor" class="faux-button">Editor</a>
+    <div><a id="editor" class="faux-button">Editor</a></div>
     {{#edit_mode}}
       <a id="submit-data" class="faux-button">Submit New Revision</a>
       <a id="revisions" class="faux-button">Revisions</a>
       {{^loggedin}}<a id="login" class="faux-button">Log in</a>{{/loggedin}}
       {{#loggedin}}<a id="logout" class="faux-button">Log out</a>{{/loggedin}}
-      <div id="field-editor">
-      </div>
-      <a id="new-field" class="faux-button">New Field</a>
+      <div><a id="new-item" class="faux-button">New Item</a></div>
     {{/edit_mode}}
-    <div id="item-editor">
-    </div>
+    <div id="item-editor"></div>
     {{#edit_mode}}
-      <a id="new-item" class="faux-button">New Item</a>
+      <a id="new-field" class="faux-button">New Field</a>
+      <div id="field-editor"></div>
     {{/edit_mode}}
   </script>
 
@@ -113,54 +111,66 @@ session_start();
     <form>
     {{#inputs}}
       <div>
-      {{#checkbox}}
-        {{#label}}
-          <label>
-        {{/label}}
-        <input type="checkbox" name="{{name}}" purpose="{{purpose}}" field="{{field}}" {{#checked}}checked="checked"{{/checked}} />
-        {{#label}}
-          {{label}}</label>
-        {{/label}}
-      {{/checkbox}}
+        {{#dropdown}}
+          <select>
+        {{/dropdown}}
+        {{#dropdown_data}}
+          <option value="{{value}}">{{label}}</option>
+        {{/dropdown_data}}
+        {{#dropdown}}
+          </select>
+        {{/dropdown}}
 
-      {{#radio}}
-        <div>
-          <div class="radio">
-            {{#label}}
-              <label>
-            {{/label}}
-              <input type="radio" name="{{name}}" {{#checked}}checked="checked"{{/checked}} value="{{value}}"/>
-            {{#label}}
-              {{label}}</label>
-            {{/label}}
+        {{#checkbox}}
+          {{#label}}
+            <label>
+          {{/label}}
+          <input type="checkbox" name="{{name}}" purpose="{{purpose}}" field="{{field}}" {{#checked}}checked="checked"{{/checked}} />
+          {{#label}}
+            {{label}}</label>
+          {{/label}}
+        {{/checkbox}}
+
+        {{#radio}}
+          <div>
+            <div class="radio">
+              {{#label}}
+                <label>
+              {{/label}}
+                <input type="radio" name="{{name}}" {{#checked}}checked="checked"{{/checked}} value="{{value}}"/>
+              {{#label}}
+                {{label}}</label>
+              {{/label}}
+            </div>
           </div>
-        </div>
-      {{/radio}}
+        {{/radio}}
 
-      {{^checkbox}}
-      {{^radio}}
-        {{#label}}
-          <label>{{label}}<br/>
-        {{/label}}
+        {{^dropdown}}
+        {{^checkbox}}
+        {{^radio}}
+          {{#label}}
+            <label>{{label}}<br/>
+          {{/label}}
 
-          {{^multiline}}
-              <input {{#password}}type="password"{{/password}} {{^password}}type="text"{{/password}}
-                name="{{name}}" value="{{val}}" purpose="{{purpose}}" field="{{field}}" />
-          {{/multiline}}
+            {{^multiline}}
+                <input {{#password}}type="password"{{/password}} {{^password}}type="text"{{/password}}
+                  name="{{name}}" value="{{val}}" purpose="{{purpose}}" field="{{field}}" />
+            {{/multiline}}
 
-          {{#multiline}}
-            <textarea name="{{name}}" purpose="{{purpose}}" field="{{field}}" >{{val}}</textarea>
-          {{/multiline}}
+            {{#multiline}}
+              <textarea name="{{name}}" purpose="{{purpose}}" field="{{field}}" >{{val}}</textarea>
+            {{/multiline}}
 
-        {{#label}}
-          </label>
-        {{/label}}
-      {{/radio}}
-      {{/checkbox}}
+          {{#label}}
+            </label>
+          {{/label}}
+        {{/radio}}
+        {{/checkbox}}
+        {{/dropdown}}
 
-      {{#description}}
-        <div class="description">{{description}}</div>
-      {{/description}}
+        {{#description}}
+          <div class="description">{{description}}</div>
+        {{/description}}
       </div>
     {{/inputs}}
     </form>

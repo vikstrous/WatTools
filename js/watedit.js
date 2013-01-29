@@ -211,10 +211,11 @@ var WatEdit = Backbone.View.extend({
 
     var revisions_dialog = function(data) {
         var i, revision, view, revisions_data, current = this.model.get('RevisionData').current,
-          revisions = data.revisions,
+          revisions = data.revisions, dropdown, dropdown_data,
           date;
 
         revisions_data = [];
+        dropdown_data = [];
         for(i in revisions) {
           if(Object.prototype.hasOwnProperty.call(revisions, i)) {
             revision = revisions[i];
@@ -222,16 +223,22 @@ var WatEdit = Backbone.View.extend({
             date = new Date();
             date.setTime(revision.time * 1000);
             //add this revision to the list
-            revisions_data.push({
-              label: revision.description,
+            var truncated = revision.description.substr(0, 25);
+            if(revision.description.length > 25) truncated += '...';
+            dropdown_data.push({
+              label: truncated,
               description: date.toLocaleDateString() + ' ' + date.toLocaleTimeString(),
               checked: i == current,
               name: 'revision',
-              value: i,
-              radio: true
+              value: i
             });
           }
         }
+        dropdown = {
+          dropdown_data: dropdown_data.reverse(),
+          dropdown: true
+        };
+        revisions_data.push(dropdown);
 
         if(this.model.get('admin')) {
           revisions_data.push({
