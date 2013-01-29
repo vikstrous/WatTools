@@ -9,6 +9,12 @@
 // Debug tools - built only if necessary and possible
 var debug = {
   on: true,
+  error: function(text){
+    $.jGrowl(text);
+    if(window.console !== undefined && console.error !== undefined) {
+      console.error(text);
+    }
+  },
   time: function(label) {
     if (debug.on && window.console !== undefined && console.time !== undefined) {
       debug.time = function(label) {
@@ -80,20 +86,20 @@ function submit_cancel_dialog(html, title, submit, submit_label) {
   submit_label = submit_label || 'Submit';
 
   //vars
-  var buttons;
+  var buttons, $dialog = $('#dialog');
 
   //setup
   buttons = {};
   buttons[submit_label] = submit;
   buttons.Cancel = function() {
-    $(this).dialog("close");
-    $(this).remove();
+    $dialog.dialog("close");
   };
 
   //open the dialog
-  $(html).dialog({
+  $dialog.html(html).dialog({
     title: title,
     buttons: buttons,
     modal: true
   });
+  $dialog.find('form').submit(submit);
 }

@@ -16,28 +16,37 @@ session_start();
   <link rel="stylesheet" type="text/css" href="css/smoothness/jquery-ui-1.8.14.custom.css" />
   <link rel="stylesheet" type="text/css" href="css/jquery.jgrowl.css" />
   <link rel="stylesheet" type="text/css" href="css/style.css" />
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js"></script>
-  <script type="text/javascript" src="js/lib/jquery.ui.touch.js"></script>
+  <script type="text/javascript" src="js/lib/jquery.min.js"></script>
+  <script type="text/javascript" src="js/lib/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="js/lib/underscore-min.js"></script>
+  <script type="text/javascript" src="js/lib/backbone-min.js"></script>
   <script type="text/javascript" src="js/lib/mustache.js"></script>
-  <script type="text/javascript" src="js/lib/jquery.jgrowl_minimized.js"></script>
+  <script type="text/javascript" src="js/lib/jquery.jgrowl.js"></script>
   <script type="text/javascript" src="js/mustache_helper.js"></script>
   <script type="text/javascript" src="js/header.js"></script>
+  <script type="text/javascript" src="js/field_editor.js"></script>
+  <script type="text/javascript" src="js/entry_editor.js"></script>
   <script type="text/javascript" src="js/watedit.js"></script>
-  <script type="text/javascript" src="js/entry_manager.js"></script>
-  <script type="text/javascript" src="js/field_manager.js"></script>
+  <!--<script type="text/javascript" src="js/watedit_old.js"></script>
+  <script type="text/javascript" src="js/entry_manager_old.js"></script>
+  <script type="text/javascript" src="js/field_manager_old.js"></script>-->
+
+  <script type="text/javascript">
+    var watEdit;
+    $(function() {
+      watEdit = new WatEdit();
+    });
+  </script>
 
   <?php if(isset($_SESSION['loggedin'])){?>
     <script type="text/javascript">
-      watedit.admin = true;
+      $(function() {
+        watEdit.model.set('admin', true);
+        watEdit.render();
+      });
     </script>
   <?php }?>
 
-  <script type="text/javascript">
-    $(document).ready(function () {
-      watedit.init();
-    });
-  </script>
   <!-- I HATE IE -->
   <!--[if lte IE 7.0]>
   <style type="text/css">
@@ -245,5 +254,6 @@ session_start();
   </script>
   <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
 
+  <div id="dialog"></div>
   </body>
   </html>

@@ -38,6 +38,7 @@ one of the following tasks:
 - The edit dialogs should only be rendered once on refresh 
   and then when the edit buttons are pressed, they should simply populate the values of the inputs inside the dialog.
 - Extract form related things into a form api
+- Set up something to track clicks and maybe sort links by popularity
 
 ##Disclaimer
 
