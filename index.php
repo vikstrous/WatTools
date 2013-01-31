@@ -59,9 +59,9 @@ session_start();
   <div id="header">
     <div class='title'><a href="/">Waterloo Tools</a></div>
     <noscript><div class="noscript">Please enable javascript to use WatTools.</div></noscript>
-    <div class='description'>A collection of tools for University of Waterloo students (made by University of Waterloo students!)</div>
-    <div class='description'>This is a wiki!</div>
-    <div class='description'>Submit your own revisions of the list! Click the Editor button!</div>
+    <div class='description'>A collection of tools for students, by students.</div>
+    <div class='description'>This is a wiki! Submit your own revisions of the list! Click the Editor button!</div>
+    <div class='description'>Fight the power and build your own tools!</div>
     <div id="social">
       <div class="social_item">
         <iframe src="http://www.facebook.com/plugins/like.php?app_id=155945941150696&amp;href=wattools.com&amp;send=false&amp;layout=box_count&amp;width=55&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=90" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:55px; height:90px;" allowTransparency="true"></iframe>
@@ -92,7 +92,7 @@ session_start();
 
   <!-- we are preloading some templates and we should be able to get the rest through ajax (currently we preload all) -->
   <script type="text/template" id="app-tpl">
-    <div><a id="editor" class="faux-button">Editor</a></div>
+    <div><a id="editor" class="faux-button">Edit the list!</a></div>
     {{#edit_mode}}
       <a id="submit-data" class="faux-button">Submit New Revision</a>
       <a id="revisions" class="faux-button">Revisions</a>
