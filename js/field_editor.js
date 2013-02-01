@@ -91,7 +91,7 @@ var FieldEditor = Backbone.View.extend({
 
       field_data = {
         id: 'field_' + field,
-        title: this_field.name,
+        title: this_field.get('name'),
         properties: properties,
         buttons: {
           buttons: [{
@@ -129,7 +129,7 @@ var FieldEditor = Backbone.View.extend({
   },
 
   edit_field: function(index) {
-    var property, prop_type, view, properties_data, field = this.model.get('current_revision').get('fields').get(index);
+    var property, prop_type, view, properties_data, field = this.model.get('current_revision').get('fields').at(index);
 
     properties_data = [];
     //go through each property that a field can have
