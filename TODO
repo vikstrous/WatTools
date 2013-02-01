@@ -1,0 +1,5 @@
+use events properly
+security check
+extract common parts of the field and entry editor out
+better revisons picker + date + description visible when selected
+transform my entry data to use a data array instead of a hashmap of name to datum; sort the data differently than right now
