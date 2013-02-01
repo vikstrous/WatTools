@@ -101,5 +101,6 @@ function submit_cancel_dialog(html, title, submit, submit_label) {
     buttons: buttons,
     modal: true
   });
-  $dialog.find('form').submit(submit);
+
+  $dialog.find('form').submit(submit.bind($dialog));
 }

@@ -1,12 +1,3 @@
-var WatEditModel = Backbone.Model.extend({
-  defaults: {
-    edit_mode: false,
-    admin: false,
-    LinkData: {},
-    RevisionData: {}
-  }
-});
-
 var WatEdit = Backbone.View.extend({
   el: '#app',
 
@@ -44,53 +35,48 @@ var WatEdit = Backbone.View.extend({
 
   new_item_btn: function() {
     var new_item_data = {};
-    new_item_data[this.model.get('LinkData').fields[0].name] = { //first thing is title amirite?
+    new_item_data[this.model.get('current_revision').get('fields').at(0).get('name')] = { //first thing is title amirite?
       'text': 'New Item'
     };
-    var old_linkdata = this.model.get('LinkData');
-    old_linkdata.entries = old_linkdata.entries || [];
-    old_linkdata.entries.push(new_item_data);
-    this.model.set('LinkData', old_linkdata);
+    this.model.get('current_revision').get('entries').add(new_item_data);
     this.ee.render();
-    this.ee.edit_entry(this.model.get('LinkData').entries.length - 1);
+    this.ee.edit_entry(this.model.get('current_revision').get('entries').length - 1);
   },
 
   new_field_btn: function() {
-    var LinkData = this.model.get('LinkData');
-    LinkData.fields = LinkData.fields || [];
-    LinkData.fields.push({
+    this.model.get('current_revision').get('fields').add({
       'name': 'New Field'
     });
-    this.model.set('LinkData', LinkData);
     this.fe.render();
-    this.fe.edit_field(this.model.get('LinkData').fields.length - 1);
+    this.fe.edit_field(this.model.get('current_revision').get('fields').length - 1);
   },
 
-  complex_behaviors: function() {
-    //TODO: put this into the editors themselves
-    //TODO: make the editors inherit from the common editor class
-    var make_sortable = function(thing) {
-        var $ul = this.$('#' + thing + 's');
-        var LinkData = this.model.get('LinkData');
-        var that = this;
-        $ul.sortable({
-          placeholder: thing + " placeholder",
-          update: function(event, ui) {
-            var sort_order = $(this).sortable('toArray');
-            LinkData['item' == thing ? 'entries' : 'fields'].sort(function(a, b) {
-              return sort_order.indexOf(thing + '_' + a.sort_id) - sort_order.indexOf(thing + '_' + b.sort_id);
-            });
-            that.ee.render();
-          }
-        });
-        $ul.disableSelection();
-      }.bind(this);
+  // complex_behaviors: function() {
+  //   //TODO: put this into the editors themselves
+  //   //TODO: make the editors inherit from the common editor class
+  //   var make_sortable = function(thing) {
+  //       var $ul = this.$('#' + thing + 's');
+  //       var current_revision = this.model.get('current_revision');
+  //       var that = this;
+  //       $ul.sortable({
+  //         placeholder: thing + " placeholder",
+  //         update: function(event, ui) {
+  //           var sort_order = $(this).sortable('toArray');
+  //           //TODO: figure out how to make this work
+  //           current_revision.get('item' == thing ? 'entries' : 'fields').sort(function(a, b) {
+  //             return sort_order.indexOf(thing + '_' + a.sort_id) - sort_order.indexOf(thing + '_' + b.sort_id);
+  //           });
+  //           that.ee.render();
+  //         }
+  //       });
+  //       $ul.disableSelection();
+  //     }.bind(this);
 
-    if(this.model.get('edit_mode')) { //sortable only in edit mode
-      make_sortable('item');
-      make_sortable('field');
-    }
-  },
+  //   if(this.model.get('edit_mode')) { //sortable only in edit mode
+  //     make_sortable('item');
+  //     make_sortable('field');
+  //   }
+  // },
 
   initialize: function() {
     debug.time('start up');
@@ -115,7 +101,7 @@ var WatEdit = Backbone.View.extend({
     // this.fe.render();
     // this.ee.render();
     this.delegateEvents(this.events);
-    this.complex_behaviors();
+    // this.complex_behaviors();
     debug.timeEnd('render all');
     return this;
   },
@@ -133,7 +119,9 @@ var WatEdit = Backbone.View.extend({
 
     function(data) {
       //set data, draw everything
-      this.model.set('LinkData', data);
+      var entries = new Entries(data.entries);
+      var fields = new Fields(data.fields);
+      this.model.set('current_revision', new Revision({entries: entries, fields:fields}));
       this.render();
       debug.timeEnd('load');
     }.bind(this),
@@ -143,14 +131,15 @@ var WatEdit = Backbone.View.extend({
       debug.error(textStatus, errorThrown);
       debug.timeEnd('load');
     }.bind(this), fresh, {
-      'revision': this.model.get('RevisionData').current
+      'revision': this.model.get('current_revision_id')
     });
   },
 
   // Loads revision data
   load_revisions: function() {
     loader('preload_revisions', 'get_revisions.php', function(data) {
-      this.model.set('RevisionData', data);
+      this.model.set('current_revision_id', data.current);
+      this.model.set('revisions_summary', new RevisionsSummary(data.revisions));
     }.bind(this), function(jqXHR, textStatus, errorThrown) {
       debug.error(errorThrown);
     });
@@ -158,18 +147,14 @@ var WatEdit = Backbone.View.extend({
 
   // Opens the dialog to log in the admin
   login: function() {
-    var view, submit_func;
-
-    view = {
+    var that = this;
+    submit_cancel_dialog($.mustache('form', {
       inputs: [{
         label: 'Password',
         name: 'password',
         password: true
       }]
-    };
-
-    var that = this;
-    submit_func = function() {
+    }), 'Log in', function() {
       var $dialog = $(this);
       $.ajax({
         url: '/action.php?action=login',
@@ -180,20 +165,19 @@ var WatEdit = Backbone.View.extend({
         success: function(data, textStatus, jqXHR) {
           if(data === '1') {
             $.jGrowl('Successfully logged in.');
-            this.model.set('admin', true);
-            this.render();
+            that.model.set('admin', true);
+            that.render();
             $dialog.dialog('close');
           } else {
             $.jGrowl(data);
           }
-        }.bind(that),
+        },
         error: function() {
           $.jGrowl('Failed to log in.');
         }
       });
       return false;
-    };
-    submit_cancel_dialog($.mustache('form', view), 'Log in', submit_func);
+    });
   },
 
   // Logs out the admin
@@ -210,7 +194,7 @@ var WatEdit = Backbone.View.extend({
   choose_revisions: function() {
 
     var revisions_dialog = function(data) {
-        var i, revision, view, revisions_data, current = this.model.get('RevisionData').current,
+        var i, revision, view, revisions_data, current = this.model.get('current_revision_id'),
           revisions = data.revisions, dropdown, dropdown_data,
           date;
 
@@ -228,14 +212,14 @@ var WatEdit = Backbone.View.extend({
             dropdown_data.push({
               label: truncated,
               description: date.toLocaleDateString() + ' ' + date.toLocaleTimeString(),
-              checked: i == current,
-              name: 'revision',
+              selected: i == current,
               value: i
             });
           }
         }
         dropdown = {
           dropdown_data: dropdown_data.reverse(),
+          name: 'revision',
           dropdown: true
         };
         revisions_data.push(dropdown);
@@ -256,13 +240,11 @@ var WatEdit = Backbone.View.extend({
         var that = this;
         submit_cancel_dialog($.mustache('form', view), 'Change active revision', function() {
           var $dialog = $(this),
-            revision = $dialog.find('input[name="revision"]:checked').val(),
+            revision = $dialog.find('select[name="revision"]>option:selected').val(),
             everyone = $dialog.find('input[name="everyone"]').attr('checked');
 
           //change active revision
-          var old_data = that.model.get('RevisionData');
-          old_data.current = revision;
-          that.model.set('RevisionData', old_data);
+          that.model.set('current_revision_id', revision);
 
           if(everyone && that.model.get('admin')) {
             $.ajax({
@@ -290,11 +272,9 @@ var WatEdit = Backbone.View.extend({
       }.bind(this);
 
     loader('preload_revisions', 'get_revisions.php', function(data) {
-      data.current = this.model.get('RevisionData').current;
-      this.model.set('RevisionData', data);
       revisions_dialog(data);
     }.bind(this), function(jqXHR, textStatus, errorThrown) {
-      console.erorr(errorThrown);
+      debug.erorr(errorThrown);
     }, true);
   },
 
@@ -314,7 +294,7 @@ var WatEdit = Backbone.View.extend({
         description = $('textarea[name="description"]', $dialog).val(),
         data = {};
 
-      data.data = that.model.get('LinkData');
+      data.data = that.model.get('current_revision');
       data.meta = {
         description: description
       };
@@ -325,9 +305,7 @@ var WatEdit = Backbone.View.extend({
         data: JSON.stringify(data),
         success: function(data, textStatus, jqXHR) {
           if(!isNaN(data)) {
-            var old_data = that.model.get('RevisionData');
-            old_data.current = data;
-            that.model.set('RevisionData', data);
+            that.model.set('current_revision_id', data);
             $.jGrowl('Successfully created new revision! It will be reviewed shortly.');
             $dialog.dialog("close");
           } else {

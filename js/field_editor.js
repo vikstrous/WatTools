@@ -20,8 +20,6 @@ field_manager.possible_properties = {
   'url': 'bool'
 };
 
-
-
 var FieldEditor = Backbone.View.extend({
   el: '#field-editor',
 
@@ -30,12 +28,34 @@ var FieldEditor = Backbone.View.extend({
     'click .faux-button[type="delete_field"]': 'delete_field_btn'
   },
 
+  complex_behaviors: function() {
+    if(this.model.get('edit_mode')){
+      var $ul = this.$('#fields');
+      var current_revision = this.model.get('current_revision');
+      var that = this;
+      $ul.sortable({
+        placeholder: "field placeholder",
+        update: function(event, ui) {
+          var sort_order = $(this).sortable('toArray');
+          var fields = current_revision.get('fields');
+          var unsorted_entries = [];
+          for(var pos in sort_order){
+            fields.at(Number(sort_order[pos].substr(6))).set({'sort_id': pos}, {silent: true});
+          }
+          current_revision.get('fields').sort();
+          watEdit.render();//TODO: use events
+        }
+      });
+      $ul.disableSelection();
+    }
+  },
+
   delete_field_btn: function(e) {
     if(confirm('Are you sure you want to delete this item?')) {
-      var param = $(e.target).attr('parameter');
-      var LinkData = this.model.get('LinkData');
-      LinkData.fields.splice(param, 1);
-      this.model.set('LinkData', LinkData);
+      var index = $(e.target).attr('parameter');
+      this.model.get('current_revision').get('fields').remove(
+        this.model.get('current_revision').get('fields').at(index)
+      );
       this.render();
     }
   },
@@ -50,56 +70,46 @@ var FieldEditor = Backbone.View.extend({
     //safety first, frosh
     if(!this.model.get('edit_mode')) return;
 
-    var LinkData = this.model.get('LinkData');
-    if(LinkData.fields === undefined) {
-      LinkData.fields = [];
-      this.model.ste('LinkData', LinkData);
-    }
-
-    var field, fields_data, this_field, property, view, properties, field_data, fields = LinkData.fields;
+    var field, fields_data, this_field, property, view, properties, field_data, fields = this.model.get('current_revision').get('fields');
 
     fields_data = [];
-    for(field in fields) {
-      if(Object.prototype.hasOwnProperty.call(fields, field)) {
-        //the sorting function  needs to know the index, but is not given it
-        //so we keep track of it ourselves
-        fields[field].sort_id = field;
+    fields.forEach(function(this_field, field, fields) {
+      //the sorting function  needs to know the index, but is not given it
+      //so we keep track of it ourselves
+      fields[field].sort_id = field;
 
-        this_field = fields[field];
-
-        properties = [];
-        for(property in this_field) {
-          if(Object.prototype.hasOwnProperty.call(this_field, property)) {
-            if(field_manager.hidden_properties.indexOf(property) == -1) {
-              properties.push({
-                property: property,
-                value: this_field[property]
-              });
-            }
+      //TODO: finish refactoring this
+      properties = [];
+      for(var property in this_field.toJSON()){
+        var value = this_field.get(property);
+          if(field_manager.hidden_properties.indexOf(property) == -1) {
+            properties.push({
+              property: property,
+              value: value
+            });
           }
-        }
-
-        field_data = {
-          id: 'field_' + field,
-          title: this_field.name,
-          properties: properties,
-          buttons: {
-            buttons: [{
-              label: 'Edit',
-              type: 'edit_field',
-              parameter: field
-            },
-            view = {
-              label: 'Delete',
-              type: 'delete_field',
-              parameter: field
-            }]
-          }
-        };
-
-        fields_data.push(field_data);
       }
-    }
+
+      field_data = {
+        id: 'field_' + field,
+        title: this_field.name,
+        properties: properties,
+        buttons: {
+          buttons: [{
+            label: 'Edit',
+            type: 'edit_field',
+            parameter: field
+          },
+          view = {
+            label: 'Delete',
+            type: 'delete_field',
+            parameter: field
+          }]
+        }
+      };
+
+      fields_data.push(field_data);
+    }.bind(this));
 
     view = {
       fields: fields_data,
@@ -107,6 +117,7 @@ var FieldEditor = Backbone.View.extend({
     };
 
     this.$el.html($.mustache('fields', view));
+    this.complex_behaviors();
     this.delegateEvents(this.events);
     debug.timeEnd('render fields');
     return this;
@@ -119,7 +130,7 @@ var FieldEditor = Backbone.View.extend({
   },
 
   edit_field: function(index) {
-    var property, prop_type, view, properties_data, field = this.model.get('LinkData').fields[index];
+    var property, prop_type, view, properties_data, field = this.model.get('current_revision').get('fields').get(index);
 
     properties_data = [];
     //go through each property that a field can have
@@ -128,10 +139,10 @@ var FieldEditor = Backbone.View.extend({
         prop_type = field_manager.possible_properties[property];
 
         properties_data.push({
-          val: field[property],
+          val: field.get(property),
           label: property,
           name: property,
-          checked: field[property] === true,
+          checked: field.get(property) === true,
           checkbox: prop_type === 'bool',
           multiline: prop_type === 'multiline'
         });
@@ -142,11 +153,11 @@ var FieldEditor = Backbone.View.extend({
     };
 
     var that = this;
-    submit_cancel_dialog($.mustache('form', view), field.name, function() {
+    submit_cancel_dialog($.mustache('form', view), field.get('name'), function() {
       var $dialog = $(this),
         $inputs = $('input,textarea', $dialog),
-        n, $input, val, old_data, name, entry, length, old_name = field.name,
-        LinkData = that.model.get('LinkData');
+        n, $input, val, old_data, name, entry, length, old_name = field.get('name'),
+        entries = that.model.get('current_revision').get('entries');
 
       //get all the inputs and text areas
       for(n = 0, length = $inputs.length; n < length; n += 1) {
@@ -155,27 +166,24 @@ var FieldEditor = Backbone.View.extend({
         name = $input.attr('name'); //name of the property to edit
         //we have to not lose the relationship if we change the name!
         if(name === 'name' && val !== old_name) {
-          for(entry in LinkData.entries) {
-            if(Object.prototype.hasOwnProperty.call(LinkData.entries, entry)) {
-              old_data = LinkData.entries[entry][old_name];
-              LinkData.entries[entry][val] = old_data;
-              that.model.set('LinkData', LinkData);
-            }
-          }
+          entries.forEach(function(entry){
+            entry.set(val, entry.get(old_name));
+            entry.unset(old_name);
+          }.bind(this));
         }
 
         //create the property if it didn't exist but we are giving it a value
         if($input.attr('type') === 'checkbox') {
           if($input.attr('checked')) {
-            field[name] = true;
+            field.set(name, true);
           } else {
-            delete field[name];
+            field.unset(name);
           }
         } else {
           if(val !== '') {
-            field[name] = val;
+            field.set(name, val);
           } else {
-            delete field[name];
+            field.unset(name);
           }
         }
       }

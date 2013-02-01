@@ -24,6 +24,7 @@ session_start();
   <script type="text/javascript" src="js/lib/jquery.jgrowl.js"></script>
   <script type="text/javascript" src="js/mustache_helper.js"></script>
   <script type="text/javascript" src="js/header.js"></script>
+  <script type="text/javascript" src="js/model.js"></script>
   <script type="text/javascript" src="js/field_editor.js"></script>
   <script type="text/javascript" src="js/entry_editor.js"></script>
   <script type="text/javascript" src="js/watedit.js"></script>
@@ -67,7 +68,7 @@ session_start();
         <iframe src="http://www.facebook.com/plugins/like.php?app_id=155945941150696&amp;href=wattools.com&amp;send=false&amp;layout=box_count&amp;width=55&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=90" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:55px; height:90px;" allowTransparency="true"></iframe>
       </div>
       <div class="social_item">
-        <g:plusone size="tall" href="http://wattools.com"></g:plusone>
+        <div class="g-plusone" data-size="tall" data-href="http://wattools.com"></div>
       </div>
       <div class="social_item">
         <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://wattools.com" data-text="I just found some useful tools for #uwaterloo students" data-count="vertical" data-via="wattools">Tweet</a>
@@ -112,10 +113,10 @@ session_start();
     {{#inputs}}
       <div>
         {{#dropdown}}
-          <select>
+          <select name="{{name}}">
         {{/dropdown}}
         {{#dropdown_data}}
-          <option value="{{value}}">{{label}}</option>
+          <option {{#selected}}selected="selected"{{/selected}} value="{{value}}">{{label}}</option>
         {{/dropdown_data}}
         {{#dropdown}}
           </select>
@@ -242,7 +243,6 @@ session_start();
   <script type="text/javascript">
     var preload_revisions = <?php require 'get_revisions.php';?>;
   </script>
-
 
   <script type="text/javascript">
 
