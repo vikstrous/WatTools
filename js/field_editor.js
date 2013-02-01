@@ -78,7 +78,6 @@ var FieldEditor = Backbone.View.extend({
       //so we keep track of it ourselves
       fields[field].sort_id = field;
 
-      //TODO: finish refactoring this
       properties = [];
       for(var property in this_field.toJSON()){
         var value = this_field.get(property);

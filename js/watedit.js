@@ -51,33 +51,6 @@ var WatEdit = Backbone.View.extend({
     this.fe.edit_field(this.model.get('current_revision').get('fields').length - 1);
   },
 
-  // complex_behaviors: function() {
-  //   //TODO: put this into the editors themselves
-  //   //TODO: make the editors inherit from the common editor class
-  //   var make_sortable = function(thing) {
-  //       var $ul = this.$('#' + thing + 's');
-  //       var current_revision = this.model.get('current_revision');
-  //       var that = this;
-  //       $ul.sortable({
-  //         placeholder: thing + " placeholder",
-  //         update: function(event, ui) {
-  //           var sort_order = $(this).sortable('toArray');
-  //           //TODO: figure out how to make this work
-  //           current_revision.get('item' == thing ? 'entries' : 'fields').sort(function(a, b) {
-  //             return sort_order.indexOf(thing + '_' + a.sort_id) - sort_order.indexOf(thing + '_' + b.sort_id);
-  //           });
-  //           that.ee.render();
-  //         }
-  //       });
-  //       $ul.disableSelection();
-  //     }.bind(this);
-
-  //   if(this.model.get('edit_mode')) { //sortable only in edit mode
-  //     make_sortable('item');
-  //     make_sortable('field');
-  //   }
-  // },
-
   initialize: function() {
     debug.time('start up');
     this.model = new WatEditModel();

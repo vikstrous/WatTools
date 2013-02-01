@@ -1,5 +1,3 @@
-//TODO: transform my revisions data to use a data array instead of a hashmap of name to datum
-
 var WatEditModel = Backbone.Model.extend({
   defaults: {
     edit_mode: false,
