@@ -104,3 +104,10 @@ function submit_cancel_dialog(html, title, submit, submit_label) {
 
   $dialog.find('form').submit(submit.bind($dialog));
 }
+
+// a convenient function when using backbone
+function mkobj(k, v){
+  var r = {};
+  r[k] = v;
+  return r;
+}

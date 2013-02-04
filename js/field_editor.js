@@ -159,7 +159,7 @@ var FieldEditor = Backbone.View.extend({
     submit_cancel_dialog($.mustache('form', view), field.get('name'), function() {
       var $dialog = $(this),
         $inputs = $('input,textarea', $dialog),
-        n, $input, val, old_data, name, entry, length, old_name = field.get('name'),
+        n, $input, val, name, entry, length, old_name = field.get('name'),
         entries = that.model.get('current_revision').get('entries');
 
       //get all the inputs and text areas
@@ -170,27 +170,28 @@ var FieldEditor = Backbone.View.extend({
         //we have to not lose the relationship if we change the name!
         if(name === 'name' && val !== old_name) {
           entries.forEach(function(entry){
-            entry.set(val, entry.get(old_name));
-            entry.unset(old_name);
+            entry.set(mkobj(val, entry.get(old_name)), {silent: true});
+            entry.unset(old_name, {silent: true});
           }.bind(this));
         }
 
         //create the property if it didn't exist but we are giving it a value
         if($input.attr('type') === 'checkbox') {
           if($input.attr('checked')) {
-            field.set(name, true);
+            field.set(mkobj(name, true), {silent: true});
           } else {
-            field.unset(name);
+            field.unset(name, {silent: true});
           }
         } else {
           if(val !== '') {
-            field.set(name, val);
+            field.set(mkobj(name, val), {silent: true});
           } else {
-            field.unset(name);
+            field.unset(name, {silent: true});
           }
         }
       }
-      // that.render();
+      that.model.get('current_revision').get('entries').trigger('change');
+      that.model.get('current_revision').get('fields').trigger('change');
       $dialog.dialog("close");
     }, 'Save');
   }

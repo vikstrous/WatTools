@@ -147,8 +147,6 @@ var EntryEditor = Backbone.View.extend({
       }
     });
 
-    var that = this;
-
     submit_cancel_dialog(
     $.mustache('form', {
       inputs: fields_data
