@@ -3,4 +3,4 @@ rss.xml
 data/*
 *.sublime-project
 *.sublime-workspace
-sass-cache
+.sass-cache
