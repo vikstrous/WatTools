@@ -190,6 +190,7 @@ var EntryEditor = Backbone.View.extend({
       } catch(e) {
         $.jGrowl(e.toString());
       }
+      return false;
     }, 'Save');
   }
 

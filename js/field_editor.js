@@ -193,6 +193,7 @@ var FieldEditor = Backbone.View.extend({
       that.model.get('current_revision').get('entries').trigger('change');
       that.model.get('current_revision').get('fields').trigger('change');
       $dialog.dialog("close");
+      return false;
     }, 'Save');
   }
 

@@ -173,6 +173,7 @@ session_start();
         {{/description}}
       </div>
     {{/inputs}}
+    <input type="submit" style="display:none"/>
     </form>
   </script>
 

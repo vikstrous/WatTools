@@ -205,12 +205,10 @@ var WatEdit = Backbone.View.extend({
           });
         }
 
-        view = {
-          inputs: revisions_data
-        };
-
         var that = this;
-        submit_cancel_dialog($.mustache('form', view), 'Change active revision', function() {
+        submit_cancel_dialog($.mustache('form', {
+          inputs: revisions_data
+        }), 'Change active revision', function() {
           var $dialog = $(this),
             revision = $dialog.find('select[name="revision"]>option:selected').val(),
             everyone = $dialog.find('input[name="everyone"]').attr('checked');
@@ -237,6 +235,7 @@ var WatEdit = Backbone.View.extend({
             that.load_data(true, revision);
             $dialog.dialog("close");
           }
+          return false;
         });
       }.bind(this);
 
@@ -285,6 +284,7 @@ var WatEdit = Backbone.View.extend({
           $.jGrowl('Failed to create new revision.');
         }
       });
+      return false;
     });
   }
 
