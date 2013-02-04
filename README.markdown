@@ -17,28 +17,24 @@ It's really easy. It will (probably) run on any server with PHP 5.
 Just please contribute back any enhancements that you make :)
 
 ###Set up
-- Create a file called .adminpassword containing the admin password. Trailing new lines are ignored.
-- Make sure there is a directory called data with write permissions
-- Make sure your web server has permission to create a file called rss.xml in the root folder.
-- If you want to build the documnetation, you need to install node.js, Pygents and docco, then run ./build_doc.sh
+- run ./set\_password.sh \<password\>
+- Make sure there is a directory called `data` with write permissions
+- Make sure your web server has permission to create a file called `rss.xml` in the root folder.
+- If you want to build the documnetation, you need to install node.js, Pygents and docco, then run ./build\_doc.sh
 
 ##Contribute
 
-See doc.html for the documented JavaScript code behind the editor.
-
-If you would like to contribute to this site, you can take on 
+If you would like to contribute to this project, you can take on 
 one of the following tasks:
 
 - Make me a logo :D
 - Make things look better
-- Make more of the site use mustache. Attach actions to 
-  add/delete buttons after rendering them, not during the render.
-- Make pressing the enter button submit the dialog boxes.
 - Make it possible for an admin to delete a revision.
-- The edit dialogs should only be rendered once on refresh 
-  and then when the edit buttons are pressed, they should simply populate the values of the inputs inside the dialog.
-- Extract form related things into a form api
 - Set up something to track clicks and maybe sort links by popularity
+- extract common parts of the field and entry editor out
+- better revisons picker + date + description visible when selected
+- transform the entry data to use a Data array instead of a hashmap of name to datum; sort the data differently than right now
+
 
 ##Disclaimer
 

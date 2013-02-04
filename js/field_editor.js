@@ -29,7 +29,7 @@ var FieldEditor = Backbone.View.extend({
   },
 
   complex_behaviors: function() {
-    if(this.model.get('edit_mode')){
+    if(this.model.get('edit_mode')) {
       var $ul = this.$('#fields');
       var current_revision = this.model.get('current_revision');
       var that = this;
@@ -39,8 +39,12 @@ var FieldEditor = Backbone.View.extend({
           var sort_order = $(this).sortable('toArray');
           var fields = current_revision.get('fields');
           var unsorted_entries = [];
-          for(var pos in sort_order){
-            fields.at(Number(sort_order[pos].substr(6))).set({'sort_id': pos}, {silent: true});
+          for(var pos in sort_order) {
+            fields.at(Number(sort_order[pos].substr(6))).set({
+              'sort_id': pos
+            }, {
+              silent: true
+            });
           }
           current_revision.get('fields').sort();
         }
@@ -53,15 +57,15 @@ var FieldEditor = Backbone.View.extend({
     if(confirm('Are you sure you want to delete this item?')) {
       var index = $(e.target).attr('parameter');
       this.model.get('current_revision').get('fields').remove(
-        this.model.get('current_revision').get('fields').at(index)
-      );
+      this.model.get('current_revision').get('fields').at(index));
     }
   },
 
   initialize: function(model) {
     this.model = model;
     var fields = this.model.get('current_revision').get('fields');
-    function notify_entries_and_render(){
+
+    function notify_entries_and_render() {
       this.model.get('current_revision').get('entries').trigger('change');
       this.render();
     }
@@ -83,14 +87,14 @@ var FieldEditor = Backbone.View.extend({
     fields.forEach(function(this_field, field, fields) {
 
       properties = [];
-      for(var property in this_field.toJSON()){
+      for(var property in this_field.toJSON()) {
         var value = this_field.get(property);
-          if(field_manager.hidden_properties.indexOf(property) == -1) {
-            properties.push({
-              property: property,
-              value: value
-            });
-          }
+        if(field_manager.hidden_properties.indexOf(property) == -1) {
+          properties.push({
+            property: property,
+            value: value
+          });
+        }
       }
 
       field_data = {
@@ -169,24 +173,36 @@ var FieldEditor = Backbone.View.extend({
         name = $input.attr('name'); //name of the property to edit
         //we have to not lose the relationship if we change the name!
         if(name === 'name' && val !== old_name) {
-          entries.forEach(function(entry){
-            entry.set(mkobj(val, entry.get(old_name)), {silent: true});
-            entry.unset(old_name, {silent: true});
+          entries.forEach(function(entry) {
+            entry.set(mkobj(val, entry.get(old_name)), {
+              silent: true
+            });
+            entry.unset(old_name, {
+              silent: true
+            });
           }.bind(this));
         }
 
         //create the property if it didn't exist but we are giving it a value
         if($input.attr('type') === 'checkbox') {
           if($input.attr('checked')) {
-            field.set(mkobj(name, true), {silent: true});
+            field.set(mkobj(name, true), {
+              silent: true
+            });
           } else {
-            field.unset(name, {silent: true});
+            field.unset(name, {
+              silent: true
+            });
           }
         } else {
           if(val !== '') {
-            field.set(mkobj(name, val), {silent: true});
+            field.set(mkobj(name, val), {
+              silent: true
+            });
           } else {
-            field.unset(name, {silent: true});
+            field.unset(name, {
+              silent: true
+            });
           }
         }
       }

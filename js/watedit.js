@@ -52,7 +52,7 @@ var WatEdit = Backbone.View.extend({
     debug.time('start up');
     this.model = new WatEditModel();
     this.model.on('change:edit_mode', this.render, this);
-    this.model.on('change:admin', function(){
+    this.model.on('change:admin', function() {
       if(this.model.get('edit_mode')) this.render();
     }, this);
     this.model.on('change:current_revision_id', this.render, this);
@@ -85,7 +85,7 @@ var WatEdit = Backbone.View.extend({
   // we should use old data
   load_data: function(fresh, revision) {
     debug.time('load');
-    var rev = fresh ? revision: this.model.get('current_revision_id');
+    var rev = fresh ? revision : this.model.get('current_revision_id');
     //get data and render it
     loader('preload_current_data', 'get_revision.php',
     //success handler
@@ -167,8 +167,8 @@ var WatEdit = Backbone.View.extend({
 
     var revisions_dialog = function(data) {
         var i, revision, view, revisions_data, current = this.model.get('current_revision_id'),
-          revisions = data.revisions, dropdown, dropdown_data,
-          date;
+          revisions = data.revisions,
+          dropdown, dropdown_data, date;
 
         revisions_data = [];
         dropdown_data = [];

@@ -116,8 +116,7 @@ var EntryEditor = Backbone.View.extend({
   },
 
   edit_entry: function(index) {
-    var this_field, property, field, $field, view, title, fields_data, field_data, 
-      entry = this.model.get('current_revision').get('entries').at(index),
+    var this_field, property, field, $field, view, title, fields_data, field_data, entry = this.model.get('current_revision').get('entries').at(index),
       fields = this.model.get('current_revision').get('fields'),
       $fields = $('<div>');
 
