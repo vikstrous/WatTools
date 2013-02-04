@@ -2,11 +2,11 @@
 
 // Constants
 
-function get_admin_password(){
+function check_admin_password($pass){
   if(file_exists('.adminpassword')){
-    return rtrim(file_get_contents('.adminpassword'), "\r\n");
+    return hash('sha512', $pass) === rtrim(file_get_contents('.adminpassword'), "\r\n");
   } else {
-    return '';
+    return false;
   }
 }
 // Useful stuff

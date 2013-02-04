@@ -81,7 +81,7 @@ switch ($_GET['action']){
 
   case 'login':
 
-    if($_POST['password'] != get_admin_password()) die('Wrong password.');
+    if(check_admin_password($_POST['password']) === false) die('Wrong password.');
 
     log_in();
     die('1');
