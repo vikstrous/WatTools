@@ -1,13 +1,3 @@
-var WatEditModel = Backbone.Model.extend({
-  defaults: {
-    edit_mode: false,
-    admin: false,
-    revisions_summary: null, // RevisionsSummary
-    current_revision: null, // Revision
-    current_revision_id: 0
-  }
-});
-
 var Field = Backbone.Model.extend({
   defaults: {
     name: '',
@@ -49,21 +39,31 @@ var Entries = Backbone.Collection.extend({
   }
 });
 
-var RevisionSummary = Backbone.Model.extend({
-  defaults: {
-    description: '',
-    time: 0,
-    file: ''
-  }
-});
+// var RevisionSummary = Backbone.Model.extend({
+//   defaults: {
+//     description: '',
+//     time: 0,
+//     file: ''
+//   }
+// });
 
-var RevisionsSummary = Backbone.Collection.extend({
-  model: RevisionSummary
-});
+// var RevisionsSummary = Backbone.Collection.extend({
+//   model: RevisionSummary
+// });
 
 var Revision = Backbone.Model.extend({
-  defaults: {
-    entries: null, //Entries
-    fields: null //Fields
-  }
+  defaults: function(){return {
+    entries: new Entries(),
+    fields: new Fields()
+  };}
+});
+
+var WatEditModel = Backbone.Model.extend({
+  defaults: function(){return {
+    edit_mode: false,
+    admin: false,
+    // revisions_summary: new RevisionsSummary(),
+    current_revision: new Revision(),
+    current_revision_id: 0
+  };}
 });

@@ -43,7 +43,6 @@ session_start();
     <script type="text/javascript">
       $(function() {
         watEdit.model.set('admin', true);
-        watEdit.render();
       });
     </script>
   <?php }?>

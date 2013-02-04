@@ -43,7 +43,6 @@ var FieldEditor = Backbone.View.extend({
             fields.at(Number(sort_order[pos].substr(6))).set({'sort_id': pos}, {silent: true});
           }
           current_revision.get('fields').sort();
-          watEdit.render();//TODO: use events
         }
       });
       $ul.disableSelection();
@@ -56,13 +55,19 @@ var FieldEditor = Backbone.View.extend({
       this.model.get('current_revision').get('fields').remove(
         this.model.get('current_revision').get('fields').at(index)
       );
-      this.render();
     }
   },
 
   initialize: function(model) {
     this.model = model;
-    this.render();
+    var fields = this.model.get('current_revision').get('fields');
+    function notify_entries_and_render(){
+      this.model.get('current_revision').get('entries').trigger('change');
+      this.render();
+    }
+    fields.on('add', notify_entries_and_render, this);
+    fields.on('change', notify_entries_and_render, this);
+    fields.on('remove', notify_entries_and_render, this);
   },
 
   render: function() {
@@ -70,13 +75,12 @@ var FieldEditor = Backbone.View.extend({
     //safety first, frosh
     if(!this.model.get('edit_mode')) return;
 
+    this.$el = $('#field-editor');
+
     var field, fields_data, this_field, property, view, properties, field_data, fields = this.model.get('current_revision').get('fields');
 
     fields_data = [];
     fields.forEach(function(this_field, field, fields) {
-      //the sorting function  needs to know the index, but is not given it
-      //so we keep track of it ourselves
-      fields[field].sort_id = field;
 
       properties = [];
       for(var property in this_field.toJSON()){
@@ -186,7 +190,7 @@ var FieldEditor = Backbone.View.extend({
           }
         }
       }
-      that.render();
+      // that.render();
       $dialog.dialog("close");
     }, 'Save');
   }

@@ -11,26 +11,26 @@ var EntryEditor = Backbone.View.extend({
       var index = $(e.target).attr('parameter');
       this.model.get('current_revision').get('entries').remove(
       this.model.get('current_revision').get('entries').at(index));
-      this.render();
     }
   },
 
   initialize: function(model) {
     this.model = model;
-    this.render();
+    var entries = this.model.get('current_revision').get('entries');
+    entries.on('add', this.render, this);
+    entries.on('change', this.render, this);
+    entries.on('remove', this.render, this);
   },
 
   render: function() {
     debug.time('render entries');
+    this.$el = $('#item-editor');
     var view, entry, field, fields_data, entries_data, this_entry, property, this_field, entries = this.model.get('current_revision').get('entries'),
       fields = this.model.get('current_revision').get('fields');
 
     //gather data from all entries
     entries_data = [];
     entries.forEach(function(this_entry, entry, entries) {
-      //the sorting function  needs to know the index, but is not given it
-      //so we keep track of it ourselves
-      this_entry.set('sort_id', entry);
 
       fields_data = [];
       //go through each field to organize the data
@@ -73,7 +73,6 @@ var EntryEditor = Backbone.View.extend({
       edit_mode: this.model.get('edit_mode'),
       partials: ['buttons']
     };
-
     this.$el.html($.mustache('entries', view));
     this.complex_behaviors();
     this.delegateEvents(this.events);
@@ -100,7 +99,7 @@ var EntryEditor = Backbone.View.extend({
             });
           }
           current_revision.get('entries').sort();
-          that.render();
+          // that.render();
         }
       });
       $ul.disableSelection();
@@ -117,7 +116,8 @@ var EntryEditor = Backbone.View.extend({
   },
 
   edit_entry: function(index) {
-    var this_field, property, field, $field, view, title, fields_data, field_data, entry = this.model.get('current_revision').get('entries').at(index),
+    var this_field, property, field, $field, view, title, fields_data, field_data, 
+      entry = this.model.get('current_revision').get('entries').at(index),
       fields = this.model.get('current_revision').get('fields'),
       $fields = $('<div>');
 
@@ -152,7 +152,7 @@ var EntryEditor = Backbone.View.extend({
     submit_cancel_dialog(
     $.mustache('form', {
       inputs: fields_data
-    }), entry.get(fields.first().get('name')).text || 'Untitled', function() {
+    }), entry.get(fields.first().get('name')) && entry.get(fields.first().get('name')).text || 'Untitled', function() {
       var $dialog = $(this),
         $inputs = $('input,textarea', $dialog),
         $input, purpose, field, val, n, length;
@@ -187,7 +187,7 @@ var EntryEditor = Backbone.View.extend({
             entry.unset(field);
           }
         }
-        that.render();
+        entry.trigger('change');
         $dialog.dialog("close");
       } catch(e) {
         $.jGrowl(e.toString());

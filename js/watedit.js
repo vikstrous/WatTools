@@ -30,7 +30,6 @@ var WatEdit = Backbone.View.extend({
 
   editor_btn: function() {
     this.model.set('edit_mode', !this.model.get('edit_mode'));
-    this.render();
   },
 
   new_item_btn: function() {
@@ -38,25 +37,30 @@ var WatEdit = Backbone.View.extend({
     new_item_data[this.model.get('current_revision').get('fields').at(0).get('name')] = { //first thing is title amirite?
       'text': 'New Item'
     };
-    this.model.get('current_revision').get('entries').add(new_item_data);
-    this.ee.render();
-    this.ee.edit_entry(this.model.get('current_revision').get('entries').length - 1);
+    this.model.get('current_revision').get('entries').unshift(new_item_data);
+    this.ee.edit_entry(0);
   },
 
   new_field_btn: function() {
-    this.model.get('current_revision').get('fields').add({
+    this.model.get('current_revision').get('fields').unshift({
       'name': 'New Field'
     });
-    this.fe.render();
-    this.fe.edit_field(this.model.get('current_revision').get('fields').length - 1);
+    this.fe.edit_field(0);
   },
 
   initialize: function() {
     debug.time('start up');
     this.model = new WatEditModel();
+    this.model.on('change:edit_mode', this.render, this);
+    this.model.on('change:admin', function(){
+      if(this.model.get('edit_mode')) this.render();
+    }, this);
+    this.model.on('change:current_revision_id', this.render, this);
+    // this.model.get('revisions_summary').on('change', this.render, this);
     this.load_data(false);
-    this.load_revisions(); //TODO: I don't think we need this so early
-    this.render();
+    this.fe = new FieldEditor(this.model);
+    this.ee = new EntryEditor(this.model);
+    this.load_revisions();
     debug.timeEnd('start up');
   },
 
@@ -66,13 +70,8 @@ var WatEdit = Backbone.View.extend({
       edit_mode: this.model.get('edit_mode'),
       loggedin: this.model.get('admin')
     }));
-    // this.$el.html('<div id="field-editor">fm</div><div id="item-editor">em</div>');
-    if(this.model.get('edit_mode')) {
-      this.fe = new FieldEditor(this.model);
-    }
-    this.ee = new EntryEditor(this.model);
-    // this.fe.render();
-    // this.ee.render();
+    this.fe.render();
+    this.ee.render();
     this.delegateEvents(this.events);
     // this.complex_behaviors();
     debug.timeEnd('render all');
@@ -84,18 +83,18 @@ var WatEdit = Backbone.View.extend({
   //
   // tell it if the data should be fetched from the server or
   // we should use old data
-  load_data: function(fresh) {
+  load_data: function(fresh, revision) {
     debug.time('load');
+    var rev = fresh ? revision: this.model.get('current_revision_id');
     //get data and render it
     loader('preload_current_data', 'get_revision.php',
     //success handler
 
     function(data) {
       //set data, draw everything
-      var entries = new Entries(data.entries);
-      var fields = new Fields(data.fields);
-      this.model.set('current_revision', new Revision({entries: entries, fields:fields}));
-      this.render();
+      this.model.get('current_revision').get('entries').reset(data.entries);
+      this.model.get('current_revision').get('fields').reset(data.fields);
+      this.model.set('current_revision_id', rev);
       debug.timeEnd('load');
     }.bind(this),
     //error handler
@@ -104,15 +103,17 @@ var WatEdit = Backbone.View.extend({
       debug.error(textStatus, errorThrown);
       debug.timeEnd('load');
     }.bind(this), fresh, {
-      'revision': this.model.get('current_revision_id')
+      'revision': rev
     });
   },
 
   // Loads revision data
+  // The user has his own revision different from the current revision on the server; this initializes that revision
+  // We don't necessarily need the revisions data here, but we use it anyway
   load_revisions: function() {
     loader('preload_revisions', 'get_revisions.php', function(data) {
       this.model.set('current_revision_id', data.current);
-      this.model.set('revisions_summary', new RevisionsSummary(data.revisions));
+      // this.model.get('revisions_summary').reset(data.revisions);
     }.bind(this), function(jqXHR, textStatus, errorThrown) {
       debug.error(errorThrown);
     });
@@ -139,7 +140,6 @@ var WatEdit = Backbone.View.extend({
           if(data === '1') {
             $.jGrowl('Successfully logged in.');
             that.model.set('admin', true);
-            that.render();
             $dialog.dialog('close');
           } else {
             $.jGrowl(data);
@@ -158,7 +158,6 @@ var WatEdit = Backbone.View.extend({
     $.get('/action.php?action=logout', function() {
       $.jGrowl('You have been logged out.');
       this.model.set('admin', false);
-      this.render();
     }.bind(this));
   },
 
@@ -216,9 +215,6 @@ var WatEdit = Backbone.View.extend({
             revision = $dialog.find('select[name="revision"]>option:selected').val(),
             everyone = $dialog.find('input[name="everyone"]').attr('checked');
 
-          //change active revision
-          that.model.set('current_revision_id', revision);
-
           if(everyone && that.model.get('admin')) {
             $.ajax({
               url: '/action.php?action=set_current_revision',
@@ -227,7 +223,7 @@ var WatEdit = Backbone.View.extend({
               success: function(data, textStatus, jqXHR) {
                 if(data === '1') {
                   $.jGrowl('Successfully changed the active revision.');
-                  that.load_data(true);
+                  that.load_data(true, revision);
                   $dialog.dialog("close");
                 } else {
                   $.jGrowl(data);
@@ -238,7 +234,7 @@ var WatEdit = Backbone.View.extend({
               }
             });
           } else {
-            that.load_data(true);
+            that.load_data(true, revision);
             $dialog.dialog("close");
           }
         });
