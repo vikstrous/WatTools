@@ -11,7 +11,6 @@ If you are not a Waterloo student, you are free to use this code for your own sc
 ###Setup
 - run ./set\_password.sh \<password\>
 - Make sure there is a directory called `data` with write permissions
-- Make sure your web server has permission to create a file called `rss.xml` in the root folder.
 - If you want to build the documentation, you need to install node.js, Pygents and docco, then run ./build\_doc.sh
 
 ##Contribute
