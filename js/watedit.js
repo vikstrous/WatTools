@@ -233,7 +233,7 @@ var WatEdit = Backbone.View.extend({
                 success: function(data, textStatus, jqXHR) {
                   if(data === '1') {
                     that.load_data(true, revision);
-                    $dialog.dialog("close");
+                    $dialog.modal('hide');
                   } else {
                     $dialog.find('.form-error').text(data);
                   }
@@ -244,7 +244,7 @@ var WatEdit = Backbone.View.extend({
               });
             } else {
               that.load_data(true, revision);
-              $dialog.dialog("close");
+              $dialog.modal('hide');
             }
             return false;
           };
