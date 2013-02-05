@@ -8,7 +8,7 @@
 
 // Debug tools - built only if necessary and possible
 var debug = {
-  on: true,
+  on: false,
   error: function(text){
     $.jGrowl(text);
     if(window.console !== undefined && console.error !== undefined) {
