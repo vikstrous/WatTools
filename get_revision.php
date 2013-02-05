@@ -7,7 +7,6 @@ if(!file_exists('data/revisions.js')){
 }
 $decoded = json_decode(file_get_contents('data/revisions.js'),true);
 if(!$decoded) $decoded = array();
-fclose($fh);
 
 //get revisions stuff and fix it up a bit
 $revisions = $decoded;
