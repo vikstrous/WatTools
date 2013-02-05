@@ -30,6 +30,8 @@ ul { margin-left: 0; }
 .social { margin-top: 10px; margin-left: 50px; float:left; }
 .social .social_item { float: left; margin-right: 10px; }
 
+.left { float: left; }
+.right { float: right; }
 .noscript { color: red; }
 .bold { font-weight: bold; }
 .clearfix { clear: both; }

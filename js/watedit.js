@@ -181,8 +181,8 @@ var WatEdit = Backbone.View.extend({
             date = new Date();
             date.setTime(revision.time * 1000);
             //add this revision to the list
-            var truncated = revision.description.substr(0, 25);
-            if(revision.description.length > 25) truncated += '...';
+            var truncated = revision.description.substr(0, 65);
+            if(revision.description.length > 65) truncated += '...';
             dropdown_data.push({
               label: truncated,
               time: date.toLocaleDateString() + ' ' + date.toLocaleTimeString(),

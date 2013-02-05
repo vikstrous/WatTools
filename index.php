@@ -102,13 +102,13 @@ session_start();
   <script type="text/template" id="app-tpl">
     <p><button class="editor-btn btn"><i class="icon-pencil"></i><span class="btn-text">Edit the list!</span></button>
     {{#edit_mode}}
-      {{^loggedin}}<button class="login-btn btn"><i class="icon-lock"></i><span class="btn-text">Log in</span></button>{{/loggedin}}
-      {{#loggedin}}<button class="logout-btn btn"><i class="icon-off"></i><span class="btn-text">Log out</span></button>{{/loggedin}}
+      {{^loggedin}}<button class="right login-btn btn"><i class="icon-lock"></i><span class="btn-text">Log in</span></button>{{/loggedin}}
+      {{#loggedin}}<button class="right logout-btn btn"><i class="icon-off"></i><span class="btn-text">Log out</span></button>{{/loggedin}}
     {{/edit_mode}}
     </p>
     {{#edit_mode}}
       <p>
-        <button class="revisions-btn btn"><i class="icon-list"></i><span class="btn-text">Revisions</span></button>
+        <button class="right revisions-btn btn"><i class="icon-list"></i><span class="btn-text">Revisions</span></button>
         <button class="submit-data-btn btn"><i class="icon-upload"></i><span class="btn-text">Submit New Revision</span></button>
       </p>
       <p class="new-item-btn-container">
@@ -128,7 +128,7 @@ session_start();
     {{#inputs}}
       <div>
         {{#dropdown}}
-          <select name="{{name}}">
+          <select class="input-block-level" name="{{name}}">
         {{/dropdown}}
         {{#dropdown_data}}
           <option {{#selected}}selected="selected"{{/selected}} value="{{value}}" data-time="{{time}}" data-details="{{description}}">{{label}}</option>
