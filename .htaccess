@@ -3,3 +3,4 @@
   deny from all
 </Files>
 IndexIgnore *
+ServerSignature Off
