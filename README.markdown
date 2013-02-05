@@ -20,7 +20,6 @@ If you would like to contribute to this project, you can take on one of the foll
 
 - Make me a logo :D
 - Make things look better
-- Move to bootstrap
 - Make it possible for an admin to delete a revision
 - Set up something to track clicks and maybe sort links by popularity
 - extract common parts of the field and entry editor out
