@@ -199,7 +199,18 @@ var WatEdit = Backbone.View.extend({
           name: 'revision',
           dropdown: true
         };
+        var info_time = {
+          'info': true,
+          'class': "description time"
+        };
+        var info_description = {
+          'info': true,
+          'class': "description details"
+        };
+
         revisions_data.push(dropdown);
+        revisions_data.push(info_description);
+        revisions_data.push(info_time);
 
         if(this.model.get('admin')) {
           revisions_data.push({
@@ -253,7 +264,7 @@ var WatEdit = Backbone.View.extend({
               $details.text($option.attr('data-details'));
             };
           $dialog.find('select[name="revision"]').change(onchange);
-          $dialog.find('form').submit(submit.bind($dialog)).append('<p class="description details"></p><p class="description time"></p>');
+          $dialog.find('form').submit(submit.bind($dialog));
           onchange.call($dialog.find('select')[0]);
         });
       }.bind(this);

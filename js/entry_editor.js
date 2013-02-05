@@ -128,7 +128,8 @@ var EntryEditor = Backbone.View.extend({
         label: this_field.get('name'),
         purpose: 'text',
         field: this_field.get('name'),
-        multiline: this_field.get('multiline')
+        multiline: this_field.get('multiline'),
+        input: !this_field.get('multiline')
       };
 
       //text input
@@ -141,6 +142,7 @@ var EntryEditor = Backbone.View.extend({
         field_data.label += ' url';
         field_data.val = property ? property.url : '';
         field_data.purpose = 'url';
+        field_data.input = true;
         //then add a field for the url
         fields_data.push(field_data);
       }

@@ -144,7 +144,8 @@ var FieldEditor = Backbone.View.extend({
           name: property,
           checked: field.get(property) === true,
           checkbox: prop_type === 'bool',
-          multiline: prop_type === 'multiline'
+          multiline: prop_type === 'multiline',
+          input: prop_type !== 'multiline'
         });
       }
     }

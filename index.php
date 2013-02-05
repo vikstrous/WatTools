@@ -145,6 +145,10 @@ session_start();
           </div>
         {{/radio}}
 
+        {{#info}}
+        <p class="{{class}}">{{value}}</p>
+        {{/info}}
+
         {{^dropdown}}
         {{^checkbox}}
         {{^radio}}
@@ -152,10 +156,10 @@ session_start();
             <label>{{label}}<br/>
           {{/label}}
 
-            {{^multiline}}
+            {{#input}}
                 <input {{#password}}type="password"{{/password}} {{^password}}type="text"{{/password}}
                   name="{{name}}" value="{{val}}" purpose="{{purpose}}" field="{{field}}" />
-            {{/multiline}}
+            {{/input}}
 
             {{#multiline}}
               <textarea name="{{name}}" purpose="{{purpose}}" field="{{field}}" >{{val}}</textarea>
