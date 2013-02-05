@@ -12,17 +12,17 @@ session_start();
   <meta property="fb:admins" content="100000486272805" />
   <title>Waterloo Tools - A collection of tools for University of Waterloo students</title>
   <link rel="alternate" type="application/rss+xml" href="/data/rss.xml" title="Waterloo Tools" />
-  <link rel="stylesheet" type="text/css" href="css/reset-min.css">
-  <link rel="stylesheet" type="text/css" href="css/smoothness/jquery-ui-1.10.0.custom.min.css" />
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.min.css" />
   <link rel="stylesheet" type="text/css" href="css/jquery.jgrowl.css" />
   <link rel="stylesheet" type="text/css" href="css/style.css" />
   <link href='http://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'>
   <script type="text/javascript" src="js/lib/jquery.min.js"></script>
-  <script type="text/javascript" src="js/lib/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="js/lib/jquery-ui-1.10.0.custom.min.js"></script>
+  <script type="text/javascript" src="js/lib/bootstrap.min.js"></script>
   <script type="text/javascript" src="js/lib/underscore-min.js"></script>
   <script type="text/javascript" src="js/lib/backbone-min.js"></script>
   <script type="text/javascript" src="js/lib/mustache.js"></script>
-  <script type="text/javascript" src="js/lib/jquery.jgrowl.js"></script>
   <script type="text/javascript" src="js/mustache_helper.js"></script>
   <script type="text/javascript" src="js/header.js"></script>
   <script type="text/javascript" src="js/model.js"></script>
@@ -55,7 +55,7 @@ session_start();
 
 <body>
   <noscript>
-    <div class="noscript">Your browser doesn't support JavaScript or you have disabled JavaScript. Sorry, but this app will not work without JavaScript.</div>
+    <p class="text-error">Your browser doesn't support JavaScript or you have disabled JavaScript. Sorry, but this app will not work without JavaScript.</p>
   </noscript>
 
   <div class="header">
@@ -77,41 +77,54 @@ session_start();
   </div>
   <div class="clearfix"></div>
 
+  <p id="global-thanks" class="text-success"></p>
   <div class="app"></div>
 
   <div>Greetings traveler, <br/>Thank you for your interest in this site. This site is built by <a href="http://viktorstanchev.com">Viktor Stanchev</a>. All the source code is available on <a href="http://github.com/vikstrous/WatTools">github.com</a></div>
-  <div><noscript><div class="noscript">Please enable javascript to view the email address. This is done to avoid spam.</div></noscript>
+  <div><noscript><p class="text-error">Please enable javascript to view the email address. This is done to avoid spam.</p></noscript>
   Please send any questions or requests to <script>document.write('wattools'+String.fromCharCode(64)+'gmail.com');</script>.
   </div>
 
-  <div id="dialog"></div>
+  <div id="dialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icon-remove"></i></button>
+      <h3 class="dialog-title">Title</h3>
+    </div>
+    <div class="modal-body">
+    </div>
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+      <button class="btn btn-primary">Submit</button>
+    </div>
+  </div>
 
   <!-- we are preloading some templates and we should be able to get the rest through ajax (currently we preload all) -->
   <script type="text/template" id="app-tpl">
-    <div><a class="editor-btn faux-button">Edit the list!</a>
+    <p><button class="editor-btn btn"><i class="icon-pencil"></i><span class="btn-text">Edit the list!</span></button>
     {{#edit_mode}}
-      {{^loggedin}}<a class="login-btn faux-button">Log in</a>{{/loggedin}}
-      {{#loggedin}}<a class="logout-btn faux-button">Log out</a>{{/loggedin}}
+      {{^loggedin}}<button class="login-btn btn"><i class="icon-lock"></i><span class="btn-text">Log in</span></button>{{/loggedin}}
+      {{#loggedin}}<button class="logout-btn btn"><i class="icon-off"></i><span class="btn-text">Log out</span></button>{{/loggedin}}
     {{/edit_mode}}
-    </div>
+    </p>
     {{#edit_mode}}
-      <div>
-        <a class="revisions-btn faux-button">Revisions</a>
-        <a class="submit-data-btn faux-button">Submit New Revision</a>
-      </div>
-      <div class="new-item-btn-container">
-        <a class="new-item-btn faux-button">New Item</a>
-      </div>
+      <p>
+        <button class="revisions-btn btn"><i class="icon-list"></i><span class="btn-text">Revisions</span></button>
+        <button class="submit-data-btn btn"><i class="icon-upload"></i><span class="btn-text">Submit New Revision</span></button>
+      </p>
+      <p class="new-item-btn-container">
+        <button class="new-item-btn btn"><i class="icon-file"></i><span class="btn-text">New Link</span></button>
+      </p>
     {{/edit_mode}}
     <div id="item-editor"></div>
     {{#edit_mode}}
-      <a class="new-field-btn faux-button">New Field</a>
+      <p><button class="new-field-btn btn"><i class="icon-file"></i><span class="btn-text">New Field</span></button></p>
       <div id="field-editor"></div>
     {{/edit_mode}}
   </script>
 
   <script type="text/template" id="form-tpl">
     <form>
+    <p class="form-error text-error"></p>
     {{#inputs}}
       <div>
         {{#dropdown}}
@@ -148,10 +161,6 @@ session_start();
           </div>
         {{/radio}}
 
-        {{#info}}
-        <p class="{{class}}">{{value}}</p>
-        {{/info}}
-
         {{^dropdown}}
         {{^checkbox}}
         {{^radio}}
@@ -160,15 +169,15 @@ session_start();
           {{/label}}
 
             {{#input}}
-                <input type="text" name="{{name}}" value="{{val}}" purpose="{{purpose}}" field="{{field}}" />
+                <input class="input-block-level" type="text" name="{{name}}" value="{{val}}" purpose="{{purpose}}" field="{{field}}" />
             {{/input}}
 
             {{#password}}
-                <input type="password" name="{{name}}" value="{{val}}" purpose="{{purpose}}" field="{{field}}" />
+                <input class="input-block-level" type="password" name="{{name}}" value="{{val}}" purpose="{{purpose}}" field="{{field}}" />
             {{/password}}
 
             {{#multiline}}
-              <textarea name="{{name}}" purpose="{{purpose}}" field="{{field}}" >{{val}}</textarea>
+              <textarea class="input-block-level" name="{{name}}" purpose="{{purpose}}" field="{{field}}" >{{val}}</textarea>
             {{/multiline}}
 
           {{#label}}
@@ -179,7 +188,7 @@ session_start();
         {{/dropdown}}
 
         {{#description}}
-          <div class="description">{{description}}</div>
+          <div class="help-block {{class}}">{{description}}</div>
         {{/description}}
       </div>
     {{/inputs}}
@@ -188,7 +197,7 @@ session_start();
   </script>
 
   <script type="text/template" id="fields-tpl">
-    <div class="big">Fields</div>
+    <p class="big">Fields</p>
     <ul id="fields" class="grid">
     {{#fields}}
       <li class="field" id="{{id}}">
@@ -197,7 +206,7 @@ session_start();
         </div>
         {{#properties}}
           <div>
-          {{property}} : {{value}}
+          {{property}}: {{value}}
           </div>
         {{/properties}}
         {{>buttons}}
@@ -213,9 +222,7 @@ session_start();
         {{#fields}}
           <div class="{{class}} field-value">
           {{#label}}
-            <div class="label">
               {{label}}
-            </div>
           {{/label}}
           {{#link}}
             <a href="{{link}}">
@@ -235,11 +242,13 @@ session_start();
   </script>
 
   <script type="text/template" id="buttons-tpl">
+    <p>
     {{#buttons}}
-      <a class="faux-button" type="{{type}}" parameter="{{parameter}}">
-        {{label}}
-      </a>
+      <button class="btn {{class}}" type="{{type}}" parameter="{{parameter}}">
+        <i class="icon-{{icon}}"></i>{{label}}
+      </button>
     {{/buttons}}
+    </p>
   </script>
 
   <script type="text/javascript">

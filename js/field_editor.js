@@ -17,8 +17,8 @@ var FieldEditor = Backbone.View.extend({
   el: '#field-editor',
 
   events: {
-    'click .faux-button[type="edit_field"]': 'edit_field_btn',
-    'click .faux-button[type="delete_field"]': 'delete_field_btn'
+    'click .btn[type="edit_field"]': 'edit_field_btn',
+    'click .btn[type="delete_field"]': 'delete_field_btn'
   },
 
   complex_behaviors: function() {
@@ -96,12 +96,12 @@ var FieldEditor = Backbone.View.extend({
         properties: properties,
         buttons: {
           buttons: [{
-            label: 'Edit',
+            icon: 'pencil',
             type: 'edit_field',
             parameter: field
           },
           view = {
-            label: 'Delete',
+            icon: 'trash',
             type: 'delete_field',
             parameter: field
           }]
@@ -202,7 +202,7 @@ var FieldEditor = Backbone.View.extend({
         }
         that.model.get('current_revision').get('entries').trigger('change');
         that.model.get('current_revision').get('fields').trigger('change');
-        $dialog.dialog("close");
+        $dialog.modal('hide');
         return false;
       };
 

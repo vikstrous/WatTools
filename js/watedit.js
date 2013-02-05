@@ -132,15 +132,14 @@ var WatEdit = Backbone.View.extend({
           },
           success: function(data, textStatus, jqXHR) {
             if(data === '1') {
-              $.jGrowl('Successfully logged in.');
               that.model.set('admin', true);
-              $dialog.dialog('close');
+              $dialog.modal('hide');
             } else {
-              $.jGrowl(data);
+              $dialog.find('.form-error').text(data);
             }
           },
           error: function() {
-            $.jGrowl('Failed to log in.');
+            $dialog.find('.form-error').text('Failed to log in.');
           }
         });
         return false;
@@ -160,7 +159,6 @@ var WatEdit = Backbone.View.extend({
   // Logs out the admin
   logout: function() {
     $.get('/action.php?action=logout', function() {
-      $.jGrowl('You have been logged out.');
       this.model.set('admin', false);
     }.bind(this));
   },
@@ -200,12 +198,12 @@ var WatEdit = Backbone.View.extend({
           dropdown: true
         };
         var info_time = {
-          'info': true,
-          'class': "description time"
+          'description': true,
+          'class': "time"
         };
         var info_description = {
-          'info': true,
-          'class': "description details"
+          'description': true,
+          'class': "details"
         };
 
         revisions_data.push(dropdown);
@@ -234,15 +232,14 @@ var WatEdit = Backbone.View.extend({
                 data: '' + revision,
                 success: function(data, textStatus, jqXHR) {
                   if(data === '1') {
-                    $.jGrowl('Successfully changed the active revision.');
                     that.load_data(true, revision);
                     $dialog.dialog("close");
                   } else {
-                    $.jGrowl(data);
+                    $dialog.find('.form-error').text(data);
                   }
                 },
                 error: function() {
-                  $.jGrowl('Failed to change active revision.');
+                  $dialog.find('.form-error').text('Failed to change active revision.');
                 }
               });
             } else {
@@ -304,14 +301,14 @@ var WatEdit = Backbone.View.extend({
           success: function(data, textStatus, jqXHR) {
             if(!isNaN(data)) {
               that.model.set('current_revision_id', data);
-              $.jGrowl('Successfully created new revision! It will be reviewed shortly.');
-              $dialog.dialog("close");
+              $('#global-thanks').text('Successfully created new revision! It will be reviewed shortly.');
+              $dialog.modal('hide');
             } else {
-              $.jGrowl(data);
+              $dialog.find('.form-error').text(data);
             }
           },
           error: function() {
-            $.jGrowl('Failed to create new revision.');
+            $dialog.find('.form-error').text('Failed to create new revision.');
           }
         });
         return false;

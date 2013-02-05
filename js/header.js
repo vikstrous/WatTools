@@ -8,7 +8,7 @@
 
 // Debug tools - built only if necessary and possible
 var debug = {
-  on: true,
+  on: false,
   error: function(text){
     $.jGrowl(text);
     if(window.console !== undefined && console.error !== undefined) {
@@ -86,22 +86,16 @@ function submit_cancel_dialog(html, title, submit, submit_label, attach_behavior
   //parameter parsing
   submit_label = submit_label || 'Submit';
 
-  //vars
-  var buttons, $dialog = $('#dialog');
+  var $dialog = $('#dialog');
 
-  //setup
-  buttons = {};
-  buttons[submit_label] = submit;
-  buttons.Cancel = function() {
-    $dialog.dialog("close");
-  };
+  //build the dialog
+  $dialog.find(".btn-primary").text(submit_label);
+  $dialog.find(".btn-primary").off().click(submit.bind($dialog));
+  $dialog.find('.dialog-title').text(title);
+  $dialog.find('.modal-body').html(html);
 
   //open the dialog
-  $dialog.html(html).dialog({
-    title: title,
-    buttons: buttons,
-    modal: true
-  });
+  $dialog.modal();
 
   //attach behavior
   if(typeof attach_behavior === 'function'){

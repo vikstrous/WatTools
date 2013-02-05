@@ -2,8 +2,8 @@ var EntryEditor = Backbone.View.extend({
   el: '#item-editor',
 
   events: {
-    'click .faux-button[type=edit_entry]': 'edit_entry_btn',
-    'click .faux-button[type=delete_entry]': 'delete_entry_btn'
+    'click .btn[type=edit_entry]': 'edit_entry_btn',
+    'click .btn[type=delete_entry]': 'delete_entry_btn'
   },
 
   delete_entry_btn: function(e) {
@@ -54,11 +54,11 @@ var EntryEditor = Backbone.View.extend({
         fields: fields_data,
         buttons: { //partial
           buttons: [{
-            label: 'Edit',
+            icon: 'pencil',
             type: 'edit_entry',
             parameter: entry
           }, {
-            label: 'Delete',
+            icon: 'trash',
             type: 'delete_entry',
             parameter: entry
           }] //array
@@ -184,9 +184,9 @@ var EntryEditor = Backbone.View.extend({
             }
           }
           entry.trigger('change');
-          $dialog.dialog("close");
+          $dialog.modal('hide');
         } catch(e) {
-          $.jGrowl(e.toString());
+          $dialog.find('.form-error').text(e.toString());
         }
         return false;
       };

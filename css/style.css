@@ -4,24 +4,14 @@ a { color: #024769; 	cursor: pointer; 	text-decoration: none; }
 a:hover { color: #95CBE9; }
 label { cursor: pointer; }
 
-.faux-button {
-  background-color: #E9E9E9;
-  border: 1px solid #CCCCCC;
-  line-height: 2.5em;
-  margin: 0.25em;
-  padding: 0.25em;
-  font-family: monospace;
-  font-weight: bold;
-  font-size: 0.9em;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  border-radius: 5px;
-  color: #000000;
-}
 .faux-button:hover {
   background-color: #C9C9C9;
   color: #000000;
 }
+
+ul { margin-left: 0; }
+
+.btn-text { margin-left: 5px; }
 
 .header { float:left; }
 .title a { font-family: 'Ubuntu Mono', sans-serif; color: #2C5700; 	font-size: 3em; }
@@ -31,8 +21,7 @@ label { cursor: pointer; }
 .new-item-btn-container { margin-top: 10px; }
 
 .item { margin-bottom: 10px; 	margin-right: 20px; }
-.item .name { font-size: 2em; }
-.item .label { display: inline; 	margin-right: 5px; }
+.item .name { font-size: 2em; margin-bottom: 4px; }
 
 .field { font-family: monospace; 	font-weight: bold; }
 .field .name { font-size: 2em; }
