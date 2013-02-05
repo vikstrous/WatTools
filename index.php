@@ -53,9 +53,12 @@ session_start();
 </head>
 
 <body>
+  <noscript>
+    <div class="noscript">Your browser doesn't support JavaScript or you have disabled JavaScript. Sorry, but this app will not work without JavaScript.</div>
+  </noscript>
+
   <div id="header">
     <div class='title'><a href="/">Waterloo Tools</a></div>
-    <noscript><div class="noscript">Please enable javascript to use WatTools.</div></noscript>
     <div class='description'>A collection of tools for students, by students.</div>
     <div class='description'>This is a wiki! Submit your own revisions of the list! Click the Editor button!</div>
     <div class='description'>Fight the power and build your own tools!</div>
@@ -83,9 +86,7 @@ session_start();
     </div>
   </div>
 
-  <noscript>
-    Your browser doesn't support JavaScript or you have disabled JavaScript. Sorry, but this app will not work without JavaScript.
-  </noscript>
+  <div id="dialog"></div>
 
   <!-- we are preloading some templates and we should be able to get the rest through ajax (currently we preload all) -->
   <script type="text/template" id="app-tpl">
@@ -265,6 +266,5 @@ session_start();
   </script>
   <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
 
-  <div id="dialog"></div>
   </body>
   </html>
