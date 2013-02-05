@@ -28,9 +28,6 @@ session_start();
   <script type="text/javascript" src="js/field_editor.js"></script>
   <script type="text/javascript" src="js/entry_editor.js"></script>
   <script type="text/javascript" src="js/watedit.js"></script>
-  <!--<script type="text/javascript" src="js/watedit_old.js"></script>
-  <script type="text/javascript" src="js/entry_manager_old.js"></script>
-  <script type="text/javascript" src="js/field_manager_old.js"></script>-->
 
   <script type="text/javascript">
     var watEdit;
