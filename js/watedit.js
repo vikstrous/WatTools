@@ -1,14 +1,14 @@
 var WatEdit = Backbone.View.extend({
-  el: '#app',
+  el: '.app',
 
   events: {
-    'click #editor': 'editor_btn',
-    'click #new-item': 'new_item_btn',
-    'click #new-field': 'new_field_btn',
-    'click #revisions': 'revisions_btn',
-    'click #login': 'login_btn',
-    'click #logout': 'logout_btn',
-    'click #submit-data': 'submit_data_btn'
+    'click .editor-btn': 'editor_btn',
+    'click .new-item-btn': 'new_item_btn',
+    'click .new-field-btn': 'new_field_btn',
+    'click .revisions-btn': 'revisions_btn',
+    'click .login-btn': 'login_btn',
+    'click .logout-btn': 'logout_btn',
+    'click .submit-data-btn': 'submit_data_btn'
   },
 
   revisions_btn: function() {
