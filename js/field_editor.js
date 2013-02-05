@@ -48,6 +48,9 @@ var FieldEditor = Backbone.View.extend({
 
   delete_field_btn: function(e) {
     if(confirm('Are you sure you want to delete this item?')) {
+      if(!$(e.target).hasClass('btn')){
+        e.target= $(e.target).parent()[0];
+      }
       var index = $(e.target).attr('parameter');
       this.model.get('current_revision').get('fields').remove(
       this.model.get('current_revision').get('fields').at(index));
@@ -126,6 +129,9 @@ var FieldEditor = Backbone.View.extend({
   //
   // Modifies watedit.LinkData and triggers redraw of everything
   edit_field_btn: function(e) {
+      if(!$(e.target).hasClass('btn')){
+        e.target= $(e.target).parent()[0];
+      }
     this.edit_field($(e.target).attr('parameter'));
   },
 

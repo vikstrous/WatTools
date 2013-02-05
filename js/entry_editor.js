@@ -8,6 +8,9 @@ var EntryEditor = Backbone.View.extend({
 
   delete_entry_btn: function(e) {
     if(confirm('Are you sure you want to delete this item?')) {
+      if(!$(e.target).hasClass('btn')){
+        e.target= $(e.target).parent()[0];
+      }
       var index = $(e.target).attr('parameter');
       this.model.get('current_revision').get('entries').remove(
       this.model.get('current_revision').get('entries').at(index));
@@ -111,8 +114,10 @@ var EntryEditor = Backbone.View.extend({
   // 
   // Modifies watedit.LinkData and triggers redraw of entries
   edit_entry_btn: function(e) {
-    var index = $(e.target).attr('parameter');
-    this.edit_entry(index);
+    if(!$(e.target).hasClass('btn')){
+      e.target= $(e.target).parent()[0];
+    }
+    this.edit_entry($(e.target).attr('parameter'));
   },
 
   edit_entry: function(index) {
