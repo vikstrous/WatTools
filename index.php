@@ -14,7 +14,6 @@ session_start();
   <link rel="alternate" type="application/rss+xml" href="/data/rss.xml" title="Waterloo Tools" />
   <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
   <link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.min.css" />
-  <link rel="stylesheet" type="text/css" href="css/jquery.jgrowl.css" />
   <link rel="stylesheet" type="text/css" href="css/style.css" />
   <link href='http://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'>
   <script type="text/javascript" src="js/lib/jquery.min.js"></script>

@@ -23,7 +23,7 @@ switch ($_GET['action']){
     $revisions = get_revisions_data();
     // rebuid the rss
     build_rss($revisions);
-    die('Succes.');
+    die('Success.');
 
     break;
 
