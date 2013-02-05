@@ -59,8 +59,8 @@ session_start();
   <div id="header">
     <div class='title'><a href="/">Waterloo Tools</a></div>
     <noscript><div class="noscript">Please enable javascript to use WatTools.</div></noscript>
-    <div class='description'>A collection of tools for students, by students.</div>
-    <div class='description'>This is a wiki! Submit your own revisions of the list! Click the Editor button!</div>
+    <div class='description' style='margin-top:-50px;'>A collection of tools for students, by students.</div>
+    <div class='description' style='margin-bottom:20px;'>This is a wiki! Submit your own revisions of the list! Click the Editor button!</div>
     <div class='description'>Fight the power and build your own tools!</div>
     <div id="social">
       <div class="social_item">
@@ -198,7 +198,7 @@ session_start();
 
   <script type="text/template" id="entries-tpl">
     {{#edit_mode}}
-    <div class="big">Entires</div>
+    <div class="big">Entries</div>
     {{/edit_mode}}
     <ul id="items" class="grid">
     {{#entries}}

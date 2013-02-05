@@ -29,9 +29,16 @@ label {
 }
 
 #header {
-	.title a {
-		color: $titlecolor;
-		font-size: 3em;
+	.title {
+		text-align:right;
+		margin:-60px -50px 0 -50px;
+		padding:50px 50px 60px 50px;
+		background:url("http://www.pleb.x10.mx/media/noise.png");
+		font-style:italic;
+		a {
+			color: $titlecolor;
+			font-size: 3em;
+		}
 	}
 	.description {
 		color: $subheadercolor;
@@ -68,11 +75,18 @@ label {
 }
 
 #social {
+	position:absolute;
+	top:108px;
+	right:100px;
 	margin-top: 10px;
 	.social_item {
 		float: left;
 		margin-right: 10px;
 	}
+}
+
+#content {
+	margin-top:50px;
 }
 
 .noscript {
@@ -100,7 +114,7 @@ label {
 }
 
 .description {
-	font-size: 0.9em;
+	font-size: 1em;
 	color: $descriptioncolor;
 }
 

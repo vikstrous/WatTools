@@ -15,9 +15,15 @@ a {
 label {
   cursor: pointer; }
 
-#header .title a {
-  color: #2c5700;
-  font-size: 3em; }
+#header .title {
+  text-align: right;
+  margin: -60px -50px 0 -50px;
+  padding: 50px 50px 60px 50px;
+  background: url("http://www.pleb.x10.mx/media/noise.png");
+  font-style: italic; }
+  #header .title a {
+    color: #2c5700;
+    font-size: 3em; }
 #header .description {
   color: #5f5f5f; }
 
@@ -42,10 +48,16 @@ label {
   margin-top: 20px; }
 
 #social {
+  position: absolute;
+  top: 108px;
+  right: 100px;
   margin-top: 10px; }
   #social .social_item {
     float: left;
     margin-right: 10px; }
+
+#content {
+  margin-top: 50px; }
 
 .noscript {
   color: red; }
@@ -66,7 +78,7 @@ label {
   font-size: 2.5em; }
 
 .description {
-  font-size: 0.9em;
+  font-size: 1em;
   color: #666666; }
 
 .placeholder {
