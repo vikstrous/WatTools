@@ -53,6 +53,25 @@ session_start();
 </head>
 
 <body>
+<<<<<<< HEAD
+  <div id="header">
+    <div class='title'><a href="/">Waterloo Tools</a></div>
+    <noscript><div class="noscript">Please enable javascript to use WatTools.</div></noscript>
+    <div class='description' style='margin-top:-50px;'>A collection of tools for students, by students.</div>
+    <div class='description' style='margin-bottom:20px;'>This is a wiki! Submit your own revisions of the list! Click the Editor button!</div>
+    <div class='description'>Fight the power and build your own tools!</div>
+    <div id="social">
+      <div class="social_item">
+        <iframe src="http://www.facebook.com/plugins/like.php?app_id=155945941150696&amp;href=wattools.com&amp;send=false&amp;layout=box_count&amp;width=55&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=90" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:55px; height:90px;" allowTransparency="true"></iframe>
+      </div>
+      <div class="social_item">
+        <div class="g-plusone" data-size="tall" data-href="http://wattools.com"></div>
+      </div>
+      <div class="social_item">
+        <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://wattools.com" data-text="I just found some useful tools for #uwaterloo students" data-count="vertical" data-via="wattools">Tweet</a>
+      </div>
+      <div class="clearfix"></div>
+=======
   <noscript>
     <p class="text-error">Your browser doesn't support JavaScript or you have disabled JavaScript. Sorry, but this app will not work without JavaScript.</p>
   </noscript>
@@ -72,6 +91,7 @@ session_start();
     </div>
     <div class="social_item">
       <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://wattools.com" data-text="I just found some useful tools for #uwaterloo students" data-count="vertical" data-via="wattools">Tweet</a>
+>>>>>>> upstream/master
     </div>
   </div>
   <div class="clearfix"></div>
@@ -215,6 +235,12 @@ session_start();
   </script>
 
   <script type="text/template" id="entries-tpl">
+<<<<<<< HEAD
+    {{#edit_mode}}
+    <div class="big">Entries</div>
+    {{/edit_mode}}
+=======
+>>>>>>> upstream/master
     <ul id="items" class="grid">
     {{#entries}}
       <li class="item" id="{{id}}">
