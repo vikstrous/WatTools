@@ -5,9 +5,7 @@ if(!file_exists('data/revisions.js')){
 		file_put_contents('data/revisions.js', '{}');
 	}
 }
-$fh = fopen('data/revisions.js','c+') or die('Failed to read revision data.');
-$jsonInput = fgets($fh);
-$decoded = json_decode($jsonInput,true);
+$decoded = json_decode(file_get_contents('data/revisions.js'),true);
 if(!$decoded) $decoded = array();
 fclose($fh);
 
@@ -24,6 +22,7 @@ if(array_key_exists('revision', $_GET)){
 } else {
 	$revision = $revisions['current'];
 }
+
 if(array_key_exists($revision, $revisions['revisions'])){
 	$data = file_get_contents($revisions['revisions'][$revision]['file']);
 	if($data) echo $data;
