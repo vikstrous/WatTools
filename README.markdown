@@ -32,7 +32,6 @@ one of the following tasks:
 - Make it possible for an admin to delete a revision.
 - Set up something to track clicks and maybe sort links by popularity
 - extract common parts of the field and entry editor out
-- better revisons picker + date + description visible when selected
 - transform the entry data to use a Data array instead of a hashmap of name to datum; sort the data differently than right now
 
 

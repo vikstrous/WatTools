@@ -115,7 +115,7 @@ session_start();
           <select name="{{name}}">
         {{/dropdown}}
         {{#dropdown_data}}
-          <option {{#selected}}selected="selected"{{/selected}} value="{{value}}">{{label}}</option>
+          <option {{#selected}}selected="selected"{{/selected}} value="{{value}}" data-time="{{time}}" data-details="{{description}}">{{label}}</option>
         {{/dropdown_data}}
         {{#dropdown}}
           </select>

@@ -146,51 +146,55 @@ var EntryEditor = Backbone.View.extend({
       }
     });
 
+    var submit = function() {
+        var $dialog = $(this),
+          $inputs = $('input,textarea', $dialog),
+          $input, purpose, field, val, n, length;
+
+        try {
+          //get all the inputs and text areas
+          for(n = 0, length = $inputs.length; n < length; n += 1) {
+            $input = $($inputs[n]); //get the input element
+            val = $input.val(); //new value to set
+            field = $input.attr('field'); //field to edit
+            purpose = $input.attr('purpose'); //text or url
+            //create the field if it didn't exist but we are giving it a value
+            if(entry.get(field) === undefined && val !== '') {
+              entry.set(field, {});
+            }
+
+            //set the value
+            if(entry.get(field) !== undefined) {
+              if(val !== '') {
+                if(purpose == 'url' && val.substr(0, 4) != 'http') {
+                  throw 'Invalid URL';
+                }
+                var tmp = entry.get(field);
+                tmp[purpose] = val;
+                entry.set(field, tmp);
+              } else {
+                delete entry.get(field)[purpose];
+              }
+            }
+            //remove empty object
+            if($.isEmptyObject(entry.get(field))) {
+              entry.unset(field);
+            }
+          }
+          entry.trigger('change');
+          $dialog.dialog("close");
+        } catch(e) {
+          $.jGrowl(e.toString());
+        }
+        return false;
+      };
+
     submit_cancel_dialog(
     $.mustache('form', {
       inputs: fields_data
-    }), entry.get(fields.first().get('name')) && entry.get(fields.first().get('name')).text || 'Untitled', function() {
-      var $dialog = $(this),
-        $inputs = $('input,textarea', $dialog),
-        $input, purpose, field, val, n, length;
-
-      try {
-        //get all the inputs and text areas
-        for(n = 0, length = $inputs.length; n < length; n += 1) {
-          $input = $($inputs[n]); //get the input element
-          val = $input.val(); //new value to set
-          field = $input.attr('field'); //field to edit
-          purpose = $input.attr('purpose'); //text or url
-          //create the field if it didn't exist but we are giving it a value
-          if(entry.get(field) === undefined && val !== '') {
-            entry.set(field, {});
-          }
-
-          //set the value
-          if(entry.get(field) !== undefined) {
-            if(val !== '') {
-              if(purpose == 'url' && val.substr(0, 4) != 'http') {
-                throw 'Invalid URL';
-              }
-              var tmp = entry.get(field);
-              tmp[purpose] = val;
-              entry.set(field, tmp);
-            } else {
-              delete entry.get(field)[purpose];
-            }
-          }
-          //remove empty object
-          if($.isEmptyObject(entry.get(field))) {
-            entry.unset(field);
-          }
-        }
-        entry.trigger('change');
-        $dialog.dialog("close");
-      } catch(e) {
-        $.jGrowl(e.toString());
-      }
-      return false;
-    }, 'Save');
+    }), entry.get(fields.first().get('name')) && entry.get(fields.first().get('name')).text || 'Untitled', submit, 'Save', function($dialog) {
+      $dialog.find('form').submit(submit.bind($dialog));
+    });
   }
 
 

@@ -79,9 +79,10 @@ function loader(preload_var, url, success, error, fresh, params) {
 // - *string* title
 // - *function* submit
 // - *string* submit_label optional
+// - *function* attach_behavior optional
 
 
-function submit_cancel_dialog(html, title, submit, submit_label) {
+function submit_cancel_dialog(html, title, submit, submit_label, attach_behavior) {
   //parameter parsing
   submit_label = submit_label || 'Submit';
 
@@ -102,7 +103,10 @@ function submit_cancel_dialog(html, title, submit, submit_label) {
     modal: true
   });
 
-  $dialog.find('form').submit(submit.bind($dialog));
+  //attach behavior
+  if(typeof attach_behavior === 'function'){
+    attach_behavior($dialog);
+  }
 }
 
 // a convenient function when using backbone

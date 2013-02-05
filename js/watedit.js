@@ -122,34 +122,38 @@ var WatEdit = Backbone.View.extend({
   // Opens the dialog to log in the admin
   login: function() {
     var that = this;
+    var submit = function() {
+        var $dialog = $(this);
+        $.ajax({
+          url: '/action.php?action=login',
+          type: 'POST',
+          data: {
+            password: $dialog.find('input[name="password"]').val()
+          },
+          success: function(data, textStatus, jqXHR) {
+            if(data === '1') {
+              $.jGrowl('Successfully logged in.');
+              that.model.set('admin', true);
+              $dialog.dialog('close');
+            } else {
+              $.jGrowl(data);
+            }
+          },
+          error: function() {
+            $.jGrowl('Failed to log in.');
+          }
+        });
+        return false;
+      };
+
     submit_cancel_dialog($.mustache('form', {
       inputs: [{
         label: 'Password',
         name: 'password',
         password: true
       }]
-    }), 'Log in', function() {
-      var $dialog = $(this);
-      $.ajax({
-        url: '/action.php?action=login',
-        type: 'POST',
-        data: {
-          password: $dialog.find('input[name="password"]').val()
-        },
-        success: function(data, textStatus, jqXHR) {
-          if(data === '1') {
-            $.jGrowl('Successfully logged in.');
-            that.model.set('admin', true);
-            $dialog.dialog('close');
-          } else {
-            $.jGrowl(data);
-          }
-        },
-        error: function() {
-          $.jGrowl('Failed to log in.');
-        }
-      });
-      return false;
+    }), 'Log in', submit, null, function($dialog) {
+      $dialog.find('form').submit(submit.bind($dialog));
     });
   },
 
@@ -183,7 +187,8 @@ var WatEdit = Backbone.View.extend({
             if(revision.description.length > 25) truncated += '...';
             dropdown_data.push({
               label: truncated,
-              description: date.toLocaleDateString() + ' ' + date.toLocaleTimeString(),
+              time: date.toLocaleDateString() + ' ' + date.toLocaleTimeString(),
+              description: revision.description,
               selected: i == current,
               value: i
             });
@@ -206,36 +211,50 @@ var WatEdit = Backbone.View.extend({
         }
 
         var that = this;
+        var submit = function() {
+            var $dialog = $(this),
+              revision = $dialog.find('select[name="revision"]>option:selected').val(),
+              everyone = $dialog.find('input[name="everyone"]').attr('checked');
+
+            if(everyone && that.model.get('admin')) {
+              $.ajax({
+                url: '/action.php?action=set_current_revision',
+                type: 'POST',
+                data: '' + revision,
+                success: function(data, textStatus, jqXHR) {
+                  if(data === '1') {
+                    $.jGrowl('Successfully changed the active revision.');
+                    that.load_data(true, revision);
+                    $dialog.dialog("close");
+                  } else {
+                    $.jGrowl(data);
+                  }
+                },
+                error: function() {
+                  $.jGrowl('Failed to change active revision.');
+                }
+              });
+            } else {
+              that.load_data(true, revision);
+              $dialog.dialog("close");
+            }
+            return false;
+          };
+
         submit_cancel_dialog($.mustache('form', {
           inputs: revisions_data
-        }), 'Change active revision', function() {
-          var $dialog = $(this),
-            revision = $dialog.find('select[name="revision"]>option:selected').val(),
-            everyone = $dialog.find('input[name="everyone"]').attr('checked');
-
-          if(everyone && that.model.get('admin')) {
-            $.ajax({
-              url: '/action.php?action=set_current_revision',
-              type: 'POST',
-              data: '' + revision,
-              success: function(data, textStatus, jqXHR) {
-                if(data === '1') {
-                  $.jGrowl('Successfully changed the active revision.');
-                  that.load_data(true, revision);
-                  $dialog.dialog("close");
-                } else {
-                  $.jGrowl(data);
-                }
-              },
-              error: function() {
-                $.jGrowl('Failed to change active revision.');
-              }
-            });
-          } else {
-            that.load_data(true, revision);
-            $dialog.dialog("close");
-          }
-          return false;
+        }), 'Change active revision', submit, null, function($dialog) {
+          var onchange = function() {
+              var $form = $(this).parent().parent();
+              var $time = $form.find('.time');
+              var $details = $form.find('.details');
+              var $option = $form.find('option:selected');
+              $time.text($option.attr('data-time'));
+              $details.text($option.attr('data-details'));
+            };
+          $dialog.find('select[name="revision"]').change(onchange);
+          $dialog.find('form').submit(submit.bind($dialog)).append('<p class="description details"></p><p class="description time"></p>');
+          onchange.call($dialog.find('select')[0]);
         });
       }.bind(this);
 
@@ -257,34 +276,38 @@ var WatEdit = Backbone.View.extend({
     };
 
     var that = this;
-    submit_cancel_dialog($.mustache('form', view), 'Submit a revision', function() {
-      var $dialog = $(this),
-        description = $('textarea[name="description"]', $dialog).val(),
-        data = {};
+    var submit = function() {
+        var $dialog = $(this),
+          description = $('textarea[name="description"]', $dialog).val(),
+          data = {};
 
-      data.data = that.model.get('current_revision');
-      data.meta = {
-        description: description
+        data.data = that.model.get('current_revision');
+        data.meta = {
+          description: description
+        };
+
+        $.ajax({
+          url: '/action.php?action=new_revision',
+          type: 'POST',
+          data: JSON.stringify(data),
+          success: function(data, textStatus, jqXHR) {
+            if(!isNaN(data)) {
+              that.model.set('current_revision_id', data);
+              $.jGrowl('Successfully created new revision! It will be reviewed shortly.');
+              $dialog.dialog("close");
+            } else {
+              $.jGrowl(data);
+            }
+          },
+          error: function() {
+            $.jGrowl('Failed to create new revision.');
+          }
+        });
+        return false;
       };
 
-      $.ajax({
-        url: '/action.php?action=new_revision',
-        type: 'POST',
-        data: JSON.stringify(data),
-        success: function(data, textStatus, jqXHR) {
-          if(!isNaN(data)) {
-            that.model.set('current_revision_id', data);
-            $.jGrowl('Successfully created new revision! It will be reviewed shortly.');
-            $dialog.dialog("close");
-          } else {
-            $.jGrowl(data);
-          }
-        },
-        error: function() {
-          $.jGrowl('Failed to create new revision.');
-        }
-      });
-      return false;
+    submit_cancel_dialog($.mustache('form', view), 'Submit a revision', submit, null, function($dialog) {
+      $dialog.find('form').submit(submit.bind($dialog));
     });
   }
 

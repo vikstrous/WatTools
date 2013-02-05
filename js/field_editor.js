@@ -1,17 +1,10 @@
 // These properties will not be displayed in the description of fields
-var field_manager = {};
-field_manager.hidden_properties = ['order', 'name', 'sort_id'];
-
-// Builds the html for a field and attaches actions to the edit/delete buttons
-//
-// @param {number} index of the field to build
-// @return {object} jquery dom element of the field
-field_manager.build_field = function(index) {};
+var field_hidden_properties = ['order', 'name', 'sort_id'];
 
 // This is a list of all properties a field may define.
 // Currently anything other than bool is a text value and bool is a
 // checkbox which results in true/false when saved
-field_manager.possible_properties = {
+var field_possible_properties = {
   //property name : property type
   'name': 'text',
   'class': 'text',
@@ -89,7 +82,7 @@ var FieldEditor = Backbone.View.extend({
       properties = [];
       for(var property in this_field.toJSON()) {
         var value = this_field.get(property);
-        if(field_manager.hidden_properties.indexOf(property) == -1) {
+        if(field_hidden_properties.indexOf(property) == -1) {
           properties.push({
             property: property,
             value: value
@@ -141,9 +134,9 @@ var FieldEditor = Backbone.View.extend({
 
     properties_data = [];
     //go through each property that a field can have
-    for(property in field_manager.possible_properties) {
-      if(Object.prototype.hasOwnProperty.call(field_manager.possible_properties, property)) {
-        prop_type = field_manager.possible_properties[property];
+    for(property in field_possible_properties) {
+      if(Object.prototype.hasOwnProperty.call(field_possible_properties, property)) {
+        prop_type = field_possible_properties[property];
 
         properties_data.push({
           val: field.get(property),
@@ -160,57 +153,61 @@ var FieldEditor = Backbone.View.extend({
     };
 
     var that = this;
-    submit_cancel_dialog($.mustache('form', view), field.get('name'), function() {
-      var $dialog = $(this),
-        $inputs = $('input,textarea', $dialog),
-        n, $input, val, name, entry, length, old_name = field.get('name'),
-        entries = that.model.get('current_revision').get('entries');
+    var submit = function() {
+        var $dialog = $(this),
+          $inputs = $('input,textarea', $dialog),
+          n, $input, val, name, entry, length, old_name = field.get('name'),
+          entries = that.model.get('current_revision').get('entries');
 
-      //get all the inputs and text areas
-      for(n = 0, length = $inputs.length; n < length; n += 1) {
-        $input = $($inputs[n]); //get the input element
-        val = $input.val(); //new value to set
-        name = $input.attr('name'); //name of the property to edit
-        //we have to not lose the relationship if we change the name!
-        if(name === 'name' && val !== old_name) {
-          entries.forEach(function(entry) {
-            entry.set(mkobj(val, entry.get(old_name)), {
-              silent: true
-            });
-            entry.unset(old_name, {
-              silent: true
-            });
-          }.bind(this));
-        }
+        //get all the inputs and text areas
+        for(n = 0, length = $inputs.length; n < length; n += 1) {
+          $input = $($inputs[n]); //get the input element
+          val = $input.val(); //new value to set
+          name = $input.attr('name'); //name of the property to edit
+          //we have to not lose the relationship if we change the name!
+          if(name === 'name' && val !== old_name) {
+            entries.forEach(function(entry) {
+              entry.set(mkobj(val, entry.get(old_name)), {
+                silent: true
+              });
+              entry.unset(old_name, {
+                silent: true
+              });
+            }.bind(this));
+          }
 
-        //create the property if it didn't exist but we are giving it a value
-        if($input.attr('type') === 'checkbox') {
-          if($input.attr('checked')) {
-            field.set(mkobj(name, true), {
-              silent: true
-            });
+          //create the property if it didn't exist but we are giving it a value
+          if($input.attr('type') === 'checkbox') {
+            if($input.attr('checked')) {
+              field.set(mkobj(name, true), {
+                silent: true
+              });
+            } else {
+              field.unset(name, {
+                silent: true
+              });
+            }
           } else {
-            field.unset(name, {
-              silent: true
-            });
-          }
-        } else {
-          if(val !== '') {
-            field.set(mkobj(name, val), {
-              silent: true
-            });
-          } else {
-            field.unset(name, {
-              silent: true
-            });
+            if(val !== '') {
+              field.set(mkobj(name, val), {
+                silent: true
+              });
+            } else {
+              field.unset(name, {
+                silent: true
+              });
+            }
           }
         }
-      }
-      that.model.get('current_revision').get('entries').trigger('change');
-      that.model.get('current_revision').get('fields').trigger('change');
-      $dialog.dialog("close");
-      return false;
-    }, 'Save');
+        that.model.get('current_revision').get('entries').trigger('change');
+        that.model.get('current_revision').get('fields').trigger('change');
+        $dialog.dialog("close");
+        return false;
+      };
+
+    submit_cancel_dialog($.mustache('form', view), field.get('name'), submit, 'Save', function($dialog) {
+      $dialog.find('form').submit(submit.bind($dialog));
+    });
   }
 
 });
