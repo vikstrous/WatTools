@@ -2,12 +2,15 @@ var EntryEditor = Backbone.View.extend({
   el: '#item-editor',
 
   events: {
-    'click .faux-button[type=edit_entry]': 'edit_entry_btn',
-    'click .faux-button[type=delete_entry]': 'delete_entry_btn'
+    'click .btn[type=edit_entry]': 'edit_entry_btn',
+    'click .btn[type=delete_entry]': 'delete_entry_btn'
   },
 
   delete_entry_btn: function(e) {
     if(confirm('Are you sure you want to delete this item?')) {
+      if(!$(e.target).hasClass('btn')){
+        e.target= $(e.target).parent()[0];
+      }
       var index = $(e.target).attr('parameter');
       this.model.get('current_revision').get('entries').remove(
       this.model.get('current_revision').get('entries').at(index));
@@ -54,11 +57,11 @@ var EntryEditor = Backbone.View.extend({
         fields: fields_data,
         buttons: { //partial
           buttons: [{
-            label: 'Edit',
+            icon: 'pencil',
             type: 'edit_entry',
             parameter: entry
           }, {
-            label: 'Delete',
+            icon: 'trash',
             type: 'delete_entry',
             parameter: entry
           }] //array
@@ -111,8 +114,10 @@ var EntryEditor = Backbone.View.extend({
   // 
   // Modifies watedit.LinkData and triggers redraw of entries
   edit_entry_btn: function(e) {
-    var index = $(e.target).attr('parameter');
-    this.edit_entry(index);
+    if(!$(e.target).hasClass('btn')){
+      e.target= $(e.target).parent()[0];
+    }
+    this.edit_entry($(e.target).attr('parameter'));
   },
 
   edit_entry: function(index) {
@@ -128,7 +133,8 @@ var EntryEditor = Backbone.View.extend({
         label: this_field.get('name'),
         purpose: 'text',
         field: this_field.get('name'),
-        multiline: this_field.get('multiline')
+        multiline: this_field.get('multiline'),
+        input: !this_field.get('multiline')
       };
 
       //text input
@@ -141,56 +147,61 @@ var EntryEditor = Backbone.View.extend({
         field_data.label += ' url';
         field_data.val = property ? property.url : '';
         field_data.purpose = 'url';
+        field_data.input = true;
         //then add a field for the url
         fields_data.push(field_data);
       }
     });
 
+    var submit = function() {
+        var $dialog = $(this),
+          $inputs = $('input,textarea', $dialog),
+          $input, purpose, field, val, n, length;
+
+        try {
+          //get all the inputs and text areas
+          for(n = 0, length = $inputs.length; n < length; n += 1) {
+            $input = $($inputs[n]); //get the input element
+            val = $input.val(); //new value to set
+            field = $input.attr('field'); //field to edit
+            purpose = $input.attr('purpose'); //text or url
+            //create the field if it didn't exist but we are giving it a value
+            if(entry.get(field) === undefined && val !== '') {
+              entry.set(field, {});
+            }
+
+            //set the value
+            if(entry.get(field) !== undefined) {
+              if(val !== '') {
+                if(purpose == 'url' && val.substr(0, 4) != 'http') {
+                  throw 'Invalid URL';
+                }
+                var tmp = entry.get(field);
+                tmp[purpose] = val;
+                entry.set(field, tmp);
+              } else {
+                delete entry.get(field)[purpose];
+              }
+            }
+            //remove empty object
+            if($.isEmptyObject(entry.get(field))) {
+              entry.unset(field);
+            }
+          }
+          entry.trigger('change');
+          $dialog.modal('hide');
+        } catch(e) {
+          $dialog.find('.form-error').text(e.toString());
+        }
+        return false;
+      };
+
     submit_cancel_dialog(
     $.mustache('form', {
       inputs: fields_data
-    }), entry.get(fields.first().get('name')) && entry.get(fields.first().get('name')).text || 'Untitled', function() {
-      var $dialog = $(this),
-        $inputs = $('input,textarea', $dialog),
-        $input, purpose, field, val, n, length;
-
-      try {
-        //get all the inputs and text areas
-        for(n = 0, length = $inputs.length; n < length; n += 1) {
-          $input = $($inputs[n]); //get the input element
-          val = $input.val(); //new value to set
-          field = $input.attr('field'); //field to edit
-          purpose = $input.attr('purpose'); //text or url
-          //create the field if it didn't exist but we are giving it a value
-          if(entry.get(field) === undefined && val !== '') {
-            entry.set(field, {});
-          }
-
-          //set the value
-          if(entry.get(field) !== undefined) {
-            if(val !== '') {
-              if(purpose == 'url' && val.substr(0, 4) != 'http') {
-                throw 'Invalid URL';
-              }
-              var tmp = entry.get(field);
-              tmp[purpose] = val;
-              entry.set(field, tmp);
-            } else {
-              delete entry.get(field)[purpose];
-            }
-          }
-          //remove empty object
-          if($.isEmptyObject(entry.get(field))) {
-            entry.unset(field);
-          }
-        }
-        entry.trigger('change');
-        $dialog.dialog("close");
-      } catch(e) {
-        $.jGrowl(e.toString());
-      }
-      return false;
-    }, 'Save');
+    }), entry.get(fields.first().get('name')) && entry.get(fields.first().get('name')).text || 'Untitled', submit, 'Save', function($dialog) {
+      $dialog.find('form').submit(submit.bind($dialog));
+    });
   }
 
 

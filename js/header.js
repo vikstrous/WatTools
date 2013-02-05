@@ -79,30 +79,28 @@ function loader(preload_var, url, success, error, fresh, params) {
 // - *string* title
 // - *function* submit
 // - *string* submit_label optional
+// - *function* attach_behavior optional
 
 
-function submit_cancel_dialog(html, title, submit, submit_label) {
+function submit_cancel_dialog(html, title, submit, submit_label, attach_behavior) {
   //parameter parsing
   submit_label = submit_label || 'Submit';
 
-  //vars
-  var buttons, $dialog = $('#dialog');
+  var $dialog = $('#dialog');
 
-  //setup
-  buttons = {};
-  buttons[submit_label] = submit;
-  buttons.Cancel = function() {
-    $dialog.dialog("close");
-  };
+  //build the dialog
+  $dialog.find(".btn-primary").text(submit_label);
+  $dialog.find(".btn-primary").off().click(submit.bind($dialog));
+  $dialog.find('.dialog-title').text(title);
+  $dialog.find('.modal-body').html(html);
 
   //open the dialog
-  $dialog.html(html).dialog({
-    title: title,
-    buttons: buttons,
-    modal: true
-  });
+  $dialog.modal();
 
-  $dialog.find('form').submit(submit.bind($dialog));
+  //attach behavior
+  if(typeof attach_behavior === 'function'){
+    attach_behavior($dialog);
+  }
 }
 
 // a convenient function when using backbone

@@ -1,14 +1,14 @@
 var WatEdit = Backbone.View.extend({
-  el: '#app',
+  el: '.app',
 
   events: {
-    'click #editor': 'editor_btn',
-    'click #new-item': 'new_item_btn',
-    'click #new-field': 'new_field_btn',
-    'click #revisions': 'revisions_btn',
-    'click #login': 'login_btn',
-    'click #logout': 'logout_btn',
-    'click #submit-data': 'submit_data_btn'
+    'click .editor-btn': 'editor_btn',
+    'click .new-item-btn': 'new_item_btn',
+    'click .new-field-btn': 'new_field_btn',
+    'click .revisions-btn': 'revisions_btn',
+    'click .login-btn': 'login_btn',
+    'click .logout-btn': 'logout_btn',
+    'click .submit-data-btn': 'submit_data_btn'
   },
 
   revisions_btn: function() {
@@ -122,41 +122,43 @@ var WatEdit = Backbone.View.extend({
   // Opens the dialog to log in the admin
   login: function() {
     var that = this;
+    var submit = function() {
+        var $dialog = $(this);
+        $.ajax({
+          url: '/action.php?action=login',
+          type: 'POST',
+          data: {
+            password: $dialog.find('input[name="password"]').val()
+          },
+          success: function(data, textStatus, jqXHR) {
+            if(data === '1') {
+              that.model.set('admin', true);
+              $dialog.modal('hide');
+            } else {
+              $dialog.find('.form-error').text(data);
+            }
+          },
+          error: function() {
+            $dialog.find('.form-error').text('Failed to log in.');
+          }
+        });
+        return false;
+      };
+
     submit_cancel_dialog($.mustache('form', {
       inputs: [{
         label: 'Password',
         name: 'password',
         password: true
       }]
-    }), 'Log in', function() {
-      var $dialog = $(this);
-      $.ajax({
-        url: '/action.php?action=login',
-        type: 'POST',
-        data: {
-          password: $dialog.find('input[name="password"]').val()
-        },
-        success: function(data, textStatus, jqXHR) {
-          if(data === '1') {
-            $.jGrowl('Successfully logged in.');
-            that.model.set('admin', true);
-            $dialog.dialog('close');
-          } else {
-            $.jGrowl(data);
-          }
-        },
-        error: function() {
-          $.jGrowl('Failed to log in.');
-        }
-      });
-      return false;
+    }), 'Log in', submit, null, function($dialog) {
+      $dialog.find('form').submit(submit.bind($dialog));
     });
   },
 
   // Logs out the admin
   logout: function() {
     $.get('/action.php?action=logout', function() {
-      $.jGrowl('You have been logged out.');
       this.model.set('admin', false);
     }.bind(this));
   },
@@ -179,11 +181,12 @@ var WatEdit = Backbone.View.extend({
             date = new Date();
             date.setTime(revision.time * 1000);
             //add this revision to the list
-            var truncated = revision.description.substr(0, 25);
-            if(revision.description.length > 25) truncated += '...';
+            var truncated = revision.description.substr(0, 65);
+            if(revision.description.length > 65) truncated += '...';
             dropdown_data.push({
               label: truncated,
-              description: date.toLocaleDateString() + ' ' + date.toLocaleTimeString(),
+              time: date.toLocaleDateString() + ' ' + date.toLocaleTimeString(),
+              description: revision.description,
               selected: i == current,
               value: i
             });
@@ -194,7 +197,18 @@ var WatEdit = Backbone.View.extend({
           name: 'revision',
           dropdown: true
         };
+        var info_time = {
+          'description': true,
+          'class': "time"
+        };
+        var info_description = {
+          'description': true,
+          'class': "details"
+        };
+
         revisions_data.push(dropdown);
+        revisions_data.push(info_description);
+        revisions_data.push(info_time);
 
         if(this.model.get('admin')) {
           revisions_data.push({
@@ -206,36 +220,49 @@ var WatEdit = Backbone.View.extend({
         }
 
         var that = this;
+        var submit = function() {
+            var $dialog = $(this),
+              revision = $dialog.find('select[name="revision"]>option:selected').val(),
+              everyone = $dialog.find('input[name="everyone"]').attr('checked');
+
+            if(everyone && that.model.get('admin')) {
+              $.ajax({
+                url: '/action.php?action=set_current_revision',
+                type: 'POST',
+                data: '' + revision,
+                success: function(data, textStatus, jqXHR) {
+                  if(data === '1') {
+                    that.load_data(true, revision);
+                    $dialog.modal('hide');
+                  } else {
+                    $dialog.find('.form-error').text(data);
+                  }
+                },
+                error: function() {
+                  $dialog.find('.form-error').text('Failed to change active revision.');
+                }
+              });
+            } else {
+              that.load_data(true, revision);
+              $dialog.modal('hide');
+            }
+            return false;
+          };
+
         submit_cancel_dialog($.mustache('form', {
           inputs: revisions_data
-        }), 'Change active revision', function() {
-          var $dialog = $(this),
-            revision = $dialog.find('select[name="revision"]>option:selected').val(),
-            everyone = $dialog.find('input[name="everyone"]').attr('checked');
-
-          if(everyone && that.model.get('admin')) {
-            $.ajax({
-              url: '/action.php?action=set_current_revision',
-              type: 'POST',
-              data: '' + revision,
-              success: function(data, textStatus, jqXHR) {
-                if(data === '1') {
-                  $.jGrowl('Successfully changed the active revision.');
-                  that.load_data(true, revision);
-                  $dialog.dialog("close");
-                } else {
-                  $.jGrowl(data);
-                }
-              },
-              error: function() {
-                $.jGrowl('Failed to change active revision.');
-              }
-            });
-          } else {
-            that.load_data(true, revision);
-            $dialog.dialog("close");
-          }
-          return false;
+        }), 'Change active revision', submit, null, function($dialog) {
+          var onchange = function() {
+              var $form = $(this).parent().parent();
+              var $time = $form.find('.time');
+              var $details = $form.find('.details');
+              var $option = $form.find('option:selected');
+              $time.text($option.attr('data-time'));
+              $details.text($option.attr('data-details'));
+            };
+          $dialog.find('select[name="revision"]').change(onchange);
+          $dialog.find('form').submit(submit.bind($dialog));
+          onchange.call($dialog.find('select')[0]);
         });
       }.bind(this);
 
@@ -257,34 +284,38 @@ var WatEdit = Backbone.View.extend({
     };
 
     var that = this;
-    submit_cancel_dialog($.mustache('form', view), 'Submit a revision', function() {
-      var $dialog = $(this),
-        description = $('textarea[name="description"]', $dialog).val(),
-        data = {};
+    var submit = function() {
+        var $dialog = $(this),
+          description = $('textarea[name="description"]', $dialog).val(),
+          data = {};
 
-      data.data = that.model.get('current_revision');
-      data.meta = {
-        description: description
+        data.data = that.model.get('current_revision');
+        data.meta = {
+          description: description
+        };
+
+        $.ajax({
+          url: '/action.php?action=new_revision',
+          type: 'POST',
+          data: JSON.stringify(data),
+          success: function(data, textStatus, jqXHR) {
+            if(!isNaN(data)) {
+              that.model.set('current_revision_id', data);
+              $('#global-thanks').text('Successfully created new revision! It will be reviewed shortly.');
+              $dialog.modal('hide');
+            } else {
+              $dialog.find('.form-error').text(data);
+            }
+          },
+          error: function() {
+            $dialog.find('.form-error').text('Failed to create new revision.');
+          }
+        });
+        return false;
       };
 
-      $.ajax({
-        url: '/action.php?action=new_revision',
-        type: 'POST',
-        data: JSON.stringify(data),
-        success: function(data, textStatus, jqXHR) {
-          if(!isNaN(data)) {
-            that.model.set('current_revision_id', data);
-            $.jGrowl('Successfully created new revision! It will be reviewed shortly.');
-            $dialog.dialog("close");
-          } else {
-            $.jGrowl(data);
-          }
-        },
-        error: function() {
-          $.jGrowl('Failed to create new revision.');
-        }
-      });
-      return false;
+    submit_cancel_dialog($.mustache('form', view), 'Submit a revision', submit, null, function($dialog) {
+      $dialog.find('form').submit(submit.bind($dialog));
     });
   }
 
