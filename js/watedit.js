@@ -223,7 +223,7 @@ var WatEdit = Backbone.View.extend({
         var submit = function() {
             var $dialog = $(this),
               revision = $dialog.find('select[name="revision"]>option:selected').val(),
-              everyone = $dialog.find('input[name="everyone"]').attr('checked');
+              everyone = $dialog.find('input[name="everyone"]').is(":checked");
 
             if(everyone && that.model.get('admin')) {
               $.ajax({

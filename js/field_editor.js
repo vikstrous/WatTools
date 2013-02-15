@@ -185,7 +185,7 @@ var FieldEditor = Backbone.View.extend({
 
           //create the property if it didn't exist but we are giving it a value
           if($input.attr('type') === 'checkbox') {
-            if($input.attr('checked')) {
+            if($input.is(':checked')) {
               field.set(mkobj(name, true), {
                 silent: true
               });
