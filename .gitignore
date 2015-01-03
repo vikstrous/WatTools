@@ -1,6 +1,0 @@
-.adminpassword
-data/*.js
-data/rss.xml
-*.sublime-project
-*.sublime-workspace
-.sass-cache
